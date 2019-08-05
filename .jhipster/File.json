@@ -1,0 +1,51 @@
+{
+    "name": "File",
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "FileType",
+            "fieldValues": "COVER_IMAGE,LOGO_IMAGE,PATH_IMAGE,RANKING_PDF,ATHLETE_ID_DOC,MEDICAL_CERTIFICATION",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "mimeType",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "binary",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "url",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "race",
+            "otherEntityRelationshipName": "attachment",
+            "relationshipName": "race",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190805160737",
+    "entityTableName": "file",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

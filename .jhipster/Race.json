@@ -1,0 +1,114 @@
+{
+    "name": "Race",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "location",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "info",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "address",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "latitude",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "longitude",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "rules",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "subscriptionExpirationDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "attributes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "RaceStatus",
+            "fieldValues": "PUBLISHED,DRAFT,CANCELED,UNPUBLISHED"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "contact",
+            "otherEntityRelationshipName": "team",
+            "relationshipName": "contact"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "file",
+            "otherEntityRelationshipName": "race",
+            "relationshipName": "attachment"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "pathType",
+            "otherEntityRelationshipName": "race",
+            "relationshipName": "pathType"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "raceSubscription",
+            "otherEntityRelationshipName": "race",
+            "relationshipName": "subscriptionType"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "raceSubscription",
+            "otherEntityRelationshipName": "race",
+            "relationshipName": "subscription"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "acsiTeam",
+            "otherEntityRelationshipName": "race",
+            "relationshipName": "acsiTeam",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190805160740",
+    "entityTableName": "race",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

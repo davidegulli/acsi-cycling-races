@@ -1,0 +1,139 @@
+entity AcsiTeam {
+    id Long,
+    code String required,
+    name String required,
+	userId String required
+}
+
+entity NonAcsiTeam {
+    id Long,
+    code String required,
+    name String required
+}
+
+entity AthleteBlackList {
+    id Long,
+    name String required,
+    surname String required,
+    birthDate Instant required,
+    taxCode String required
+}
+
+entity File {
+    id Long,
+    title String,
+    type FileType required,
+    mimeType String required,
+    binary Blob,
+    url String
+}
+
+entity Contact {
+    id Long,
+    name String required,
+    email String,
+    phone String
+}
+
+entity Category {
+	id Long,
+    name String required,
+    alias String,
+    gender GenderType,
+    minAge Integer,
+    maxAge Integer
+}
+
+entity Race {
+	id Long,
+    name String required,
+    date Instant required,
+    location String required,
+    description String,
+    info String,
+    address String required,
+    latitude Double,
+    longitude Double,
+    rules String,
+    subscriptionExpirationDate Instant,
+    attributes String,
+    status RaceStatus
+}
+
+entity SubscriptionType {
+	id Long,
+    name String required,
+    description String required,
+    rules String,
+    price Double
+}
+
+entity PathType {
+	id Long,
+    name String required,
+    description String required,
+	distance String
+}
+
+entity RaceSubscription {
+	id Long,
+    name String required,
+    surname String required,
+    birthDate String required,
+    birthPlace String required,
+    gender GenderType required,
+    taxCode String required,
+    email String required,
+    phone String required,
+    category String,
+    subcriptionTypeId Long required,
+    pathType Long required,
+    teamId Long required,
+    athleteId String required,
+    date Instant required,
+    paymentType PaymentType required,
+    payed Boolean,
+    payedPrice Double
+}
+
+enum RaceStatus {
+	PUBLISHED, 
+    DRAFT, 
+    CANCELED, 
+    UNPUBLISHED
+}
+
+enum FileType {
+	COVER_IMAGE, 
+    LOGO_IMAGE, 
+    PATH_IMAGE, 
+    RANKING_PDF,
+    ATHLETE_ID_DOC,
+    MEDICAL_CERTIFICATION
+}
+
+enum PaymentType {
+	PAYPAL, 
+    CREDIT_TRANSFER
+}
+
+enum GenderType {
+	MALE, 
+    FEMALE
+}
+
+relationship OneToMany {
+    AcsiTeam{race} to Race{acsiTeam}
+    AcsiTeam{contact} to Contact{team}
+    Race{contact} to Contact{team}
+    Race{attachment} to File{race}
+    Race{pathType} to PathType{race}
+    Race{subscriptionType} to RaceSubscription{race}
+    Race{subscription} to RaceSubscription{race}
+}
+
+// Set pagination options
+paginate Race, RaceSubscription with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct

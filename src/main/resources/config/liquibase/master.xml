@@ -14,6 +14,36 @@
     <property name="uuidType" value="varchar(36)" dbms="h2, mysql, mariadb"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160553_added_entity_AcsiTeam.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160554_added_entity_NonAcsiTeam.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160555_added_entity_AthleteBlackList.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160556_added_entity_File.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160557_added_entity_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160558_added_entity_Category.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160559_added_entity_Race.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160600_added_entity_SubscriptionType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160601_added_entity_PathType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160602_added_entity_RaceSubscription.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160734_added_entity_AcsiTeam.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160735_added_entity_NonAcsiTeam.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160736_added_entity_AthleteBlackList.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160737_added_entity_File.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160738_added_entity_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160739_added_entity_Category.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160740_added_entity_Race.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160741_added_entity_SubscriptionType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160742_added_entity_PathType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160743_added_entity_RaceSubscription.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20190805160556_added_entity_constraints_File.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160557_added_entity_constraints_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160559_added_entity_constraints_Race.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160601_added_entity_constraints_PathType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160602_added_entity_constraints_RaceSubscription.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160737_added_entity_constraints_File.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160738_added_entity_constraints_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160740_added_entity_constraints_Race.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160742_added_entity_constraints_PathType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190805160743_added_entity_constraints_RaceSubscription.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

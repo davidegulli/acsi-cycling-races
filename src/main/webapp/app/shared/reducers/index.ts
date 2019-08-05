@@ -12,6 +12,46 @@ import password, { PasswordState } from 'app/modules/account/password/password.r
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
 import sessions, { SessionsState } from 'app/modules/account/sessions/sessions.reducer';
+// prettier-ignore
+import acsiTeam, {
+  AcsiTeamState
+} from 'app/entities/acsi-team/acsi-team.reducer';
+// prettier-ignore
+import nonAcsiTeam, {
+  NonAcsiTeamState
+} from 'app/entities/non-acsi-team/non-acsi-team.reducer';
+// prettier-ignore
+import athleteBlackList, {
+  AthleteBlackListState
+} from 'app/entities/athlete-black-list/athlete-black-list.reducer';
+// prettier-ignore
+import file, {
+  FileState
+} from 'app/entities/file/file.reducer';
+// prettier-ignore
+import contact, {
+  ContactState
+} from 'app/entities/contact/contact.reducer';
+// prettier-ignore
+import category, {
+  CategoryState
+} from 'app/entities/category/category.reducer';
+// prettier-ignore
+import race, {
+  RaceState
+} from 'app/entities/race/race.reducer';
+// prettier-ignore
+import subscriptionType, {
+  SubscriptionTypeState
+} from 'app/entities/subscription-type/subscription-type.reducer';
+// prettier-ignore
+import pathType, {
+  PathTypeState
+} from 'app/entities/path-type/path-type.reducer';
+// prettier-ignore
+import raceSubscription, {
+  RaceSubscriptionState
+} from 'app/entities/race-subscription/race-subscription.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -25,6 +65,16 @@ export interface IRootState {
   readonly password: PasswordState;
   readonly settings: SettingsState;
   readonly sessions: SessionsState;
+  readonly acsiTeam: AcsiTeamState;
+  readonly nonAcsiTeam: NonAcsiTeamState;
+  readonly athleteBlackList: AthleteBlackListState;
+  readonly file: FileState;
+  readonly contact: ContactState;
+  readonly category: CategoryState;
+  readonly race: RaceState;
+  readonly subscriptionType: SubscriptionTypeState;
+  readonly pathType: PathTypeState;
+  readonly raceSubscription: RaceSubscriptionState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -40,6 +90,16 @@ const rootReducer = combineReducers<IRootState>({
   password,
   settings,
   sessions,
+  acsiTeam,
+  nonAcsiTeam,
+  athleteBlackList,
+  file,
+  contact,
+  category,
+  race,
+  subscriptionType,
+  pathType,
+  raceSubscription,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

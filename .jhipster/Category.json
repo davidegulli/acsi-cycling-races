@@ -1,0 +1,39 @@
+{
+    "name": "Category",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "alias",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "GenderType",
+            "fieldValues": "MALE,FEMALE"
+        },
+        {
+            "fieldName": "minAge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "maxAge",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190805160739",
+    "entityTableName": "category",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
