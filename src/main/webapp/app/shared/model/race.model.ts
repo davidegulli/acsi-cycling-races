@@ -2,6 +2,7 @@ import { Moment } from 'moment';
 import { IContact } from 'app/shared/model/contact.model';
 import { IFile } from 'app/shared/model/file.model';
 import { IPathType } from 'app/shared/model/path-type.model';
+import { ISubscriptionType } from 'app/shared/model/subscription-type.model';
 import { IRaceSubscription } from 'app/shared/model/race-subscription.model';
 
 export const enum RaceStatus {
@@ -28,7 +29,7 @@ export interface IRace {
   contacts?: IContact[];
   attachments?: IFile[];
   pathTypes?: IPathType[];
-  subscriptionTypes?: IRaceSubscription[];
+  subscriptionTypes?: ISubscriptionType[];
   subscriptions?: IRaceSubscription[];
   acsiTeamId?: number;
 }

@@ -67,7 +67,7 @@
         {
             "relationshipType": "one-to-many",
             "otherEntityName": "contact",
-            "otherEntityRelationshipName": "team",
+            "otherEntityRelationshipName": "race",
             "relationshipName": "contact"
         },
         {
@@ -84,7 +84,7 @@
         },
         {
             "relationshipType": "one-to-many",
-            "otherEntityName": "raceSubscription",
+            "otherEntityName": "subscriptionType",
             "otherEntityRelationshipName": "race",
             "relationshipName": "subscriptionType"
         },

@@ -70,7 +70,9 @@ export class AcsiTeamUpdate extends React.Component<IAcsiTeamUpdateProps, IAcsiT
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="acsiCyclingRacesApp.acsiTeam.home.createOrEditLabel">Create or edit a AcsiTeam</h2>
+            <h2 id="acsiCyclingRacesApp.acsiTeam.home.createOrEditLabel" className="sheet-title">
+              Associazione ACSI
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -79,61 +81,95 @@ export class AcsiTeamUpdate extends React.Component<IAcsiTeamUpdateProps, IAcsiT
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : acsiTeamEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="acsi-team-id">ID</Label>
-                    <AvInput id="acsi-team-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
                 <AvGroup>
                   <Label id="codeLabel" for="acsi-team-code">
-                    Code
+                    Codice
                   </Label>
                   <AvField
                     id="acsi-team-code"
                     type="text"
                     name="code"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio.' }
                     }}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="nameLabel" for="acsi-team-name">
-                    Name
+                    Nome
                   </Label>
                   <AvField
                     id="acsi-team-name"
                     type="text"
                     name="name"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio.' }
                     }}
+                  />
+                </AvGroup>
+                <h4 id="acsiCyclingRacesApp.acsiTeam.home.createOrEditLabel" className="sheet-title">
+                  Dati Responsabile
+                </h4>
+                <AvGroup>
+                  <Label id="managerNameIdLabel" for="acsiTeamManagerName">
+                    Nome
+                  </Label>
+                  <AvField
+                    id="acsiTeamManagerName"
+                    type="text"
+                    name="managerName"
+                    validate={{
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio.' }
+                    }}
+                    readOnly={!isNew}
+                    helpMessage="Inserisci il nome del responsabile dell'associzione"
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="userIdLabel" for="acsi-team-userId">
-                    User Id
+                  <Label id="managerSurameLabel" for="acsiTeamManagerSurname">
+                    Cognome
                   </Label>
                   <AvField
-                    id="acsi-team-userId"
+                    id="acsiTeamManagerSurname"
                     type="text"
-                    name="userId"
+                    name="managerSurname"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio.' }
                     }}
+                    readOnly={!isNew}
+                    helpMessage="Inserisci il cognome del responsabile dell'associzione"
                   />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/acsi-team" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <AvGroup>
+                  <Label id="managerEmailLabel" for="acsiTeamManagerEmail">
+                    Email
+                  </Label>
+                  <AvField
+                    id="acsiTeamManagerEmail"
+                    type="text"
+                    name="managerEmail"
+                    validate={{
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio.' },
+                      email: true
+                    }}
+                    readOnly={!isNew}
+                    helpMessage="Inserisci l'indirizzo email del responsabile dell'associzione, 
+                                 all'indirizzo indicato verrà mandata una mail per l'accesso al 
+                                 portale di gestione delle gare acsi"
+                  />
+                </AvGroup>
+                <div className="form-button-holder">
+                  <Button tag={Link} id="cancel-save" to="/entity/acsi-team" replace>
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <span className="d-none d-md-inline">Back</span>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">Back</span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp; Save
-                </Button>
+                  <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp; Save
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>

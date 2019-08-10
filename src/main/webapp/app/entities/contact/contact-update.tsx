@@ -23,7 +23,7 @@ export interface IContactUpdateProps extends StateProps, DispatchProps, RouteCom
 export interface IContactUpdateState {
   isNew: boolean;
   teamId: string;
-  teamId: string;
+  raceId: string;
 }
 
 export class ContactUpdate extends React.Component<IContactUpdateProps, IContactUpdateState> {
@@ -31,7 +31,7 @@ export class ContactUpdate extends React.Component<IContactUpdateProps, IContact
     super(props);
     this.state = {
       teamId: '0',
-      teamId: '0',
+      raceId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -135,8 +135,8 @@ export class ContactUpdate extends React.Component<IContactUpdateProps, IContact
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="contact-team">Team</Label>
-                  <AvInput id="contact-team" type="select" className="form-control" name="teamId">
+                  <Label for="contact-race">Race</Label>
+                  <AvInput id="contact-race" type="select" className="form-control" name="raceId">
                     <option value="" key="0" />
                     {races
                       ? races.map(otherEntity => (

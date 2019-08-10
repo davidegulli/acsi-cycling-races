@@ -4,15 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
     <!--
-        Added the constraints for entity Race.
+        Added the constraints for entity SubscriptionType.
     -->
-    <changeSet id="20190805160559-2" author="jhipster">
+    <changeSet id="20190805160741-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="acsi_team_id"
-                                 baseTableName="race"
-                                 constraintName="fk_race_acsi_team_id"
+        <addForeignKeyConstraint baseColumnNames="race_id"
+                                 baseTableName="subscription_type"
+                                 constraintName="fk_subscription_type_race_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="acsi_team"/>
+                                 referencedTableName="race"/>
 
     </changeSet>
 </databaseChangeLog>

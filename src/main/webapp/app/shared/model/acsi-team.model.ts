@@ -6,6 +6,9 @@ export interface IAcsiTeam {
   code?: string;
   name?: string;
   userId?: string;
+  managerName?: string;
+  managerSurname?: string;
+  managerEmail?: string;
   races?: IRace[];
   contacts?: IContact[];
 }

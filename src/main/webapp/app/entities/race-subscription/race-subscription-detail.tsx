@@ -100,8 +100,6 @@ export class RaceSubscriptionDetail extends React.Component<IRaceSubscriptionDet
             <dd>{raceSubscriptionEntity.payedPrice}</dd>
             <dt>Race</dt>
             <dd>{raceSubscriptionEntity.raceId ? raceSubscriptionEntity.raceId : ''}</dd>
-            <dt>Race</dt>
-            <dd>{raceSubscriptionEntity.raceId ? raceSubscriptionEntity.raceId : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/race-subscription" replace color="info">
             <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

@@ -1,0 +1,10 @@
+version: '2'
+services:
+  acsicyclingraces-mysql:
+    extends:
+      file: mysql.yml
+      service: acsicyclingraces-mysql
+  acsicyclingraces-elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: acsicyclingraces-elasticsearch

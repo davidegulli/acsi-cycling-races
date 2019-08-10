@@ -118,13 +118,6 @@
         {
             "relationshipType": "many-to-one",
             "otherEntityName": "race",
-            "otherEntityRelationshipName": "subscriptionType",
-            "relationshipName": "race",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "race",
             "otherEntityRelationshipName": "subscription",
             "relationshipName": "race",
             "otherEntityField": "id"

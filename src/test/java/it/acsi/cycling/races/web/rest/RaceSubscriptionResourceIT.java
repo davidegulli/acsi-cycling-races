@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import it.acsi.cycling.races.domain.enumeration.GenderType;
 import it.acsi.cycling.races.domain.enumeration.PaymentType;
 /**
- * Integration tests for the {@Link RaceSubscriptionResource} REST controller.
+ * Integration tests for the {@link RaceSubscriptionResource} REST controller.
  */
 @SpringBootTest(classes = AcsiCyclingRacesApp.class)
 public class RaceSubscriptionResourceIT {
@@ -75,18 +75,22 @@ public class RaceSubscriptionResourceIT {
 
     private static final Long DEFAULT_SUBCRIPTION_TYPE_ID = 1L;
     private static final Long UPDATED_SUBCRIPTION_TYPE_ID = 2L;
+    private static final Long SMALLER_SUBCRIPTION_TYPE_ID = 1L - 1L;
 
     private static final Long DEFAULT_PATH_TYPE = 1L;
     private static final Long UPDATED_PATH_TYPE = 2L;
+    private static final Long SMALLER_PATH_TYPE = 1L - 1L;
 
     private static final Long DEFAULT_TEAM_ID = 1L;
     private static final Long UPDATED_TEAM_ID = 2L;
+    private static final Long SMALLER_TEAM_ID = 1L - 1L;
 
     private static final String DEFAULT_ATHLETE_ID = "AAAAAAAAAA";
     private static final String UPDATED_ATHLETE_ID = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant SMALLER_DATE = Instant.ofEpochMilli(-1L);
 
     private static final PaymentType DEFAULT_PAYMENT_TYPE = PaymentType.PAYPAL;
     private static final PaymentType UPDATED_PAYMENT_TYPE = PaymentType.CREDIT_TRANSFER;
@@ -96,6 +100,7 @@ public class RaceSubscriptionResourceIT {
 
     private static final Double DEFAULT_PAYED_PRICE = 1D;
     private static final Double UPDATED_PAYED_PRICE = 2D;
+    private static final Double SMALLER_PAYED_PRICE = 1D - 1D;
 
     @Autowired
     private RaceSubscriptionRepository raceSubscriptionRepository;

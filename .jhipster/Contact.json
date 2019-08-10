@@ -29,7 +29,7 @@
             "relationshipType": "many-to-one",
             "otherEntityName": "race",
             "otherEntityRelationshipName": "contact",
-            "relationshipName": "team",
+            "relationshipName": "race",
             "otherEntityField": "id"
         }
     ],

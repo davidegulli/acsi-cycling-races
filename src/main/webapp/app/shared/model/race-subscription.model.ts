@@ -30,7 +30,6 @@ export interface IRaceSubscription {
   payed?: boolean;
   payedPrice?: number;
   raceId?: number;
-  raceId?: number;
 }
 
 export const defaultValue: Readonly<IRaceSubscription> = {

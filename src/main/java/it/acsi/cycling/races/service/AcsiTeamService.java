@@ -1,10 +1,15 @@
 package it.acsi.cycling.races.service;
 
 import it.acsi.cycling.races.domain.AcsiTeam;
+import it.acsi.cycling.races.domain.User;
 import it.acsi.cycling.races.repository.AcsiTeamRepository;
+import it.acsi.cycling.races.repository.UserRepository;
 import it.acsi.cycling.races.repository.search.AcsiTeamSearchRepository;
 import it.acsi.cycling.races.service.dto.AcsiTeamDTO;
 import it.acsi.cycling.races.service.mapper.AcsiTeamMapper;
+import it.acsi.cycling.races.web.rest.errors.EmailAlreadyUsedException;
+import it.acsi.cycling.races.web.rest.errors.LoginAlreadyUsedException;
+import it.acsi.cycling.races.web.rest.errors.ServiceMomentlyNotAvailableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,10 +39,26 @@ public class AcsiTeamService {
 
     private final AcsiTeamSearchRepository acsiTeamSearchRepository;
 
-    public AcsiTeamService(AcsiTeamRepository acsiTeamRepository, AcsiTeamMapper acsiTeamMapper, AcsiTeamSearchRepository acsiTeamSearchRepository) {
+    private final UserRepository userRepository;
+
+    private final UserService userService;
+
+    private final MailService mailService;
+
+    public AcsiTeamService(
+            AcsiTeamRepository acsiTeamRepository,
+            AcsiTeamMapper acsiTeamMapper,
+            AcsiTeamSearchRepository acsiTeamSearchRepository,
+            UserRepository userRepository,
+            UserService userService,
+            MailService mailService) {
+
         this.acsiTeamRepository = acsiTeamRepository;
         this.acsiTeamMapper = acsiTeamMapper;
         this.acsiTeamSearchRepository = acsiTeamSearchRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.mailService = mailService;
     }
 
     /**
@@ -47,12 +68,46 @@ public class AcsiTeamService {
      * @return the persisted entity.
      */
     public AcsiTeamDTO save(AcsiTeamDTO acsiTeamDTO) {
+
         log.debug("Request to save AcsiTeam : {}", acsiTeamDTO);
+
+        if(acsiTeamDTO.getId() == null) {
+
+            String login = new StringBuilder()
+                .append(acsiTeamDTO.getManagerName())
+                .append(".")
+                .append(acsiTeamDTO.getManagerSurname())
+                .toString();
+
+            if (userRepository.findOneByLogin(login.toLowerCase()).isPresent()) {
+                throw new LoginAlreadyUsedException();
+            } else if (userRepository.findOneByEmailIgnoreCase(acsiTeamDTO.getManagerEmail()).isPresent()) {
+                throw new EmailAlreadyUsedException();
+            }
+
+            User user = userService.createTeamManagerUser(
+                login,
+                acsiTeamDTO.getManagerName(),
+                acsiTeamDTO.getManagerSurname(),
+                acsiTeamDTO.getManagerEmail());
+
+            try {
+                mailService.sendCreationEmail(user);
+            } catch (Exception exc) {
+                throw new ServiceMomentlyNotAvailableException();
+            }
+
+            acsiTeamDTO.setUserId(String.valueOf(user.getId()));
+        }
+
         AcsiTeam acsiTeam = acsiTeamMapper.toEntity(acsiTeamDTO);
         acsiTeam = acsiTeamRepository.save(acsiTeam);
+
         AcsiTeamDTO result = acsiTeamMapper.toDto(acsiTeam);
         acsiTeamSearchRepository.save(acsiTeam);
+
         return result;
+
     }
 
     /**
@@ -77,9 +132,26 @@ public class AcsiTeamService {
      */
     @Transactional(readOnly = true)
     public Optional<AcsiTeamDTO> findOne(Long id) {
+
         log.debug("Request to get AcsiTeam : {}", id);
+
         return acsiTeamRepository.findById(id)
-            .map(acsiTeamMapper::toDto);
+            .map(acsiTeamMapper::toDto)
+            .map(e -> {
+                AcsiTeamDTO result = new AcsiTeamDTO();
+                result.setId(e.getId());
+                result.setCode(e.getCode());
+                result.setName(e.getName());
+                result.setUserId(e.getUserId());
+
+                userRepository.findById(Long.parseLong(e.getUserId()))
+                    .ifPresent(user -> {
+                        result.setManagerName(user.getFirstName());
+                        result.setManagerSurname(user.getLastName());
+                        result.setManagerEmail(user.getEmail());
+                    });
+                return result;
+            });
     }
 
     /**
@@ -88,7 +160,15 @@ public class AcsiTeamService {
      * @param id the id of the entity.
      */
     public void delete(Long id) {
+
         log.debug("Request to delete AcsiTeam : {}", id);
+
+        Optional<AcsiTeam> acsiTeam = acsiTeamRepository.findById(id);
+
+        acsiTeam.ifPresent(e -> {
+            userService.deleteUser(Long.parseLong(e.getUserId()));
+        });
+
         acsiTeamRepository.deleteById(id);
         acsiTeamSearchRepository.deleteById(id);
     }

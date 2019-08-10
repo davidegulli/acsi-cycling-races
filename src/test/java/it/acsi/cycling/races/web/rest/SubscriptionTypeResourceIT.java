@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link SubscriptionTypeResource} REST controller.
+ * Integration tests for the {@link SubscriptionTypeResource} REST controller.
  */
 @SpringBootTest(classes = AcsiCyclingRacesApp.class)
 public class SubscriptionTypeResourceIT {
@@ -51,6 +51,7 @@ public class SubscriptionTypeResourceIT {
 
     private static final Double DEFAULT_PRICE = 1D;
     private static final Double UPDATED_PRICE = 2D;
+    private static final Double SMALLER_PRICE = 1D - 1D;
 
     @Autowired
     private SubscriptionTypeRepository subscriptionTypeRepository;

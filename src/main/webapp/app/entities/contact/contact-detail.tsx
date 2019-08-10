@@ -42,8 +42,8 @@ export class ContactDetail extends React.Component<IContactDetailProps> {
             <dd>{contactEntity.phone}</dd>
             <dt>Team</dt>
             <dd>{contactEntity.teamId ? contactEntity.teamId : ''}</dd>
-            <dt>Team</dt>
-            <dd>{contactEntity.teamId ? contactEntity.teamId : ''}</dd>
+            <dt>Race</dt>
+            <dd>{contactEntity.raceId ? contactEntity.raceId : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/contact" replace color="info">
             <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

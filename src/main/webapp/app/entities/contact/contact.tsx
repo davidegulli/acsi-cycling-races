@@ -50,7 +50,7 @@ export class Contact extends React.Component<IContactProps, IContactState> {
           Contacts
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Create new Contact
+            &nbsp; Create a new Contact
           </Link>
         </h2>
         <Row>
@@ -80,7 +80,7 @@ export class Contact extends React.Component<IContactProps, IContactState> {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Team</th>
-                  <th>Team</th>
+                  <th>Race</th>
                   <th />
                 </tr>
               </thead>
@@ -96,7 +96,7 @@ export class Contact extends React.Component<IContactProps, IContactState> {
                     <td>{contact.email}</td>
                     <td>{contact.phone}</td>
                     <td>{contact.teamId ? <Link to={`acsi-team/${contact.teamId}`}>{contact.teamId}</Link> : ''}</td>
-                    <td>{contact.teamId ? <Link to={`race/${contact.teamId}`}>{contact.teamId}</Link> : ''}</td>
+                    <td>{contact.raceId ? <Link to={`race/${contact.raceId}`}>{contact.raceId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`${match.url}/${contact.id}`} color="info" size="sm">

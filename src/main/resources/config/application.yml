@@ -130,7 +130,7 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: AcsiCyclingRaces@localhost
+    from: info@acsiciclismolazio.it
   swagger:
     default-include-pattern: /api/.*
     title: AcsiCyclingRaces API

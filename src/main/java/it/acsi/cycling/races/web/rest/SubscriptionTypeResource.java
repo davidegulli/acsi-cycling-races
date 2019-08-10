@@ -85,6 +85,7 @@ public class SubscriptionTypeResource {
     /**
      * {@code GET  /subscription-types} : get all the subscriptionTypes.
      *
+
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of subscriptionTypes in body.
      */
     @GetMapping("/subscription-types")

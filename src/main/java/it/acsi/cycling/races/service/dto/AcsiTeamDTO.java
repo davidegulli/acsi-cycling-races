@@ -16,8 +16,16 @@ public class AcsiTeamDTO implements Serializable {
     @NotNull
     private String name;
 
-    @NotNull
     private String userId;
+
+    @NotNull
+    private String managerName;
+
+    @NotNull
+    private String managerSurname;
+
+    @NotNull
+    private String managerEmail;
 
 
     public Long getId() {
@@ -52,6 +60,30 @@ public class AcsiTeamDTO implements Serializable {
         this.userId = userId;
     }
 
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
+    public String getManagerSurname() {
+        return managerSurname;
+    }
+
+    public void setManagerSurname(String managerSurname) {
+        this.managerSurname = managerSurname;
+    }
+
+    public String getManagerEmail() {
+        return managerEmail;
+    }
+
+    public void setManagerEmail(String managerEmail) {
+        this.managerEmail = managerEmail;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +112,9 @@ public class AcsiTeamDTO implements Serializable {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", userId='" + getUserId() + "'" +
+            ", managerName='" + getManagerName() + "'" +
+            ", managersurname='" + getManagerSurname() + "'" +
+            ", managerEmail='" + getManagerEmail() + "'" +
             "}";
     }
 }

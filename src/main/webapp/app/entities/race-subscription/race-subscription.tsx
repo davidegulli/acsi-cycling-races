@@ -89,7 +89,7 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
           Race Subscriptions
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Create new Race Subscription
+            &nbsp; Create a new Race Subscription
           </Link>
         </h2>
         <Row>
@@ -171,9 +171,6 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
                   <th>
                     Race <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    Race <FontAwesomeIcon icon="sort" />
-                  </th>
                   <th />
                 </tr>
               </thead>
@@ -204,7 +201,6 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
                     <td>{raceSubscription.paymentType}</td>
                     <td>{raceSubscription.payed ? 'true' : 'false'}</td>
                     <td>{raceSubscription.payedPrice}</td>
-                    <td>{raceSubscription.raceId ? <Link to={`race/${raceSubscription.raceId}`}>{raceSubscription.raceId}</Link> : ''}</td>
                     <td>{raceSubscription.raceId ? <Link to={`race/${raceSubscription.raceId}`}>{raceSubscription.raceId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">

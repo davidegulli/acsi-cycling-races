@@ -4,7 +4,7 @@ export interface IContact {
   email?: string;
   phone?: string;
   teamId?: number;
-  teamId?: number;
+  raceId?: number;
 }
 
 export const defaultValue: Readonly<IContact> = {};

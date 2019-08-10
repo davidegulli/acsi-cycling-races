@@ -89,7 +89,7 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
           Races
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Create new Race
+            &nbsp; Create a new Race
           </Link>
         </h2>
         <Row>

@@ -2,8 +2,8 @@ version: '2'
 services:
   acsicyclingraces-mysql:
     image: mysql:8.0.16
-    # volumes:
-    #     - ~/volumes/jhipster/AcsiCyclingRaces/mysql/:/var/lib/mysql/
+    volumes:
+      - ~/volumes/jhipster/acsi-cycling-races/mysql/:/var/lib/mysql/
     environment:
       - MYSQL_USER=root
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes

@@ -88,10 +88,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="race_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
@@ -111,9 +107,10 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
+    <!--
     <changeSet id="20190805160743-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/data/race_subscription.csv"
+                  file="config/liquibase/fake-data/race_subscription.csv"
                   separator=";"
                   tableName="race_subscription">
             <column name="id" type="numeric"/>
@@ -134,8 +131,8 @@
             <column name="payment_type" type="string"/>
             <column name="payed" type="boolean"/>
             <column name="payed_price" type="numeric"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>
+    -->
 
 </databaseChangeLog>

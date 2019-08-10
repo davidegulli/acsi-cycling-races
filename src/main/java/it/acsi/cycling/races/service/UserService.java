@@ -47,7 +47,13 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, PersistentTokenRepository persistentTokenRepository, AuthorityRepository authorityRepository) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            UserSearchRepository userSearchRepository,
+            PersistentTokenRepository persistentTokenRepository,
+            AuthorityRepository authorityRepository) {
+
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
@@ -166,6 +172,34 @@ public class UserService {
         return user;
     }
 
+    public User createTeamManagerUser(String login, String name, String surname, String email) {
+
+        User user = new User();
+        user.setLogin(login);
+        user.setFirstName(name);
+        user.setLastName(surname);
+        user.setEmail(email);
+        user.setLangKey("it_IT");
+
+        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        user.setPassword(encryptedPassword);
+        user.setResetKey(RandomUtil.generateResetKey());
+        user.setResetDate(Instant.now());
+        user.setActivated(true);
+
+        Set<Authority> authorities = Collections.singleton("ROLE_TEAM_MANAGER").stream()
+            .map(authorityRepository::findById)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toSet());
+        user.setAuthorities(authorities);
+
+        userRepository.save(user);
+        userSearchRepository.save(user);
+        log.debug("Created Information for User: {}", user);
+        return user;
+    }
+
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
@@ -220,6 +254,14 @@ public class UserService {
                 return user;
             })
             .map(UserDTO::new);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.findById(id).ifPresent(user -> {
+            userRepository.delete(user);
+            userSearchRepository.delete(user);
+            log.debug("Deleted User: {}", user);
+        });
     }
 
     public void deleteUser(String login) {

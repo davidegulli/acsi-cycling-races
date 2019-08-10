@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link ContactResource} REST controller.
+ * Integration tests for the {@link ContactResource} REST controller.
  */
 @SpringBootTest(classes = AcsiCyclingRacesApp.class)
 public class ContactResourceIT {

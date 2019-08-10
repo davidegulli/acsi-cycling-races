@@ -1,11 +1,16 @@
 id;name;alias;gender;min_age;max_age
-1;Austria mindshare EXE;bandwidth Liaison;MALE;8410;42609
-2;Centralized revolutionize International;Sleek;FEMALE;58130;37427
-3;transition open-source Interactions;Pennsylvania dynamic bandwidth;FEMALE;42422;24872
-4;array supply-chains Advanced;Parkway Handmade Wooden Cheese;FEMALE;74421;74604
-5;Idaho Markets grow;Refined;MALE;1215;97790
-6;Arizona success Sleek Frozen Chips;Gorgeous Rubber Chicken Associate Central African Republic;FEMALE;99583;62755
-7;Maryland Legacy Unbranded Plastic Chips;Unbranded Cotton Table Generic B2B;FEMALE;46369;38826
-8;Persevering analyzing;Engineer Architect;FEMALE;60278;68473
-9;Keyboard;Licensed Usability models;FEMALE;93272;87666
-10;Aruba Chair portals;online Strategist Shirt;MALE;82916;84211
+1;Master Junior;;MALE;15;18
+2;Junior Uomini;Elite Master Sport;MALE;19;29
+3;Senior 1;Master 1;MALE;30;34
+4;Senior 2;Master 2;MALE;35;39
+5;Veterano 1;Master 3;MALE;40;44
+6;Veterano 2;Master 4;MALE;45;49
+7;Gentleman 1;Master 5;MALE;50;54
+8;Gentleman 2;Master 6;MALE;55;59
+9;Super Gentleman A;Master 7;MALE;60;64
+10;Super Gentleman B;Master 8;MALE;65;99
+11;Junior Donne;Ews;FEMALE;15;18
+12;Donne A;;FEMALE;19;29
+13;Donne B;;FEMALE;30;40
+14;Donne C;;FEMALE;41;50
+15;Donne D;;FEMALE;51;99

@@ -24,7 +24,15 @@
             "fieldType": "Double"
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "race",
+            "otherEntityRelationshipName": "subscriptionType",
+            "relationshipName": "race",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20190805160741",
     "entityTableName": "subscription_type",
     "dto": "mapstruct",

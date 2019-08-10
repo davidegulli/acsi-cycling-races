@@ -2,8 +2,8 @@ version: '2'
 services:
   acsicyclingraces-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
-    # volumes:
-    #     - ~/volumes/jhipster/AcsiCyclingRaces/elasticsearch/:/usr/share/elasticsearch/data/
+    volumes:
+      - ~/volumes/jhipster/acsi-cycling-races/elasticsearch/:/usr/share/elasticsearch/data/
     ports:
       - 9200:9200
       - 9300:9300

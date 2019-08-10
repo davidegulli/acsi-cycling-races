@@ -14,11 +14,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="race"/>
 
-        <addForeignKeyConstraint baseColumnNames="race_id"
-                                 baseTableName="race_subscription"
-                                 constraintName="fk_race_subscription_race_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="race"/>
-
     </changeSet>
 </databaseChangeLog>

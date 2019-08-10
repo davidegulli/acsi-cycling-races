@@ -21,6 +21,8 @@ public class SubscriptionTypeDTO implements Serializable {
     private Double price;
 
 
+    private Long raceId;
+
     public Long getId() {
         return id;
     }
@@ -61,6 +63,14 @@ public class SubscriptionTypeDTO implements Serializable {
         this.price = price;
     }
 
+    public Long getRaceId() {
+        return raceId;
+    }
+
+    public void setRaceId(Long raceId) {
+        this.raceId = raceId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -90,6 +100,7 @@ public class SubscriptionTypeDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", rules='" + getRules() + "'" +
             ", price=" + getPrice() +
+            ", race=" + getRaceId() +
             "}";
     }
 }

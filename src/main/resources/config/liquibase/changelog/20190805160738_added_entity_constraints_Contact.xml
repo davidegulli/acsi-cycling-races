@@ -14,9 +14,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="acsi_team"/>
 
-        <addForeignKeyConstraint baseColumnNames="team_id"
+        <addForeignKeyConstraint baseColumnNames="race_id"
                                  baseTableName="contact"
-                                 constraintName="fk_contact_team_id"
+                                 constraintName="fk_contact_race_id"
                                  referencedColumnNames="id"
                                  referencedTableName="race"/>
 

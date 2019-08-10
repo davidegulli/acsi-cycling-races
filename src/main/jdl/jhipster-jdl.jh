@@ -125,10 +125,10 @@ enum GenderType {
 relationship OneToMany {
     AcsiTeam{race} to Race{acsiTeam}
     AcsiTeam{contact} to Contact{team}
-    Race{contact} to Contact{team}
+    Race{contact} to Contact{race}
     Race{attachment} to File{race}
     Race{pathType} to PathType{race}
-    Race{subscriptionType} to RaceSubscription{race}
+    Race{subscriptionType} to SubscriptionType{race}
     Race{subscription} to RaceSubscription{race}
 }
 

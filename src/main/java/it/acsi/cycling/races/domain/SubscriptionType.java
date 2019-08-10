@@ -1,4 +1,5 @@
 package it.acsi.cycling.races.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -34,6 +35,10 @@ public class SubscriptionType implements Serializable {
 
     @Column(name = "price")
     private Double price;
+
+    @ManyToOne
+    @JsonIgnoreProperties("subscriptionTypes")
+    private Race race;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -94,6 +99,19 @@ public class SubscriptionType implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Race getRace() {
+        return race;
+    }
+
+    public SubscriptionType race(Race race) {
+        this.race = race;
+        return this;
+    }
+
+    public void setRace(Race race) {
+        this.race = race;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

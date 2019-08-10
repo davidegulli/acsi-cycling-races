@@ -8,6 +8,8 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipste
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IRace } from 'app/shared/model/race.model';
+import { getEntities as getRaces } from 'app/entities/race/race.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './subscription-type.reducer';
 import { ISubscriptionType } from 'app/shared/model/subscription-type.model';
 // tslint:disable-next-line:no-unused-variable
@@ -18,12 +20,14 @@ export interface ISubscriptionTypeUpdateProps extends StateProps, DispatchProps,
 
 export interface ISubscriptionTypeUpdateState {
   isNew: boolean;
+  raceId: string;
 }
 
 export class SubscriptionTypeUpdate extends React.Component<ISubscriptionTypeUpdateProps, ISubscriptionTypeUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
+      raceId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -40,6 +44,8 @@ export class SubscriptionTypeUpdate extends React.Component<ISubscriptionTypeUpd
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
+
+    this.props.getRaces();
   }
 
   saveEntity = (event, errors, values) => {
@@ -63,7 +69,7 @@ export class SubscriptionTypeUpdate extends React.Component<ISubscriptionTypeUpd
   };
 
   render() {
-    const { subscriptionTypeEntity, loading, updating } = this.props;
+    const { subscriptionTypeEntity, races, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -123,6 +129,19 @@ export class SubscriptionTypeUpdate extends React.Component<ISubscriptionTypeUpd
                   </Label>
                   <AvField id="subscription-type-price" type="string" className="form-control" name="price" />
                 </AvGroup>
+                <AvGroup>
+                  <Label for="subscription-type-race">Race</Label>
+                  <AvInput id="subscription-type-race" type="select" className="form-control" name="raceId">
+                    <option value="" key="0" />
+                    {races
+                      ? races.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.id}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/subscription-type" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
@@ -143,6 +162,7 @@ export class SubscriptionTypeUpdate extends React.Component<ISubscriptionTypeUpd
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  races: storeState.race.entities,
   subscriptionTypeEntity: storeState.subscriptionType.entity,
   loading: storeState.subscriptionType.loading,
   updating: storeState.subscriptionType.updating,
@@ -150,6 +170,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getRaces,
   getEntity,
   updateEntity,
   createEntity,

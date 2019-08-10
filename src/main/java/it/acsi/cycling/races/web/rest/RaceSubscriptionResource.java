@@ -14,8 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,16 +91,16 @@ public class RaceSubscriptionResource {
     /**
      * {@code GET  /race-subscriptions} : get all the raceSubscriptions.
      *
+
      * @param pageable the pagination information.
-     * @param queryParams a {@link MultiValueMap} query parameters.
-     * @param uriBuilder a {@link UriComponentsBuilder} URI builder.
+
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of raceSubscriptions in body.
      */
     @GetMapping("/race-subscriptions")
-    public ResponseEntity<List<RaceSubscriptionDTO>> getAllRaceSubscriptions(Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<List<RaceSubscriptionDTO>> getAllRaceSubscriptions(Pageable pageable) {
         log.debug("REST request to get a page of RaceSubscriptions");
         Page<RaceSubscriptionDTO> page = raceSubscriptionService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -137,15 +136,13 @@ public class RaceSubscriptionResource {
      *
      * @param query the query of the raceSubscription search.
      * @param pageable the pagination information.
-     * @param queryParams a {@link MultiValueMap} query parameters.
-     * @param uriBuilder a {@link UriComponentsBuilder} URI builder.
      * @return the result of the search.
      */
     @GetMapping("/_search/race-subscriptions")
-    public ResponseEntity<List<RaceSubscriptionDTO>> searchRaceSubscriptions(@RequestParam String query, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<List<RaceSubscriptionDTO>> searchRaceSubscriptions(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RaceSubscriptions for query {}", query);
         Page<RaceSubscriptionDTO> page = raceSubscriptionService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

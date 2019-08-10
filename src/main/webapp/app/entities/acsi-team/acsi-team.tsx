@@ -12,6 +12,7 @@ import { getSearchEntities, getEntities } from './acsi-team.reducer';
 import { IAcsiTeam } from 'app/shared/model/acsi-team.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import NoElementFound from '../../shared/component/no-element-found';
 
 export interface IAcsiTeamProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -46,11 +47,11 @@ export class AcsiTeam extends React.Component<IAcsiTeamProps, IAcsiTeamState> {
     const { acsiTeamList, match } = this.props;
     return (
       <div>
-        <h2 id="acsi-team-heading">
-          Acsi Teams
+        <h2 id="acsi-team-heading" className="list-title">
+          Associazioni Acsi
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Create new Acsi Team
+            &nbsp; Nuova
           </Link>
         </h2>
         <Row>
@@ -58,8 +59,15 @@ export class AcsiTeam extends React.Component<IAcsiTeamProps, IAcsiTeamState> {
             <AvForm onSubmit={this.search}>
               <AvGroup>
                 <InputGroup>
-                  <AvInput type="text" name="search" value={this.state.search} onChange={this.handleSearch} placeholder="Search" />
-                  <Button className="input-group-addon">
+                  <AvInput
+                    type="text"
+                    name="search"
+                    value={this.state.search}
+                    onChange={this.handleSearch}
+                    placeholder="Ricerca"
+                    className="button-rigth-margin"
+                  />
+                  <Button className="input-group-addon button-rigth-margin">
                     <FontAwesomeIcon icon="search" />
                   </Button>
                   <Button type="reset" className="input-group-addon" onClick={this.clear}>
@@ -75,34 +83,40 @@ export class AcsiTeam extends React.Component<IAcsiTeamProps, IAcsiTeamState> {
             <Table responsive>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Code</th>
                   <th>Name</th>
-                  <th>User Id</th>
                   <th />
                 </tr>
               </thead>
               <tbody>
                 {acsiTeamList.map((acsiTeam, i) => (
                   <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${acsiTeam.id}`} color="link" size="sm">
-                        {acsiTeam.id}
-                      </Button>
-                    </td>
                     <td>{acsiTeam.code}</td>
                     <td>{acsiTeam.name}</td>
-                    <td>{acsiTeam.userId}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${acsiTeam.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${acsiTeam.id}`}
+                          color="info"
+                          size="sm"
+                          title="Dettaglio"
+                          className="button-rigth-margin"
+                        >
+                          <FontAwesomeIcon icon="eye" />
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${acsiTeam.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${acsiTeam.id}/edit`}
+                          color="primary"
+                          size="sm"
+                          title="Modifica"
+                          className="button-rigth-margin"
+                        >
+                          <FontAwesomeIcon icon="pencil-alt" />
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${acsiTeam.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
+                        <Button tag={Link} to={`${match.url}/${acsiTeam.id}/delete`} color="danger" size="sm" title="Elimina">
+                          <FontAwesomeIcon icon="trash" />
                         </Button>
                       </div>
                     </td>
@@ -111,7 +125,7 @@ export class AcsiTeam extends React.Component<IAcsiTeamProps, IAcsiTeamState> {
               </tbody>
             </Table>
           ) : (
-            <div className="alert alert-warning">No Acsi Teams found</div>
+            <NoElementFound />
           )}
         </div>
       </div>
@@ -135,3 +149,7 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(AcsiTeam);
+
+/*
+<Button tag={Link} to={`${match.url}/${acsiTeam.id}`} color="link" size="sm"></Button>
+*/

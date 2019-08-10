@@ -95,10 +95,6 @@ public class RaceSubscription implements Serializable {
     private Double payedPrice;
 
     @ManyToOne
-    @JsonIgnoreProperties("subscriptionTypes")
-    private Race race;
-
-    @ManyToOne
     @JsonIgnoreProperties("subscriptions")
     private Race race;
 
@@ -330,19 +326,6 @@ public class RaceSubscription implements Serializable {
 
     public void setPayedPrice(Double payedPrice) {
         this.payedPrice = payedPrice;
-    }
-
-    public Race getRace() {
-        return race;
-    }
-
-    public RaceSubscription race(Race race) {
-        this.race = race;
-        return this;
-    }
-
-    public void setRace(Race race) {
-        this.race = race;
     }
 
     public Race getRace() {

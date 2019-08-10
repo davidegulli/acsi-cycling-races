@@ -14,8 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,16 +91,16 @@ public class RaceResource {
     /**
      * {@code GET  /races} : get all the races.
      *
+
      * @param pageable the pagination information.
-     * @param queryParams a {@link MultiValueMap} query parameters.
-     * @param uriBuilder a {@link UriComponentsBuilder} URI builder.
+
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of races in body.
      */
     @GetMapping("/races")
-    public ResponseEntity<List<RaceDTO>> getAllRaces(Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<List<RaceDTO>> getAllRaces(Pageable pageable) {
         log.debug("REST request to get a page of Races");
         Page<RaceDTO> page = raceService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -137,15 +136,13 @@ public class RaceResource {
      *
      * @param query the query of the race search.
      * @param pageable the pagination information.
-     * @param queryParams a {@link MultiValueMap} query parameters.
-     * @param uriBuilder a {@link UriComponentsBuilder} URI builder.
      * @return the result of the search.
      */
     @GetMapping("/_search/races")
-    public ResponseEntity<List<RaceDTO>> searchRaces(@RequestParam String query, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<List<RaceDTO>> searchRaces(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Races for query {}", query);
         Page<RaceDTO> page = raceService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

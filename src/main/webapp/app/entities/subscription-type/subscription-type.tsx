@@ -50,7 +50,7 @@ export class SubscriptionType extends React.Component<ISubscriptionTypeProps, IS
           Subscription Types
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Create new Subscription Type
+            &nbsp; Create a new Subscription Type
           </Link>
         </h2>
         <Row>
@@ -80,6 +80,7 @@ export class SubscriptionType extends React.Component<ISubscriptionTypeProps, IS
                   <th>Description</th>
                   <th>Rules</th>
                   <th>Price</th>
+                  <th>Race</th>
                   <th />
                 </tr>
               </thead>
@@ -95,6 +96,7 @@ export class SubscriptionType extends React.Component<ISubscriptionTypeProps, IS
                     <td>{subscriptionType.description}</td>
                     <td>{subscriptionType.rules}</td>
                     <td>{subscriptionType.price}</td>
+                    <td>{subscriptionType.raceId ? <Link to={`race/${subscriptionType.raceId}`}>{subscriptionType.raceId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`${match.url}/${subscriptionType.id}`} color="info" size="sm">

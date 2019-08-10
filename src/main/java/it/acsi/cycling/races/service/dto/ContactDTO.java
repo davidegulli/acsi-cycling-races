@@ -20,7 +20,7 @@ public class ContactDTO implements Serializable {
 
     private Long teamId;
 
-    private Long teamId;
+    private Long raceId;
 
     public Long getId() {
         return id;
@@ -62,12 +62,12 @@ public class ContactDTO implements Serializable {
         this.teamId = acsiTeamId;
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public Long getRaceId() {
+        return raceId;
     }
 
-    public void setTeamId(Long raceId) {
-        this.teamId = raceId;
+    public void setRaceId(Long raceId) {
+        this.raceId = raceId;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ContactDTO implements Serializable {
             ", email='" + getEmail() + "'" +
             ", phone='" + getPhone() + "'" +
             ", team=" + getTeamId() +
-            ", team=" + getTeamId() +
+            ", race=" + getRaceId() +
             "}";
     }
 }

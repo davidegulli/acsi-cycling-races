@@ -12,10 +12,8 @@ import org.mapstruct.*;
 public interface RaceSubscriptionMapper extends EntityMapper<RaceSubscriptionDTO, RaceSubscription> {
 
     @Mapping(source = "race.id", target = "raceId")
-    @Mapping(source = "race.id", target = "raceId")
     RaceSubscriptionDTO toDto(RaceSubscription raceSubscription);
 
-    @Mapping(source = "raceId", target = "race")
     @Mapping(source = "raceId", target = "race")
     RaceSubscription toEntity(RaceSubscriptionDTO raceSubscriptionDTO);
 

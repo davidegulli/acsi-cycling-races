@@ -21,14 +21,12 @@ export interface IRaceSubscriptionUpdateProps extends StateProps, DispatchProps,
 export interface IRaceSubscriptionUpdateState {
   isNew: boolean;
   raceId: string;
-  raceId: string;
 }
 
 export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpdateProps, IRaceSubscriptionUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      raceId: '0',
       raceId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
@@ -307,19 +305,6 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                     Payed Price
                   </Label>
                   <AvField id="race-subscription-payedPrice" type="string" className="form-control" name="payedPrice" />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="race-subscription-race">Race</Label>
-                  <AvInput id="race-subscription-race" type="select" className="form-control" name="raceId">
-                    <option value="" key="0" />
-                    {races
-                      ? races.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
                 </AvGroup>
                 <AvGroup>
                   <Label for="race-subscription-race">Race</Label>

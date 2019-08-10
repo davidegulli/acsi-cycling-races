@@ -44,6 +44,8 @@ export class SubscriptionTypeDetail extends React.Component<ISubscriptionTypeDet
               <span id="price">Price</span>
             </dt>
             <dd>{subscriptionTypeEntity.price}</dd>
+            <dt>Race</dt>
+            <dd>{subscriptionTypeEntity.raceId ? subscriptionTypeEntity.raceId : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/subscription-type" replace color="info">
             <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

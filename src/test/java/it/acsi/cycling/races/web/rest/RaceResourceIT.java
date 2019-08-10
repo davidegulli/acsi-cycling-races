@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import it.acsi.cycling.races.domain.enumeration.RaceStatus;
 /**
- * Integration tests for the {@Link RaceResource} REST controller.
+ * Integration tests for the {@link RaceResource} REST controller.
  */
 @SpringBootTest(classes = AcsiCyclingRacesApp.class)
 public class RaceResourceIT {
@@ -50,6 +50,7 @@ public class RaceResourceIT {
 
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant SMALLER_DATE = Instant.ofEpochMilli(-1L);
 
     private static final String DEFAULT_LOCATION = "AAAAAAAAAA";
     private static final String UPDATED_LOCATION = "BBBBBBBBBB";
@@ -65,15 +66,18 @@ public class RaceResourceIT {
 
     private static final Double DEFAULT_LATITUDE = 1D;
     private static final Double UPDATED_LATITUDE = 2D;
+    private static final Double SMALLER_LATITUDE = 1D - 1D;
 
     private static final Double DEFAULT_LONGITUDE = 1D;
     private static final Double UPDATED_LONGITUDE = 2D;
+    private static final Double SMALLER_LONGITUDE = 1D - 1D;
 
     private static final String DEFAULT_RULES = "AAAAAAAAAA";
     private static final String UPDATED_RULES = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_SUBSCRIPTION_EXPIRATION_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_SUBSCRIPTION_EXPIRATION_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant SMALLER_SUBSCRIPTION_EXPIRATION_DATE = Instant.ofEpochMilli(-1L);
 
     private static final String DEFAULT_ATTRIBUTES = "AAAAAAAAAA";
     private static final String UPDATED_ATTRIBUTES = "BBBBBBBBBB";

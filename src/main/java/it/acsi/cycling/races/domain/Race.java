@@ -68,7 +68,7 @@ public class Race implements Serializable {
     @Column(name = "status")
     private RaceStatus status;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "race")
     private Set<Contact> contacts = new HashSet<>();
 
     @OneToMany(mappedBy = "race")
@@ -78,7 +78,7 @@ public class Race implements Serializable {
     private Set<PathType> pathTypes = new HashSet<>();
 
     @OneToMany(mappedBy = "race")
-    private Set<RaceSubscription> subscriptionTypes = new HashSet<>();
+    private Set<SubscriptionType> subscriptionTypes = new HashSet<>();
 
     @OneToMany(mappedBy = "race")
     private Set<RaceSubscription> subscriptions = new HashSet<>();
@@ -263,13 +263,13 @@ public class Race implements Serializable {
 
     public Race addContact(Contact contact) {
         this.contacts.add(contact);
-        contact.setTeam(this);
+        contact.setRace(this);
         return this;
     }
 
     public Race removeContact(Contact contact) {
         this.contacts.remove(contact);
-        contact.setTeam(null);
+        contact.setRace(null);
         return this;
     }
 
@@ -327,29 +327,29 @@ public class Race implements Serializable {
         this.pathTypes = pathTypes;
     }
 
-    public Set<RaceSubscription> getSubscriptionTypes() {
+    public Set<SubscriptionType> getSubscriptionTypes() {
         return subscriptionTypes;
     }
 
-    public Race subscriptionTypes(Set<RaceSubscription> raceSubscriptions) {
-        this.subscriptionTypes = raceSubscriptions;
+    public Race subscriptionTypes(Set<SubscriptionType> subscriptionTypes) {
+        this.subscriptionTypes = subscriptionTypes;
         return this;
     }
 
-    public Race addSubscriptionType(RaceSubscription raceSubscription) {
-        this.subscriptionTypes.add(raceSubscription);
-        raceSubscription.setRace(this);
+    public Race addSubscriptionType(SubscriptionType subscriptionType) {
+        this.subscriptionTypes.add(subscriptionType);
+        subscriptionType.setRace(this);
         return this;
     }
 
-    public Race removeSubscriptionType(RaceSubscription raceSubscription) {
-        this.subscriptionTypes.remove(raceSubscription);
-        raceSubscription.setRace(null);
+    public Race removeSubscriptionType(SubscriptionType subscriptionType) {
+        this.subscriptionTypes.remove(subscriptionType);
+        subscriptionType.setRace(null);
         return this;
     }
 
-    public void setSubscriptionTypes(Set<RaceSubscription> raceSubscriptions) {
-        this.subscriptionTypes = raceSubscriptions;
+    public void setSubscriptionTypes(Set<SubscriptionType> subscriptionTypes) {
+        this.subscriptionTypes = subscriptionTypes;
     }
 
     public Set<RaceSubscription> getSubscriptions() {

@@ -14,6 +14,7 @@ import { AdminMenu, EntitiesMenu, AccountMenu } from '../menus';
 export interface IHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isAcsiAdmin: boolean;
   ribbonEnv: string;
   isInProduction: boolean;
   isSwaggerEnabled: boolean;
@@ -37,17 +38,21 @@ const Header = (props: IHeaderProps) => {
     <div id="app-header">
       {renderDevRibbon()}
       <LoadingBar className="loading-bar" />
-      <Navbar dark expand="sm" fixed="top" className="jh-navbar">
-        <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
-        <Brand />
-        <Collapse isOpen={menuOpen} navbar>
-          <Nav id="header-tabs" className="ml-auto" navbar>
-            <Home />
-            {props.isAuthenticated && <EntitiesMenu />}
-            {props.isAuthenticated && props.isAdmin && <AdminMenu showSwagger={props.isSwaggerEnabled} />}
-            <AccountMenu isAuthenticated={props.isAuthenticated} />
-          </Nav>
-        </Collapse>
+      <Navbar dark expand="sm" className="jh-navbar">
+        <div
+          className="container d-flex justify-content-between"
+          style={props.isAdmin || props.isAcsiAdmin ? { marginLeft: '250px' } : null}
+        >
+          <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
+          <Brand />
+          <Collapse isOpen={menuOpen} navbar>
+            <Nav id="header-tabs" className="ml-auto" navbar>
+              <Home />
+              {props.isAuthenticated && props.isAdmin && <AdminMenu showSwagger={props.isSwaggerEnabled} />}
+              <AccountMenu isAuthenticated={props.isAuthenticated} />
+            </Nav>
+          </Collapse>
+        </div>
       </Navbar>
     </div>
   );

@@ -1,6 +1,4 @@
-$header-color: #fff;
-$header-color-secondary: #bbb;
-$header-color-hover: darken($header-color, 20%);
+@import '../../../colors-variables.scss';
 
 /* ==========================================================================
 Developement Ribbon
@@ -34,12 +32,19 @@ Developement Ribbon
   }
 }
 
+#app-header {
+  width: 100%;
+}
+
 /* ==========================================================================
 Navbar styles
 ========================================================================== */
 .jh-navbar {
-  background-color: #353d47;
+  background-color: $header-color;
   padding: 0.2em 1em;
+  height: 120px;
+  align-items: flex-end;
+
   .profile-image {
     margin: -10px 0px;
     height: 40px;
@@ -49,7 +54,7 @@ Navbar styles
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
-    background-color: #353d47;
+    background-color: $header-color;
   }
   .dropdown-toggle::after {
     margin-left: 0.15em;
@@ -86,11 +91,11 @@ Navbar styles
     text-decoration: none;
   }
   .brand-icon {
-    height: 35px;
+    margin-left: 0.2em;
     width: auto;
     display: inline-block;
     img {
-      height: 45px;
+      height: 100px;
     }
   }
 }

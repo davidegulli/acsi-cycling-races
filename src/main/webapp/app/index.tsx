@@ -26,7 +26,7 @@ const render = Component =>
   ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store}>
-        <div>
+        <div className="h-100">
           {/* If this slows down the app in dev disable it and enable when required  */}
           {devTools}
           <Component />

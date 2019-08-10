@@ -12,11 +12,11 @@ import org.mapstruct.*;
 public interface ContactMapper extends EntityMapper<ContactDTO, Contact> {
 
     @Mapping(source = "team.id", target = "teamId")
-    @Mapping(source = "team.id", target = "teamId")
+    @Mapping(source = "race.id", target = "raceId")
     ContactDTO toDto(Contact contact);
 
     @Mapping(source = "teamId", target = "team")
-    @Mapping(source = "teamId", target = "team")
+    @Mapping(source = "raceId", target = "race")
     Contact toEntity(ContactDTO contactDTO);
 
     default Contact fromId(Long id) {

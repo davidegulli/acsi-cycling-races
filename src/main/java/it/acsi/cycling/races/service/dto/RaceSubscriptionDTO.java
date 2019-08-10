@@ -64,8 +64,6 @@ public class RaceSubscriptionDTO implements Serializable {
 
     private Long raceId;
 
-    private Long raceId;
-
     public Long getId() {
         return id;
     }
@@ -218,14 +216,6 @@ public class RaceSubscriptionDTO implements Serializable {
         this.raceId = raceId;
     }
 
-    public Long getRaceId() {
-        return raceId;
-    }
-
-    public void setRaceId(Long raceId) {
-        this.raceId = raceId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -268,7 +258,6 @@ public class RaceSubscriptionDTO implements Serializable {
             ", paymentType='" + getPaymentType() + "'" +
             ", payed='" + isPayed() + "'" +
             ", payedPrice=" + getPayedPrice() +
-            ", race=" + getRaceId() +
             ", race=" + getRaceId() +
             "}";
     }
