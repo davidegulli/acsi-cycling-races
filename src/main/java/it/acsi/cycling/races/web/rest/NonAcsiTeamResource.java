@@ -5,10 +5,16 @@ import it.acsi.cycling.races.web.rest.errors.BadRequestAlertException;
 import it.acsi.cycling.races.service.dto.NonAcsiTeamDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,12 +91,17 @@ public class NonAcsiTeamResource {
     /**
      * {@code GET  /non-acsi-teams} : get all the nonAcsiTeams.
      *
+
+     * @param pageable the pagination information.
+
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of nonAcsiTeams in body.
      */
     @GetMapping("/non-acsi-teams")
-    public List<NonAcsiTeamDTO> getAllNonAcsiTeams() {
-        log.debug("REST request to get all NonAcsiTeams");
-        return nonAcsiTeamService.findAll();
+    public ResponseEntity<List<NonAcsiTeamDTO>> getAllNonAcsiTeams(Pageable pageable) {
+        log.debug("REST request to get a page of NonAcsiTeams");
+        Page<NonAcsiTeamDTO> page = nonAcsiTeamService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -124,12 +135,15 @@ public class NonAcsiTeamResource {
      * to the query.
      *
      * @param query the query of the nonAcsiTeam search.
+     * @param pageable the pagination information.
      * @return the result of the search.
      */
     @GetMapping("/_search/non-acsi-teams")
-    public List<NonAcsiTeamDTO> searchNonAcsiTeams(@RequestParam String query) {
-        log.debug("REST request to search NonAcsiTeams for query {}", query);
-        return nonAcsiTeamService.search(query);
+    public ResponseEntity<List<NonAcsiTeamDTO>> searchNonAcsiTeams(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of NonAcsiTeams for query {}", query);
+        Page<NonAcsiTeamDTO> page = nonAcsiTeamService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

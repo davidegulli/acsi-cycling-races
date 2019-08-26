@@ -8,14 +8,12 @@ import it.acsi.cycling.races.service.mapper.NonAcsiTeamMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -58,14 +56,14 @@ public class NonAcsiTeamService {
     /**
      * Get all the nonAcsiTeams.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<NonAcsiTeamDTO> findAll() {
+    public Page<NonAcsiTeamDTO> findAll(Pageable pageable) {
         log.debug("Request to get all NonAcsiTeams");
-        return nonAcsiTeamRepository.findAll().stream()
-            .map(nonAcsiTeamMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return nonAcsiTeamRepository.findAll(pageable)
+            .map(nonAcsiTeamMapper::toDto);
     }
 
 
@@ -97,14 +95,13 @@ public class NonAcsiTeamService {
      * Search for the nonAcsiTeam corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<NonAcsiTeamDTO> search(String query) {
-        log.debug("Request to search NonAcsiTeams for query {}", query);
-        return StreamSupport
-            .stream(nonAcsiTeamSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(nonAcsiTeamMapper::toDto)
-            .collect(Collectors.toList());
+    public Page<NonAcsiTeamDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of NonAcsiTeams for query {}", query);
+        return nonAcsiTeamSearchRepository.search(queryStringQuery(query), pageable)
+            .map(nonAcsiTeamMapper::toDto);
     }
 }

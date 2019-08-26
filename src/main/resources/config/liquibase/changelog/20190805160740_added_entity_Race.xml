@@ -20,7 +20,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="date" type="datetime">
+            <column name="date" type="date">
                 <constraints nullable="false" />
             </column>
 
@@ -71,7 +71,6 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
-        <dropDefaultValue tableName="race" columnName="date" columnDataType="datetime"/>
         <dropDefaultValue tableName="race" columnName="subscription_expiration_date" columnDataType="datetime"/>
     </changeSet>
 
@@ -96,7 +95,7 @@
                   tableName="race">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
-            <column name="date" type="datetime"/>
+            <column name="date" type="date"/>
             <column name="location" type="string"/>
             <column name="description" type="string"/>
             <column name="info" type="string"/>

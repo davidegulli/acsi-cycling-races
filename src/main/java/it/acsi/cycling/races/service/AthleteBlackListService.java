@@ -8,14 +8,12 @@ import it.acsi.cycling.races.service.mapper.AthleteBlackListMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -58,14 +56,14 @@ public class AthleteBlackListService {
     /**
      * Get all the athleteBlackLists.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<AthleteBlackListDTO> findAll() {
+    public Page<AthleteBlackListDTO> findAll(Pageable pageable) {
         log.debug("Request to get all AthleteBlackLists");
-        return athleteBlackListRepository.findAll().stream()
-            .map(athleteBlackListMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return athleteBlackListRepository.findAll(pageable)
+            .map(athleteBlackListMapper::toDto);
     }
 
 
@@ -97,14 +95,13 @@ public class AthleteBlackListService {
      * Search for the athleteBlackList corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<AthleteBlackListDTO> search(String query) {
-        log.debug("Request to search AthleteBlackLists for query {}", query);
-        return StreamSupport
-            .stream(athleteBlackListSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(athleteBlackListMapper::toDto)
-            .collect(Collectors.toList());
+    public Page<AthleteBlackListDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of AthleteBlackLists for query {}", query);
+        return athleteBlackListSearchRepository.search(queryStringQuery(query), pageable)
+            .map(athleteBlackListMapper::toDto);
     }
 }

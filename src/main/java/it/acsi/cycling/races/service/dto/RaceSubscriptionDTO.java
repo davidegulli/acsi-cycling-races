@@ -54,8 +54,12 @@ public class RaceSubscriptionDTO implements Serializable {
     @NotNull
     private Instant date;
 
+    private String attribute;
+
     @NotNull
     private PaymentType paymentType;
+
+    private String paymentReceivedCode;
 
     private Boolean payed;
 
@@ -184,12 +188,28 @@ public class RaceSubscriptionDTO implements Serializable {
         this.date = date;
     }
 
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
+    }
+
     public PaymentType getPaymentType() {
         return paymentType;
     }
 
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public String getPaymentReceivedCode() {
+        return paymentReceivedCode;
+    }
+
+    public void setPaymentReceivedCode(String paymentReceivedCode) {
+        this.paymentReceivedCode = paymentReceivedCode;
     }
 
     public Boolean isPayed() {
@@ -255,7 +275,9 @@ public class RaceSubscriptionDTO implements Serializable {
             ", teamId=" + getTeamId() +
             ", athleteId='" + getAthleteId() + "'" +
             ", date='" + getDate() + "'" +
+            ", attribute='" + getAttribute() + "'" +
             ", paymentType='" + getPaymentType() + "'" +
+            ", paymentReceivedCode='" + getPaymentReceivedCode() + "'" +
             ", payed='" + isPayed() + "'" +
             ", payedPrice=" + getPayedPrice() +
             ", race=" + getRaceId() +

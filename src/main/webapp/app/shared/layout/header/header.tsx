@@ -15,6 +15,7 @@ export interface IHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isAcsiAdmin: boolean;
+  isTeamManager: boolean;
   ribbonEnv: string;
   isInProduction: boolean;
   isSwaggerEnabled: boolean;
@@ -41,7 +42,7 @@ const Header = (props: IHeaderProps) => {
       <Navbar dark expand="sm" className="jh-navbar">
         <div
           className="container d-flex justify-content-between"
-          style={props.isAdmin || props.isAcsiAdmin ? { marginLeft: '250px' } : null}
+          style={props.isAdmin || props.isAcsiAdmin || props.isTeamManager ? { marginLeft: '250px' } : null}
         >
           <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
           <Brand />

@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class Race implements Serializable {
 
     @NotNull
     @Column(name = "date", nullable = false)
-    private Instant date;
+    private LocalDate date;
 
     @NotNull
     @Column(name = "location", nullable = false)
@@ -83,6 +84,9 @@ public class Race implements Serializable {
     @OneToMany(mappedBy = "race")
     private Set<RaceSubscription> subscriptions = new HashSet<>();
 
+    @OneToMany(mappedBy = "race")
+    private Set<RaceType> types = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties("races")
     private AcsiTeam acsiTeam;
@@ -109,16 +113,16 @@ public class Race implements Serializable {
         this.name = name;
     }
 
-    public Instant getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Race date(Instant date) {
+    public Race date(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(Instant date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -375,6 +379,31 @@ public class Race implements Serializable {
 
     public void setSubscriptions(Set<RaceSubscription> raceSubscriptions) {
         this.subscriptions = raceSubscriptions;
+    }
+
+    public Set<RaceType> getTypes() {
+        return types;
+    }
+
+    public Race types(Set<RaceType> raceTypes) {
+        this.types = raceTypes;
+        return this;
+    }
+
+    public Race addType(RaceType raceType) {
+        this.types.add(raceType);
+        raceType.setRace(this);
+        return this;
+    }
+
+    public Race removeType(RaceType raceType) {
+        this.types.remove(raceType);
+        raceType.setRace(null);
+        return this;
+    }
+
+    public void setTypes(Set<RaceType> raceTypes) {
+        this.types = raceTypes;
     }
 
     public AcsiTeam getAcsiTeam() {

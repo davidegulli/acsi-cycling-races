@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<INonAcsiTeam>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false
 };
 
@@ -67,7 +68,8 @@ export default (state: NonAcsiTeamState = initialState, action): NonAcsiTeamStat
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
     case SUCCESS(ACTION_TYPES.FETCH_NONACSITEAM):
       return {
@@ -106,13 +108,16 @@ const apiSearchUrl = 'api/_search/non-acsi-teams';
 
 export const getSearchEntities: ICrudSearchAction<INonAcsiTeam> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_NONACSITEAMS,
-  payload: axios.get<INonAcsiTeam>(`${apiSearchUrl}?query=${query}`)
+  payload: axios.get<INonAcsiTeam>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
 });
 
-export const getEntities: ICrudGetAllAction<INonAcsiTeam> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_NONACSITEAM_LIST,
-  payload: axios.get<INonAcsiTeam>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<INonAcsiTeam> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_NONACSITEAM_LIST,
+    payload: axios.get<INonAcsiTeam>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntity: ICrudGetAction<INonAcsiTeam> = id => {
   const requestUrl = `${apiUrl}/${id}`;

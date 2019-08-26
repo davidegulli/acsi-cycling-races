@@ -49,7 +49,7 @@
     <!--
     <changeSet id="20190805160734-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/data/acsi_team.csv"
+                  file="config/liquibase/fake-data/acsi_team.csv"
                   separator=";"
                   tableName="acsi_team">
             <column name="id" type="numeric"/>
@@ -59,4 +59,5 @@
         </loadData>
     </changeSet>
     -->
+
 </databaseChangeLog>

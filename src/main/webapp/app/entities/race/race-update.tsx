@@ -49,7 +49,6 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
   }
 
   saveEntity = (event, errors, values) => {
-    values.date = convertDateTimeToServer(values.date);
     values.subscriptionExpirationDate = convertDateTimeToServer(values.subscriptionExpirationDate);
 
     if (errors.length === 0) {
@@ -111,13 +110,11 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
                   <Label id="dateLabel" for="race-date">
                     Date
                   </Label>
-                  <AvInput
+                  <AvField
                     id="race-date"
-                    type="datetime-local"
+                    type="date"
                     className="form-control"
                     name="date"
-                    placeholder={'YYYY-MM-DD HH:mm'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.raceEntity.date)}
                     validate={{
                       required: { value: true, errorMessage: 'This field is required.' }
                     }}

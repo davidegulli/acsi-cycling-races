@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAthleteBlackList } from 'app/shared/model/athlete-black-list.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './athlete-black-list.reducer';
+import GenericDeleteConfirmation from '../../shared/component/generic-delete-confirmation-dialog';
 
 export interface IAthleteBlackListDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -28,24 +29,7 @@ export class AthleteBlackListDeleteDialog extends React.Component<IAthleteBlackL
 
   render() {
     const { athleteBlackListEntity } = this.props;
-    return (
-      <Modal isOpen toggle={this.handleClose}>
-        <ModalHeader toggle={this.handleClose}>Confirm delete operation</ModalHeader>
-        <ModalBody id="acsiCyclingRacesApp.athleteBlackList.delete.question">
-          Are you sure you want to delete this AthleteBlackList?
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={this.handleClose}>
-            <FontAwesomeIcon icon="ban" />
-            &nbsp; Cancel
-          </Button>
-          <Button id="jhi-confirm-delete-athleteBlackList" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp; Delete
-          </Button>
-        </ModalFooter>
-      </Modal>
-    );
+    return <GenericDeleteConfirmation close={this.handleClose} confirm={this.confirmDelete} entityName="dell'atleta dalla blacklist" />;
   }
 }
 

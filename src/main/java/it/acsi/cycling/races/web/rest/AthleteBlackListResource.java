@@ -5,10 +5,16 @@ import it.acsi.cycling.races.web.rest.errors.BadRequestAlertException;
 import it.acsi.cycling.races.service.dto.AthleteBlackListDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,12 +91,17 @@ public class AthleteBlackListResource {
     /**
      * {@code GET  /athlete-black-lists} : get all the athleteBlackLists.
      *
+
+     * @param pageable the pagination information.
+
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of athleteBlackLists in body.
      */
     @GetMapping("/athlete-black-lists")
-    public List<AthleteBlackListDTO> getAllAthleteBlackLists() {
-        log.debug("REST request to get all AthleteBlackLists");
-        return athleteBlackListService.findAll();
+    public ResponseEntity<List<AthleteBlackListDTO>> getAllAthleteBlackLists(Pageable pageable) {
+        log.debug("REST request to get a page of AthleteBlackLists");
+        Page<AthleteBlackListDTO> page = athleteBlackListService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -124,12 +135,15 @@ public class AthleteBlackListResource {
      * to the query.
      *
      * @param query the query of the athleteBlackList search.
+     * @param pageable the pagination information.
      * @return the result of the search.
      */
     @GetMapping("/_search/athlete-black-lists")
-    public List<AthleteBlackListDTO> searchAthleteBlackLists(@RequestParam String query) {
-        log.debug("REST request to search AthleteBlackLists for query {}", query);
-        return athleteBlackListService.search(query);
+    public ResponseEntity<List<AthleteBlackListDTO>> searchAthleteBlackLists(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of AthleteBlackLists for query {}", query);
+        Page<AthleteBlackListDTO> page = athleteBlackListService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

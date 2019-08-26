@@ -92,8 +92,14 @@ public class RaceSubscriptionResourceIT {
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
     private static final Instant SMALLER_DATE = Instant.ofEpochMilli(-1L);
 
+    private static final String DEFAULT_ATTRIBUTE = "AAAAAAAAAA";
+    private static final String UPDATED_ATTRIBUTE = "BBBBBBBBBB";
+
     private static final PaymentType DEFAULT_PAYMENT_TYPE = PaymentType.PAYPAL;
     private static final PaymentType UPDATED_PAYMENT_TYPE = PaymentType.CREDIT_TRANSFER;
+
+    private static final String DEFAULT_PAYMENT_RECEIVED_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_PAYMENT_RECEIVED_CODE = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_PAYED = false;
     private static final Boolean UPDATED_PAYED = true;
@@ -172,7 +178,9 @@ public class RaceSubscriptionResourceIT {
             .teamId(DEFAULT_TEAM_ID)
             .athleteId(DEFAULT_ATHLETE_ID)
             .date(DEFAULT_DATE)
+            .attribute(DEFAULT_ATTRIBUTE)
             .paymentType(DEFAULT_PAYMENT_TYPE)
+            .paymentReceivedCode(DEFAULT_PAYMENT_RECEIVED_CODE)
             .payed(DEFAULT_PAYED)
             .payedPrice(DEFAULT_PAYED_PRICE);
         return raceSubscription;
@@ -199,7 +207,9 @@ public class RaceSubscriptionResourceIT {
             .teamId(UPDATED_TEAM_ID)
             .athleteId(UPDATED_ATHLETE_ID)
             .date(UPDATED_DATE)
+            .attribute(UPDATED_ATTRIBUTE)
             .paymentType(UPDATED_PAYMENT_TYPE)
+            .paymentReceivedCode(UPDATED_PAYMENT_RECEIVED_CODE)
             .payed(UPDATED_PAYED)
             .payedPrice(UPDATED_PAYED_PRICE);
         return raceSubscription;
@@ -240,7 +250,9 @@ public class RaceSubscriptionResourceIT {
         assertThat(testRaceSubscription.getTeamId()).isEqualTo(DEFAULT_TEAM_ID);
         assertThat(testRaceSubscription.getAthleteId()).isEqualTo(DEFAULT_ATHLETE_ID);
         assertThat(testRaceSubscription.getDate()).isEqualTo(DEFAULT_DATE);
+        assertThat(testRaceSubscription.getAttribute()).isEqualTo(DEFAULT_ATTRIBUTE);
         assertThat(testRaceSubscription.getPaymentType()).isEqualTo(DEFAULT_PAYMENT_TYPE);
+        assertThat(testRaceSubscription.getPaymentReceivedCode()).isEqualTo(DEFAULT_PAYMENT_RECEIVED_CODE);
         assertThat(testRaceSubscription.isPayed()).isEqualTo(DEFAULT_PAYED);
         assertThat(testRaceSubscription.getPayedPrice()).isEqualTo(DEFAULT_PAYED_PRICE);
 
@@ -563,7 +575,9 @@ public class RaceSubscriptionResourceIT {
             .andExpect(jsonPath("$.[*].teamId").value(hasItem(DEFAULT_TEAM_ID.intValue())))
             .andExpect(jsonPath("$.[*].athleteId").value(hasItem(DEFAULT_ATHLETE_ID.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+            .andExpect(jsonPath("$.[*].attribute").value(hasItem(DEFAULT_ATTRIBUTE.toString())))
             .andExpect(jsonPath("$.[*].paymentType").value(hasItem(DEFAULT_PAYMENT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].paymentReceivedCode").value(hasItem(DEFAULT_PAYMENT_RECEIVED_CODE.toString())))
             .andExpect(jsonPath("$.[*].payed").value(hasItem(DEFAULT_PAYED.booleanValue())))
             .andExpect(jsonPath("$.[*].payedPrice").value(hasItem(DEFAULT_PAYED_PRICE.doubleValue())));
     }
@@ -593,7 +607,9 @@ public class RaceSubscriptionResourceIT {
             .andExpect(jsonPath("$.teamId").value(DEFAULT_TEAM_ID.intValue()))
             .andExpect(jsonPath("$.athleteId").value(DEFAULT_ATHLETE_ID.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
+            .andExpect(jsonPath("$.attribute").value(DEFAULT_ATTRIBUTE.toString()))
             .andExpect(jsonPath("$.paymentType").value(DEFAULT_PAYMENT_TYPE.toString()))
+            .andExpect(jsonPath("$.paymentReceivedCode").value(DEFAULT_PAYMENT_RECEIVED_CODE.toString()))
             .andExpect(jsonPath("$.payed").value(DEFAULT_PAYED.booleanValue()))
             .andExpect(jsonPath("$.payedPrice").value(DEFAULT_PAYED_PRICE.doubleValue()));
     }
@@ -633,7 +649,9 @@ public class RaceSubscriptionResourceIT {
             .teamId(UPDATED_TEAM_ID)
             .athleteId(UPDATED_ATHLETE_ID)
             .date(UPDATED_DATE)
+            .attribute(UPDATED_ATTRIBUTE)
             .paymentType(UPDATED_PAYMENT_TYPE)
+            .paymentReceivedCode(UPDATED_PAYMENT_RECEIVED_CODE)
             .payed(UPDATED_PAYED)
             .payedPrice(UPDATED_PAYED_PRICE);
         RaceSubscriptionDTO raceSubscriptionDTO = raceSubscriptionMapper.toDto(updatedRaceSubscription);
@@ -661,7 +679,9 @@ public class RaceSubscriptionResourceIT {
         assertThat(testRaceSubscription.getTeamId()).isEqualTo(UPDATED_TEAM_ID);
         assertThat(testRaceSubscription.getAthleteId()).isEqualTo(UPDATED_ATHLETE_ID);
         assertThat(testRaceSubscription.getDate()).isEqualTo(UPDATED_DATE);
+        assertThat(testRaceSubscription.getAttribute()).isEqualTo(UPDATED_ATTRIBUTE);
         assertThat(testRaceSubscription.getPaymentType()).isEqualTo(UPDATED_PAYMENT_TYPE);
+        assertThat(testRaceSubscription.getPaymentReceivedCode()).isEqualTo(UPDATED_PAYMENT_RECEIVED_CODE);
         assertThat(testRaceSubscription.isPayed()).isEqualTo(UPDATED_PAYED);
         assertThat(testRaceSubscription.getPayedPrice()).isEqualTo(UPDATED_PAYED_PRICE);
 
@@ -738,7 +758,9 @@ public class RaceSubscriptionResourceIT {
             .andExpect(jsonPath("$.[*].teamId").value(hasItem(DEFAULT_TEAM_ID.intValue())))
             .andExpect(jsonPath("$.[*].athleteId").value(hasItem(DEFAULT_ATHLETE_ID)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+            .andExpect(jsonPath("$.[*].attribute").value(hasItem(DEFAULT_ATTRIBUTE)))
             .andExpect(jsonPath("$.[*].paymentType").value(hasItem(DEFAULT_PAYMENT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].paymentReceivedCode").value(hasItem(DEFAULT_PAYMENT_RECEIVED_CODE)))
             .andExpect(jsonPath("$.[*].payed").value(hasItem(DEFAULT_PAYED.booleanValue())))
             .andExpect(jsonPath("$.[*].payedPrice").value(hasItem(DEFAULT_PAYED_PRICE.doubleValue())));
     }

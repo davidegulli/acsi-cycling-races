@@ -87,9 +87,17 @@ export class RaceSubscriptionDetail extends React.Component<IRaceSubscriptionDet
               <TextFormat value={raceSubscriptionEntity.date} type="date" format={APP_DATE_FORMAT} />
             </dd>
             <dt>
+              <span id="attribute">Attribute</span>
+            </dt>
+            <dd>{raceSubscriptionEntity.attribute}</dd>
+            <dt>
               <span id="paymentType">Payment Type</span>
             </dt>
             <dd>{raceSubscriptionEntity.paymentType}</dd>
+            <dt>
+              <span id="paymentReceivedCode">Payment Received Code</span>
+            </dt>
+            <dd>{raceSubscriptionEntity.paymentReceivedCode}</dd>
             <dt>
               <span id="payed">Payed</span>
             </dt>

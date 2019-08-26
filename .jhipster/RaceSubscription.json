@@ -98,12 +98,20 @@
             ]
         },
         {
+            "fieldName": "attribute",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "paymentType",
             "fieldType": "PaymentType",
             "fieldValues": "PAYPAL,CREDIT_TRANSFER",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "paymentReceivedCode",
+            "fieldType": "String"
         },
         {
             "fieldName": "payed",

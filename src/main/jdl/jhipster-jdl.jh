@@ -47,7 +47,7 @@ entity Category {
 entity Race {
 	id Long,
     name String required,
-    date Instant required,
+    date LocalDate required,
     location String required,
     description String,
     info String,
@@ -58,6 +58,12 @@ entity Race {
     subscriptionExpirationDate Instant,
     attributes String,
     status RaceStatus
+}
+
+entity RaceType {
+    id Long,
+    name String,
+    description String
 }
 
 entity SubscriptionType {
@@ -91,7 +97,9 @@ entity RaceSubscription {
     teamId Long required,
     athleteId String required,
     date Instant required,
+    attribute String,
     paymentType PaymentType required,
+    paymentReceivedCode String,
     payed Boolean,
     payedPrice Double
 }
@@ -132,8 +140,12 @@ relationship OneToMany {
     Race{subscription} to RaceSubscription{race}
 }
 
+relationship OneToMany {
+    Race{type} to RaceType
+}
+
 // Set pagination options
-paginate Race, RaceSubscription with pagination
+paginate Race, RaceSubscription, AcsiTeam, NonAcsiTeam, AthleteBlackList with pagination
 
 // Use Data Transfert Objects (DTO)
 dto * with mapstruct

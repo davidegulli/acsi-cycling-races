@@ -10,7 +10,7 @@
         },
         {
             "fieldName": "date",
-            "fieldType": "Instant",
+            "fieldType": "LocalDate",
             "fieldValidateRules": [
                 "required"
             ]
@@ -93,6 +93,12 @@
             "otherEntityName": "raceSubscription",
             "otherEntityRelationshipName": "race",
             "relationshipName": "subscription"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "raceType",
+            "otherEntityRelationshipName": "race",
+            "relationshipName": "type"
         },
         {
             "relationshipType": "many-to-one",

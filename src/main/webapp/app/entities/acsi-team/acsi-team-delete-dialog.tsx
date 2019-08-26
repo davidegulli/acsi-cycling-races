@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import { ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GenericDeleteConfirmationDialog from '../../shared/component/generic-delete-confirmation-dialog';
 
 import { IAcsiTeam } from 'app/shared/model/acsi-team.model';
 import { IRootState } from 'app/shared/reducers';
@@ -29,20 +30,7 @@ export class AcsiTeamDeleteDialog extends React.Component<IAcsiTeamDeleteDialogP
   render() {
     const { acsiTeamEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
-        <ModalHeader toggle={this.handleClose}>Confirm delete operation</ModalHeader>
-        <ModalBody id="acsiCyclingRacesApp.acsiTeam.delete.question">Are you sure you want to delete this AcsiTeam?</ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={this.handleClose}>
-            <FontAwesomeIcon icon="ban" />
-            &nbsp; Cancel
-          </Button>
-          <Button id="jhi-confirm-delete-acsiTeam" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp; Delete
-          </Button>
-        </ModalFooter>
-      </Modal>
+      <GenericDeleteConfirmationDialog close={this.handleClose} confirm={this.confirmDelete} entityName="dell'associazione affiliata" />
     );
   }
 }

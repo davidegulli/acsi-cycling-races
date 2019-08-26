@@ -169,7 +169,7 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
                     </td>
                     <td>{race.name}</td>
                     <td>
-                      <TextFormat type="date" value={race.date} format={APP_DATE_FORMAT} />
+                      <TextFormat type="date" value={race.date} format={APP_LOCAL_DATE_FORMAT} />
                     </td>
                     <td>{race.location}</td>
                     <td>{race.description}</td>

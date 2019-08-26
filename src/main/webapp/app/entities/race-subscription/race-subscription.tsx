@@ -159,8 +159,14 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
                   <th className="hand" onClick={this.sort('date')}>
                     Date <FontAwesomeIcon icon="sort" />
                   </th>
+                  <th className="hand" onClick={this.sort('attribute')}>
+                    Attribute <FontAwesomeIcon icon="sort" />
+                  </th>
                   <th className="hand" onClick={this.sort('paymentType')}>
                     Payment Type <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('paymentReceivedCode')}>
+                    Payment Received Code <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={this.sort('payed')}>
                     Payed <FontAwesomeIcon icon="sort" />
@@ -198,7 +204,9 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
                     <td>
                       <TextFormat type="date" value={raceSubscription.date} format={APP_DATE_FORMAT} />
                     </td>
+                    <td>{raceSubscription.attribute}</td>
                     <td>{raceSubscription.paymentType}</td>
+                    <td>{raceSubscription.paymentReceivedCode}</td>
                     <td>{raceSubscription.payed ? 'true' : 'false'}</td>
                     <td>{raceSubscription.payedPrice}</td>
                     <td>{raceSubscription.raceId ? <Link to={`race/${raceSubscription.raceId}`}>{raceSubscription.raceId}</Link> : ''}</td>

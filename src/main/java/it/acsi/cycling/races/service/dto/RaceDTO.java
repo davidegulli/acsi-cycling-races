@@ -1,5 +1,6 @@
 package it.acsi.cycling.races.service.dto;
 import java.time.Instant;
+import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,7 +17,7 @@ public class RaceDTO implements Serializable {
     private String name;
 
     @NotNull
-    private Instant date;
+    private LocalDate date;
 
     @NotNull
     private String location;
@@ -59,11 +60,11 @@ public class RaceDTO implements Serializable {
         this.name = name;
     }
 
-    public Instant getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Instant date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

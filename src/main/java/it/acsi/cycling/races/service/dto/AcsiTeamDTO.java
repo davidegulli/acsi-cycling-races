@@ -113,7 +113,7 @@ public class AcsiTeamDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", userId='" + getUserId() + "'" +
             ", managerName='" + getManagerName() + "'" +
-            ", managersurname='" + getManagerSurname() + "'" +
+            ", managerSurname='" + getManagerSurname() + "'" +
             ", managerEmail='" + getManagerEmail() + "'" +
             "}";
     }

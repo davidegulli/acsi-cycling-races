@@ -122,7 +122,7 @@ export class AcsiTeamUpdate extends React.Component<IAcsiTeamUpdateProps, IAcsiT
                       required: { value: true, errorMessage: 'Il campo è obbligatorio.' }
                     }}
                     readOnly={!isNew}
-                    helpMessage="Inserisci il nome del responsabile dell'associzione"
+                    helpMessage={isNew ? "Inserisci il nome del responsabile dell'associzione" : null}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -137,7 +137,7 @@ export class AcsiTeamUpdate extends React.Component<IAcsiTeamUpdateProps, IAcsiT
                       required: { value: true, errorMessage: 'Il campo è obbligatorio.' }
                     }}
                     readOnly={!isNew}
-                    helpMessage="Inserisci il cognome del responsabile dell'associzione"
+                    helpMessage={isNew ? "Inserisci il cognome del responsabile dell'associzione" : null}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -153,21 +153,23 @@ export class AcsiTeamUpdate extends React.Component<IAcsiTeamUpdateProps, IAcsiT
                       email: true
                     }}
                     readOnly={!isNew}
-                    helpMessage="Inserisci l'indirizzo email del responsabile dell'associzione, 
-                                 all'indirizzo indicato verrà mandata una mail per l'accesso al 
-                                 portale di gestione delle gare acsi"
+                    helpMessage={
+                      isNew
+                        ? "Inserisci l'indirizzo email del responsabile dell'associzione, all'indirizzo indicato verrà mandata una mail per l'accesso al portale di gestione delle gare acsi"
+                        : null
+                    }
                   />
                 </AvGroup>
                 <div className="form-button-holder">
                   <Button tag={Link} id="cancel-save" to="/entity/acsi-team" replace>
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
-                    <span className="d-none d-md-inline">Back</span>
+                    <span className="d-none d-md-inline">Indietro</span>
                   </Button>
                   &nbsp;
                   <Button color="primary" id="save-entity" type="submit" disabled={updating}>
                     <FontAwesomeIcon icon="save" />
-                    &nbsp; Save
+                    &nbsp; Salva
                   </Button>
                 </div>
               </AvForm>

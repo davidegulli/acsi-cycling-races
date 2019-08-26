@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IAthleteBlackList>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false
 };
 
@@ -67,7 +68,8 @@ export default (state: AthleteBlackListState = initialState, action): AthleteBla
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
     case SUCCESS(ACTION_TYPES.FETCH_ATHLETEBLACKLIST):
       return {
@@ -106,13 +108,16 @@ const apiSearchUrl = 'api/_search/athlete-black-lists';
 
 export const getSearchEntities: ICrudSearchAction<IAthleteBlackList> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_ATHLETEBLACKLISTS,
-  payload: axios.get<IAthleteBlackList>(`${apiSearchUrl}?query=${query}`)
+  payload: axios.get<IAthleteBlackList>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
 });
 
-export const getEntities: ICrudGetAllAction<IAthleteBlackList> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_ATHLETEBLACKLIST_LIST,
-  payload: axios.get<IAthleteBlackList>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<IAthleteBlackList> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_ATHLETEBLACKLIST_LIST,
+    payload: axios.get<IAthleteBlackList>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntity: ICrudGetAction<IAthleteBlackList> = id => {
   const requestUrl = `${apiUrl}/${id}`;

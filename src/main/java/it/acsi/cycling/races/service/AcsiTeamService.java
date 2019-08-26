@@ -13,14 +13,12 @@ import it.acsi.cycling.races.web.rest.errors.ServiceMomentlyNotAvailableExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -46,12 +44,12 @@ public class AcsiTeamService {
     private final MailService mailService;
 
     public AcsiTeamService(
-            AcsiTeamRepository acsiTeamRepository,
-            AcsiTeamMapper acsiTeamMapper,
-            AcsiTeamSearchRepository acsiTeamSearchRepository,
-            UserRepository userRepository,
-            UserService userService,
-            MailService mailService) {
+        AcsiTeamRepository acsiTeamRepository,
+        AcsiTeamMapper acsiTeamMapper,
+        AcsiTeamSearchRepository acsiTeamSearchRepository,
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService) {
 
         this.acsiTeamRepository = acsiTeamRepository;
         this.acsiTeamMapper = acsiTeamMapper;
@@ -113,14 +111,14 @@ public class AcsiTeamService {
     /**
      * Get all the acsiTeams.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<AcsiTeamDTO> findAll() {
+    public Page<AcsiTeamDTO> findAll(Pageable pageable) {
         log.debug("Request to get all AcsiTeams");
-        return acsiTeamRepository.findAll().stream()
-            .map(acsiTeamMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return acsiTeamRepository.findAll(pageable)
+            .map(acsiTeamMapper::toDto);
     }
 
 
@@ -177,14 +175,13 @@ public class AcsiTeamService {
      * Search for the acsiTeam corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<AcsiTeamDTO> search(String query) {
-        log.debug("Request to search AcsiTeams for query {}", query);
-        return StreamSupport
-            .stream(acsiTeamSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(acsiTeamMapper::toDto)
-            .collect(Collectors.toList());
+    public Page<AcsiTeamDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of AcsiTeams for query {}", query);
+        return acsiTeamSearchRepository.search(queryStringQuery(query), pageable)
+            .map(acsiTeamMapper::toDto);
     }
 }

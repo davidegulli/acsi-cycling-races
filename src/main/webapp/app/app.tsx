@@ -57,21 +57,22 @@ export const App = (props: IAppProps) => {
               isAuthenticated={props.isAuthenticated}
               isAdmin={props.isAdmin}
               isAcsiAdmin={props.isAcsiAdmin}
+              isTeamManager={props.isTeamManager}
               ribbonEnv={props.ribbonEnv}
               isInProduction={props.isInProduction}
               isSwaggerEnabled={props.isSwaggerEnabled}
             />
           </ErrorBoundary>
         </header>
-        <div className="container h-100" style={props.isAdmin || props.isAcsiAdmin ? { marginLeft: '250px' } : null}>
+        <div className="container h-100" style={props.isAdmin || props.isAcsiAdmin || props.isTeamManager ? { marginLeft: '250px' } : null}>
           {leftMenu}
           <main role="main" className="h-100">
             <div
               id="app-view-container"
-              className={props.isAdmin || props.isAcsiAdmin ? 'view-container py-4 px-4' : 'view-container py-4'}
+              className={props.isAdmin || props.isAcsiAdmin || props.isTeamManager ? 'view-container py-4 px-4' : 'view-container py-4'}
             >
               <div className="container h-100">
-                <Card className="jh-card h-100">
+                <Card className="jh-card">
                   <ErrorBoundary>
                     <AppRoutes />
                   </ErrorBoundary>
@@ -80,15 +81,17 @@ export const App = (props: IAppProps) => {
             </div>
           </main>
         </div>
-        <footer>
-          <Footer isAuthenticated={props.isAuthenticated} />
-        </footer>
       </div>
     </Router>
   );
 };
 
 /*
+        <footer>
+          <Footer isAuthenticated={props.isAuthenticated} />
+        </footer>
+
+
 <div style={{ display: 'flex', width: '100%', alignItems: 'stretch' }}>
                 {leftMenu}
                 <div className="content">

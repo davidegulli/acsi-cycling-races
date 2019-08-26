@@ -72,8 +72,16 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="attribute" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="payment_type" type="varchar(255)">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="payment_received_code" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
 
             <column name="payed" type="boolean">
@@ -128,7 +136,9 @@
             <column name="team_id" type="numeric"/>
             <column name="athlete_id" type="string"/>
             <column name="date" type="datetime"/>
+            <column name="attribute" type="string"/>
             <column name="payment_type" type="string"/>
+            <column name="payment_received_code" type="string"/>
             <column name="payed" type="boolean"/>
             <column name="payed_price" type="numeric"/>
         </loadData>

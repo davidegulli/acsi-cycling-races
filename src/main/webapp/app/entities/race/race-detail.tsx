@@ -36,7 +36,7 @@ export class RaceDetail extends React.Component<IRaceDetailProps> {
               <span id="date">Date</span>
             </dt>
             <dd>
-              <TextFormat value={raceEntity.date} type="date" format={APP_DATE_FORMAT} />
+              <TextFormat value={raceEntity.date} type="date" format={APP_LOCAL_DATE_FORMAT} />
             </dd>
             <dt>
               <span id="location">Location</span>

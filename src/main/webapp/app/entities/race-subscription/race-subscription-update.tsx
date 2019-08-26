@@ -280,6 +280,12 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label id="attributeLabel" for="race-subscription-attribute">
+                    Attribute
+                  </Label>
+                  <AvField id="race-subscription-attribute" type="text" name="attribute" />
+                </AvGroup>
+                <AvGroup>
                   <Label id="paymentTypeLabel" for="race-subscription-paymentType">
                     Payment Type
                   </Label>
@@ -293,6 +299,12 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                     <option value="PAYPAL">PAYPAL</option>
                     <option value="CREDIT_TRANSFER">CREDIT_TRANSFER</option>
                   </AvInput>
+                </AvGroup>
+                <AvGroup>
+                  <Label id="paymentReceivedCodeLabel" for="race-subscription-paymentReceivedCode">
+                    Payment Received Code
+                  </Label>
+                  <AvField id="race-subscription-paymentReceivedCode" type="text" name="paymentReceivedCode" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="payedLabel" check>

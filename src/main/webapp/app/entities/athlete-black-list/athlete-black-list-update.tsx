@@ -72,7 +72,9 @@ export class AthleteBlackListUpdate extends React.Component<IAthleteBlackListUpd
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="acsiCyclingRacesApp.athleteBlackList.home.createOrEditLabel">Create or edit a AthleteBlackList</h2>
+            <h2 id="acsiCyclingRacesApp.athleteBlackList.home.createOrEditLabel" className="sheet-title">
+              Atleta in Blacklist
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -81,57 +83,50 @@ export class AthleteBlackListUpdate extends React.Component<IAthleteBlackListUpd
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : athleteBlackListEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="athlete-black-list-id">ID</Label>
-                    <AvInput id="athlete-black-list-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
                 <AvGroup>
                   <Label id="nameLabel" for="athlete-black-list-name">
-                    Name
+                    Nome
                   </Label>
                   <AvField
                     id="athlete-black-list-name"
                     type="text"
                     name="name"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
                     }}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="surnameLabel" for="athlete-black-list-surname">
-                    Surname
+                    Cognome
                   </Label>
                   <AvField
                     id="athlete-black-list-surname"
                     type="text"
                     name="surname"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
                     }}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="birthDateLabel" for="athlete-black-list-birthDate">
-                    Birth Date
+                    Data di Nascita
                   </Label>
                   <AvInput
                     id="athlete-black-list-birthDate"
-                    type="datetime-local"
+                    type="date"
                     className="form-control"
                     name="birthDate"
-                    placeholder={'YYYY-MM-DD HH:mm'}
                     value={isNew ? null : convertDateTimeFromServer(this.props.athleteBlackListEntity.birthDate)}
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
                     }}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="taxCodeLabel" for="athlete-black-list-taxCode">
-                    Tax Code
+                    Codice Fiscale
                   </Label>
                   <AvField
                     id="athlete-black-list-taxCode"
@@ -140,22 +135,24 @@ export class AthleteBlackListUpdate extends React.Component<IAthleteBlackListUpd
                     validate={{
                       required: { value: true, errorMessage: 'This field is required.' },
                       pattern: {
-                        value: '^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$',
-                        errorMessage: 'Il codice fiscale non è corretto'
+                        value:
+                          '/^(?:[A-Z][AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/i'
                       }
                     }}
                   />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/athlete-black-list" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <div className="form-button-holder">
+                  <Button tag={Link} id="cancel-save" to="/entity/athlete-black-list" replace>
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <span className="d-none d-md-inline">Indietro</span>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">Back</span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp; Save
-                </Button>
+                  <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp; Salva
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>
@@ -164,6 +161,10 @@ export class AthleteBlackListUpdate extends React.Component<IAthleteBlackListUpd
     );
   }
 }
+
+/*
+pattern: { value: '/^(?:[A-Z][AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/i' }
+*/
 
 const mapStateToProps = (storeState: IRootState) => ({
   athleteBlackListEntity: storeState.athleteBlackList.entity,

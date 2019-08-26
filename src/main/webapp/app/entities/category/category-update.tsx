@@ -70,7 +70,9 @@ export class CategoryUpdate extends React.Component<ICategoryUpdateProps, ICateg
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="acsiCyclingRacesApp.category.home.createOrEditLabel">Create or edit a Category</h2>
+            <h2 id="acsiCyclingRacesApp.category.home.createOrEditLabel" className="sheet-title">
+              Categoria
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -79,22 +81,16 @@ export class CategoryUpdate extends React.Component<ICategoryUpdateProps, ICateg
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : categoryEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="category-id">ID</Label>
-                    <AvInput id="category-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
                 <AvGroup>
                   <Label id="nameLabel" for="category-name">
-                    Name
+                    Nome
                   </Label>
                   <AvField
                     id="category-name"
                     type="text"
                     name="name"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
                     }}
                   />
                 </AvGroup>
@@ -106,7 +102,7 @@ export class CategoryUpdate extends React.Component<ICategoryUpdateProps, ICateg
                 </AvGroup>
                 <AvGroup>
                   <Label id="genderLabel" for="category-gender">
-                    Gender
+                    Sesso
                   </Label>
                   <AvInput
                     id="category-gender"
@@ -115,32 +111,50 @@ export class CategoryUpdate extends React.Component<ICategoryUpdateProps, ICateg
                     name="gender"
                     value={(!isNew && categoryEntity.gender) || 'MALE'}
                   >
-                    <option value="MALE">MALE</option>
-                    <option value="FEMALE">FEMALE</option>
+                    <option value="MALE">UOMINI</option>
+                    <option value="FEMALE">DONNE</option>
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
                   <Label id="minAgeLabel" for="category-minAge">
-                    Min Age
+                    Età Minima
                   </Label>
-                  <AvField id="category-minAge" type="string" className="form-control" name="minAge" />
+                  <AvField
+                    id="category-minAge"
+                    type="string"
+                    className="form-control"
+                    name="minAge"
+                    validate={{
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="maxAgeLabel" for="category-maxAge">
-                    Max Age
+                    Età Massima
                   </Label>
-                  <AvField id="category-maxAge" type="string" className="form-control" name="maxAge" />
+                  <AvField
+                    id="category-maxAge"
+                    type="string"
+                    className="form-control"
+                    name="maxAge"
+                    validate={{
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                    }}
+                  />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/category" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <div className="form-button-holder">
+                  <Button tag={Link} id="cancel-save" to="/entity/category" replace>
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <span className="d-none d-md-inline">Indietro</span>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">Back</span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp; Save
-                </Button>
+                  <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp; Salva
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>

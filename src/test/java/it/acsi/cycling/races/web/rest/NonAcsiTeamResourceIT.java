@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -35,7 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link NonAcsiTeamResource} REST controller.
+ * Integration tests for the {@link NonAcsiTeamResource} REST controller.
  */
 @SpringBootTest(classes = AcsiCyclingRacesApp.class)
 public class NonAcsiTeamResourceIT {
@@ -328,8 +330,8 @@ public class NonAcsiTeamResourceIT {
     public void searchNonAcsiTeam() throws Exception {
         // Initialize the database
         nonAcsiTeamRepository.saveAndFlush(nonAcsiTeam);
-        when(mockNonAcsiTeamSearchRepository.search(queryStringQuery("id:" + nonAcsiTeam.getId())))
-            .thenReturn(Collections.singletonList(nonAcsiTeam));
+        when(mockNonAcsiTeamSearchRepository.search(queryStringQuery("id:" + nonAcsiTeam.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(nonAcsiTeam), PageRequest.of(0, 1), 1));
         // Search the nonAcsiTeam
         restNonAcsiTeamMockMvc.perform(get("/api/_search/non-acsi-teams?query=id:" + nonAcsiTeam.getId()))
             .andExpect(status().isOk())

@@ -26,7 +26,9 @@ export interface IRaceSubscription {
   teamId?: number;
   athleteId?: string;
   date?: Moment;
+  attribute?: string;
   paymentType?: PaymentType;
+  paymentReceivedCode?: string;
   payed?: boolean;
   payedPrice?: number;
   raceId?: number;

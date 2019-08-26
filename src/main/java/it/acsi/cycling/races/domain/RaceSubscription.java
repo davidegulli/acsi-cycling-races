@@ -83,10 +83,16 @@ public class RaceSubscription implements Serializable {
     @Column(name = "date", nullable = false)
     private Instant date;
 
+    @Column(name = "attribute")
+    private String attribute;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_type", nullable = false)
     private PaymentType paymentType;
+
+    @Column(name = "payment_received_code")
+    private String paymentReceivedCode;
 
     @Column(name = "payed")
     private Boolean payed;
@@ -289,6 +295,19 @@ public class RaceSubscription implements Serializable {
         this.date = date;
     }
 
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public RaceSubscription attribute(String attribute) {
+        this.attribute = attribute;
+        return this;
+    }
+
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
+    }
+
     public PaymentType getPaymentType() {
         return paymentType;
     }
@@ -300,6 +319,19 @@ public class RaceSubscription implements Serializable {
 
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public String getPaymentReceivedCode() {
+        return paymentReceivedCode;
+    }
+
+    public RaceSubscription paymentReceivedCode(String paymentReceivedCode) {
+        this.paymentReceivedCode = paymentReceivedCode;
+        return this;
+    }
+
+    public void setPaymentReceivedCode(String paymentReceivedCode) {
+        this.paymentReceivedCode = paymentReceivedCode;
     }
 
     public Boolean isPayed() {
@@ -376,7 +408,9 @@ public class RaceSubscription implements Serializable {
             ", teamId=" + getTeamId() +
             ", athleteId='" + getAthleteId() + "'" +
             ", date='" + getDate() + "'" +
+            ", attribute='" + getAttribute() + "'" +
             ", paymentType='" + getPaymentType() + "'" +
+            ", paymentReceivedCode='" + getPaymentReceivedCode() + "'" +
             ", payed='" + isPayed() + "'" +
             ", payedPrice=" + getPayedPrice() +
             "}";

@@ -70,7 +70,9 @@ export class NonAcsiTeamUpdate extends React.Component<INonAcsiTeamUpdateProps, 
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="acsiCyclingRacesApp.nonAcsiTeam.home.createOrEditLabel">Create or edit a NonAcsiTeam</h2>
+            <h2 id="acsiCyclingRacesApp.nonAcsiTeam.home.createOrEditLabel" className="sheet-title">
+              Associazione Non Affiliata
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -79,48 +81,44 @@ export class NonAcsiTeamUpdate extends React.Component<INonAcsiTeamUpdateProps, 
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : nonAcsiTeamEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="non-acsi-team-id">ID</Label>
-                    <AvInput id="non-acsi-team-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
                 <AvGroup>
                   <Label id="codeLabel" for="non-acsi-team-code">
-                    Code
+                    Codice
                   </Label>
                   <AvField
                     id="non-acsi-team-code"
                     type="text"
                     name="code"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
                     }}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="nameLabel" for="non-acsi-team-name">
-                    Name
+                    Nome
                   </Label>
                   <AvField
                     id="non-acsi-team-name"
                     type="text"
                     name="name"
                     validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
                     }}
                   />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/non-acsi-team" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <div className="form-button-holder">
+                  <Button tag={Link} id="cancel-save" to="/entity/non-acsi-team">
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <span className="d-none d-md-inline">Indetro</span>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">Back</span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp; Save
-                </Button>
+                  <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp; Salva
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>

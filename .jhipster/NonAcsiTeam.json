@@ -20,7 +20,7 @@
     "changelogDate": "20190805160735",
     "entityTableName": "non_acsi_team",
     "dto": "mapstruct",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
