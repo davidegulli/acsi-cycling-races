@@ -1,6 +1,11 @@
 package it.acsi.cycling.races.service;
 
+import it.acsi.cycling.races.domain.Contact;
+import it.acsi.cycling.races.domain.File;
 import it.acsi.cycling.races.domain.Race;
+import it.acsi.cycling.races.domain.enumeration.FileType;
+import it.acsi.cycling.races.repository.ContactRepository;
+import it.acsi.cycling.races.repository.FileRepository;
 import it.acsi.cycling.races.repository.RaceRepository;
 import it.acsi.cycling.races.repository.search.RaceSearchRepository;
 import it.acsi.cycling.races.service.dto.RaceDTO;
@@ -28,14 +33,25 @@ public class RaceService {
 
     private final RaceRepository raceRepository;
 
+    private final FileRepository fileRepository;
+
+    private final ContactRepository contactRepository;
+
     private final RaceMapper raceMapper;
 
     private final RaceSearchRepository raceSearchRepository;
 
-    public RaceService(RaceRepository raceRepository, RaceMapper raceMapper, RaceSearchRepository raceSearchRepository) {
+    private final FileService fileService;
+
+    public RaceService(
+            RaceRepository raceRepository, RaceMapper raceMapper, RaceSearchRepository raceSearchRepository,
+            FileRepository fileRepository, ContactRepository contactRepository, FileService fileService) {
         this.raceRepository = raceRepository;
+        this.fileRepository = fileRepository;
+        this.contactRepository = contactRepository;
         this.raceMapper = raceMapper;
         this.raceSearchRepository = raceSearchRepository;
+        this.fileService = fileService;
     }
 
     /**
@@ -45,11 +61,55 @@ public class RaceService {
      * @return the persisted entity.
      */
     public RaceDTO save(RaceDTO raceDTO) {
+
         log.debug("Request to save Race : {}", raceDTO);
+
         Race race = raceMapper.toEntity(raceDTO);
         race = raceRepository.save(race);
         RaceDTO result = raceMapper.toDto(race);
+
+        File logoImage = new File()
+            .mimeType(raceDTO.getBinaryLogoContentType())
+            .title(raceDTO.getBinaryLogoFileName())
+            .binary(raceDTO.getBinaryLogoImage())
+            .binaryContentType(raceDTO.getBinaryLogoContentType())
+            .type(FileType.LOGO_IMAGE)
+            .race(race);
+        logoImage = fileRepository.save(logoImage);
+        fileService.setFileUrl(logoImage);
+        fileRepository.save(logoImage);
+
+        File coverImage = new File()
+            .mimeType(raceDTO.getBinaryCoverContentType())
+            .title(raceDTO.getBinaryCoverFileName())
+            .binary(raceDTO.getBinaryCoverImage())
+            .binaryContentType(raceDTO.getBinaryCoverContentType())
+            .type(FileType.COVER_IMAGE)
+            .race(race);
+        coverImage = fileRepository.save(coverImage);
+        fileService.setFileUrl(coverImage);
+        fileRepository.save(coverImage);
+
+        File pathMapImage = new File()
+            .mimeType(raceDTO.getBinaryPathMapContentType())
+            .title(raceDTO.getBinaryPathMapFileName())
+            .binary(raceDTO.getBinaryPathMapImage())
+            .binaryContentType(raceDTO.getBinaryPathMapContentType())
+            .type(FileType.PATH_IMAGE)
+            .race(race);
+        pathMapImage = fileRepository.save(pathMapImage);
+        fileService.setFileUrl(pathMapImage);
+        fileRepository.save(pathMapImage);
+
+        Contact contact = new Contact()
+            .name(raceDTO.getContactName())
+            .email(raceDTO.getContactEmail())
+            .phone(raceDTO.getContactPhone())
+            .race(race);
+        contactRepository.save(contact);
+
         raceSearchRepository.save(race);
+
         return result;
     }
 
@@ -61,11 +121,12 @@ public class RaceService {
      */
     @Transactional(readOnly = true)
     public Page<RaceDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Races");
-        return raceRepository.findAll(pageable)
-            .map(raceMapper::toDto);
-    }
 
+        log.debug("Request to get all Races");
+
+        return raceRepository.findAll(pageable)
+            .map(raceMapper::toDtoWithChildRelation);
+    }
 
     /**
      * Get one race by id.
@@ -75,9 +136,52 @@ public class RaceService {
      */
     @Transactional(readOnly = true)
     public Optional<RaceDTO> findOne(Long id) {
+
         log.debug("Request to get Race : {}", id);
+
         return raceRepository.findById(id)
-            .map(raceMapper::toDto);
+            .map(raceMapper::toDtoWithChildRelation);
+/*
+        if(optRace.isPresent()) {
+            Race race = optRace.get();
+            RaceDTO result = raceMapper.toDto(race);
+
+            race.getContacts()
+                .stream()
+                .findFirst()
+                .ifPresent(c -> {
+                    result.setContactName(c.getName());
+                    result.setContactEmail(c.getEmail());
+                    result.setContactPhone(c.getPhone());
+                });
+
+            race.getAttachments()
+                .stream()
+                .filter(f -> f.getType().equals(FileType.LOGO_IMAGE))
+                .forEach(f -> {
+                    result.setBinaryLogoUrl(f.getUrl());
+                });
+
+            race.getAttachments()
+                .stream()
+                .filter(f -> f.getType().equals(FileType.COVER_IMAGE))
+                .forEach(f -> {
+                    result.setBinaryCoverUrl(f.getUrl());
+                });
+
+            race.getAttachments()
+                .stream()
+                .filter(f -> f.getType().equals(FileType.PATH_IMAGE))
+                .forEach(f -> {
+                    result.setBinaryPathMapUrl(f.getUrl());
+                });
+
+            return Optional.of(result);
+        }
+
+        return Optional.empty();
+
+ */
     }
 
     /**

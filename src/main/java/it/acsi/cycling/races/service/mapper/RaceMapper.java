@@ -1,6 +1,7 @@
 package it.acsi.cycling.races.service.mapper;
 
 import it.acsi.cycling.races.domain.*;
+import it.acsi.cycling.races.domain.enumeration.FileType;
 import it.acsi.cycling.races.service.dto.RaceDTO;
 
 import org.mapstruct.*;
@@ -8,9 +9,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Race} and its DTO {@link RaceDTO}.
  */
-@Mapper(componentModel = "spring", uses = {AcsiTeamMapper.class})
+@Mapper(componentModel = "spring", uses = {RaceTypeMapper.class, AcsiTeamMapper.class})
 public interface RaceMapper extends EntityMapper<RaceDTO, Race> {
 
+    @Mapping(source = "type.id", target = "typeId")
+    @Mapping(source = "type.name", target = "typeName")
     @Mapping(source = "acsiTeam.id", target = "acsiTeamId")
     RaceDTO toDto(Race race);
 
@@ -24,8 +27,7 @@ public interface RaceMapper extends EntityMapper<RaceDTO, Race> {
     @Mapping(target = "removeSubscriptionType", ignore = true)
     @Mapping(target = "subscriptions", ignore = true)
     @Mapping(target = "removeSubscription", ignore = true)
-    @Mapping(target = "types", ignore = true)
-    @Mapping(target = "removeType", ignore = true)
+    @Mapping(source = "typeId", target = "type")
     @Mapping(source = "acsiTeamId", target = "acsiTeam")
     Race toEntity(RaceDTO raceDTO);
 
@@ -36,5 +38,42 @@ public interface RaceMapper extends EntityMapper<RaceDTO, Race> {
         Race race = new Race();
         race.setId(id);
         return race;
+    }
+
+    @Named("toDtoWithChildRelation")
+    default RaceDTO toDtoWithChildRelation(Race race) {
+
+        RaceDTO dto = toDto(race);
+        race.getContacts()
+            .stream()
+            .findFirst()
+            .ifPresent(c -> {
+                dto.setContactName(c.getName());
+                dto.setContactEmail(c.getEmail());
+                dto.setContactPhone(c.getPhone());
+            });
+
+        race.getAttachments()
+            .stream()
+            .filter(f -> f.getType().equals(FileType.LOGO_IMAGE))
+            .forEach(f -> {
+                dto.setBinaryLogoUrl(f.getUrl());
+            });
+
+        race.getAttachments()
+            .stream()
+            .filter(f -> f.getType().equals(FileType.COVER_IMAGE))
+            .forEach(f -> {
+                dto.setBinaryCoverUrl(f.getUrl());
+            });
+
+        race.getAttachments()
+            .stream()
+            .filter(f -> f.getType().equals(FileType.PATH_IMAGE))
+            .forEach(f -> {
+                dto.setBinaryPathMapUrl(f.getUrl());
+            });
+
+        return dto;
     }
 }

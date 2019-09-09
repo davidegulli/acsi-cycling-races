@@ -1,4 +1,6 @@
-import React from 'react';
+import './race.scss';
+
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
@@ -21,77 +23,79 @@ export class RaceDetail extends React.Component<IRaceDetailProps> {
 
   render() {
     const { raceEntity } = this.props;
+    const coverImage = {
+      backgroundImage: 'url(' + raceEntity.binaryCoverUrl + ')',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#fff'
+    };
+
     return (
-      <Row>
-        <Col md="8">
-          <h2>
-            Race [<b>{raceEntity.id}</b>]
-          </h2>
-          <dl className="jh-entity-details">
-            <dt>
-              <span id="name">Name</span>
-            </dt>
-            <dd>{raceEntity.name}</dd>
-            <dt>
-              <span id="date">Date</span>
-            </dt>
-            <dd>
-              <TextFormat value={raceEntity.date} type="date" format={APP_LOCAL_DATE_FORMAT} />
-            </dd>
-            <dt>
-              <span id="location">Location</span>
-            </dt>
-            <dd>{raceEntity.location}</dd>
-            <dt>
-              <span id="description">Description</span>
-            </dt>
-            <dd>{raceEntity.description}</dd>
-            <dt>
-              <span id="info">Info</span>
-            </dt>
-            <dd>{raceEntity.info}</dd>
-            <dt>
-              <span id="address">Address</span>
-            </dt>
-            <dd>{raceEntity.address}</dd>
-            <dt>
-              <span id="latitude">Latitude</span>
-            </dt>
-            <dd>{raceEntity.latitude}</dd>
-            <dt>
-              <span id="longitude">Longitude</span>
-            </dt>
-            <dd>{raceEntity.longitude}</dd>
-            <dt>
-              <span id="rules">Rules</span>
-            </dt>
-            <dd>{raceEntity.rules}</dd>
-            <dt>
-              <span id="subscriptionExpirationDate">Subscription Expiration Date</span>
-            </dt>
-            <dd>
-              <TextFormat value={raceEntity.subscriptionExpirationDate} type="date" format={APP_DATE_FORMAT} />
-            </dd>
-            <dt>
-              <span id="attributes">Attributes</span>
-            </dt>
-            <dd>{raceEntity.attributes}</dd>
-            <dt>
-              <span id="status">Status</span>
-            </dt>
-            <dd>{raceEntity.status}</dd>
-            <dt>Acsi Team</dt>
-            <dd>{raceEntity.acsiTeamId ? raceEntity.acsiTeamId : ''}</dd>
-          </dl>
-          <Button tag={Link} to="/entity/race" replace color="info">
-            <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
-          </Button>
-          &nbsp;
-          <Button tag={Link} to={`/entity/race/${raceEntity.id}/edit`} replace color="primary">
-            <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
-          </Button>
-        </Col>
-      </Row>
+      <Fragment>
+        <div style={coverImage} className="cover-image">
+          <div className="race-main-data">
+            <div>
+              <span>
+                <img src={raceEntity.binaryLogoUrl} className="race-logo-image" />
+              </span>
+              <span className="race-main-data-title">{raceEntity.name}</span>
+            </div>
+            <div className="pl-2">
+              <div>{raceEntity.description}</div>
+              <div>{raceEntity.location}</div>
+              <div>
+                <TextFormat value={raceEntity.date} type="date" format={APP_LOCAL_DATE_FORMAT} />
+              </div>
+              <button className="race-subscription-button">Iscriviti Ora</button>
+            </div>
+          </div>
+        </div>
+        <div className="race-secondary-data">
+          <div>
+            <h4 className="sheet-title">Informazioni Utili</h4>
+            <div>
+              <span className="race-secondary-data-label">Indirizzo:</span>
+              <span>{raceEntity.address}</span>
+            </div>
+            <div>
+              <span className="race-secondary-data-label">Disciplina:</span>
+              <span>{raceEntity.typeName}</span>
+            </div>
+            <div>
+              <span className="race-secondary-data-label">Scadenza Iscrizioni:</span>
+              <span>
+                <TextFormat value={raceEntity.subscriptionExpirationDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
+              </span>
+            </div>
+            <div>
+              <span className="race-secondary-data-label">Info:</span>
+              <span>{raceEntity.info}</span>
+            </div>
+          </div>
+          <div>
+            <h4 className="sheet-title">Contatti Organizzazione</h4>
+            <div className="race-secondary-data-label-no-text">
+              <FontAwesomeIcon icon="user" />
+              <span className="ml-2">{raceEntity.contactName}</span>
+            </div>
+            <div className="race-secondary-data-label-no-text">
+              <FontAwesomeIcon icon="phone" />
+              <span className="ml-2">{raceEntity.contactPhone}</span>
+            </div>
+            <div className="race-secondary-data-label-no-text">
+              <FontAwesomeIcon icon="envelope" />
+              <span className="ml-2">{raceEntity.contactEmail}</span>
+            </div>
+          </div>
+          <div>
+            <h4 className="sheet-title">Regolamento</h4>
+            <div>{raceEntity.rules}</div>
+          </div>
+          <div>
+            <h4 className="sheet-title">Percorso</h4>
+            <img src={raceEntity.binaryPathMapUrl} className="race-path-map-image" />
+          </div>
+        </div>
+      </Fragment>
     );
   }
 }

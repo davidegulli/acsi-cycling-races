@@ -107,9 +107,7 @@ export class AcsiTeamUpdate extends React.Component<IAcsiTeamUpdateProps, IAcsiT
                     }}
                   />
                 </AvGroup>
-                <h4 id="acsiCyclingRacesApp.acsiTeam.home.createOrEditLabel" className="sheet-title">
-                  Dati Responsabile
-                </h4>
+                <h4 className="sheet-title">Dati Responsabile</h4>
                 <AvGroup>
                   <Label id="managerNameIdLabel" for="acsiTeamManagerName">
                     Nome

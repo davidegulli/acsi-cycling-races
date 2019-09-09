@@ -8,8 +8,6 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipste
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IRace } from 'app/shared/model/race.model';
-import { getEntities as getRaces } from 'app/entities/race/race.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './race-type.reducer';
 import { IRaceType } from 'app/shared/model/race-type.model';
 // tslint:disable-next-line:no-unused-variable
@@ -20,14 +18,12 @@ export interface IRaceTypeUpdateProps extends StateProps, DispatchProps, RouteCo
 
 export interface IRaceTypeUpdateState {
   isNew: boolean;
-  raceId: string;
 }
 
 export class RaceTypeUpdate extends React.Component<IRaceTypeUpdateProps, IRaceTypeUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      raceId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -44,8 +40,6 @@ export class RaceTypeUpdate extends React.Component<IRaceTypeUpdateProps, IRaceT
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
-
-    this.props.getRaces();
   }
 
   saveEntity = (event, errors, values) => {
@@ -69,14 +63,16 @@ export class RaceTypeUpdate extends React.Component<IRaceTypeUpdateProps, IRaceT
   };
 
   render() {
-    const { raceTypeEntity, races, loading, updating } = this.props;
+    const { raceTypeEntity, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="acsiCyclingRacesApp.raceType.home.createOrEditLabel">Create or edit a RaceType</h2>
+            <h2 id="acsiCyclingRacesApp.raceType.home.createOrEditLabel" className="sheet-title">
+              Disciplina
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -85,47 +81,37 @@ export class RaceTypeUpdate extends React.Component<IRaceTypeUpdateProps, IRaceT
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : raceTypeEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="race-type-id">ID</Label>
-                    <AvInput id="race-type-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
                 <AvGroup>
                   <Label id="nameLabel" for="race-type-name">
-                    Name
+                    Nome
                   </Label>
-                  <AvField id="race-type-name" type="text" name="name" />
+                  <AvField
+                    id="race-type-name"
+                    type="text"
+                    name="name"
+                    validate={{
+                      required: { value: true, errorMessage: 'Il campo è obbligatorio.' }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="race-type-description">
-                    Description
+                    Descrizione
                   </Label>
                   <AvField id="race-type-description" type="text" name="description" />
                 </AvGroup>
-                <AvGroup>
-                  <Label for="race-type-race">Race</Label>
-                  <AvInput id="race-type-race" type="select" className="form-control" name="raceId">
-                    <option value="" key="0" />
-                    {races
-                      ? races.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/race-type" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <div className="form-button-holder">
+                  <Button tag={Link} id="cancel-save" to="/entity/race-type" replace>
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <span className="d-none d-md-inline">Indietro</span>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">Back</span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp; Save
-                </Button>
+                  <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp; Salva
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>
@@ -136,7 +122,6 @@ export class RaceTypeUpdate extends React.Component<IRaceTypeUpdateProps, IRaceT
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  races: storeState.race.entities,
   raceTypeEntity: storeState.raceType.entity,
   loading: storeState.raceType.loading,
   updating: storeState.raceType.updating,
@@ -144,7 +129,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getRaces,
   getEntity,
   updateEntity,
   createEntity,

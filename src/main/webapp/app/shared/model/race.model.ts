@@ -4,7 +4,6 @@ import { IFile } from 'app/shared/model/file.model';
 import { IPathType } from 'app/shared/model/path-type.model';
 import { ISubscriptionType } from 'app/shared/model/subscription-type.model';
 import { IRaceSubscription } from 'app/shared/model/race-subscription.model';
-import { IRaceType } from 'app/shared/model/race-type.model';
 
 export const enum RaceStatus {
   PUBLISHED = 'PUBLISHED',
@@ -32,8 +31,18 @@ export interface IRace {
   pathTypes?: IPathType[];
   subscriptionTypes?: ISubscriptionType[];
   subscriptions?: IRaceSubscription[];
-  types?: IRaceType[];
+  typeId?: number;
+  typeName?: string;
   acsiTeamId?: number;
+  contactName?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  binaryLogoImage?: any;
+  binaryLogoUrl?: string;
+  binaryCoverImage?: any;
+  binaryCoverUrl?: string;
+  binaryPathMapImage?: any;
+  binaryPathMapUrl?: string;
 }
 
 export const defaultValue: Readonly<IRace> = {};

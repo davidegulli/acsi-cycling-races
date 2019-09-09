@@ -10,14 +10,7 @@
             "fieldType": "String"
         }
     ],
-    "relationships": [
-        {
-            "relationshipName": "race",
-            "otherEntityName": "race",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        }
-    ],
+    "relationships": [],
     "changelogDate": "20190811091254",
     "entityTableName": "race_type",
     "dto": "mapstruct",

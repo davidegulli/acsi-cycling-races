@@ -36,8 +36,6 @@ export class RaceTypeDetail extends React.Component<IRaceTypeDetailProps> {
               <span id="description">Description</span>
             </dt>
             <dd>{raceTypeEntity.description}</dd>
-            <dt>Race</dt>
-            <dd>{raceTypeEntity.raceId ? raceTypeEntity.raceId : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/race-type" replace color="info">
             <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

@@ -13,6 +13,7 @@ export const ACTION_TYPES = {
   CREATE_RACE: 'race/CREATE_RACE',
   UPDATE_RACE: 'race/UPDATE_RACE',
   DELETE_RACE: 'race/DELETE_RACE',
+  SET_BLOB: 'race/SET_BLOB',
   RESET: 'race/RESET'
 };
 
@@ -92,6 +93,17 @@ export default (state: RaceState = initialState, action): RaceState => {
         updateSuccess: true,
         entity: {}
       };
+    case ACTION_TYPES.SET_BLOB:
+      const { name, data, contentType } = action.payload;
+      return {
+        ...state,
+        entity: {
+          ...state.entity,
+          [name + 'Image']: data,
+          [name + 'ContentType']: contentType,
+          [name + 'FileName']: name
+        }
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -154,6 +166,15 @@ export const deleteEntity: ICrudDeleteAction<IRace> = id => async dispatch => {
   dispatch(getEntities());
   return result;
 };
+
+export const setBlob = (name, data, contentType?) => ({
+  type: ACTION_TYPES.SET_BLOB,
+  payload: {
+    name,
+    data,
+    contentType
+  }
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET

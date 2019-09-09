@@ -1,5 +1,4 @@
 package it.acsi.cycling.races.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -26,10 +25,6 @@ public class RaceType implements Serializable {
 
     @Column(name = "description")
     private String description;
-
-    @ManyToOne
-    @JsonIgnoreProperties("raceTypes")
-    private Race race;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -64,19 +59,6 @@ public class RaceType implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Race getRace() {
-        return race;
-    }
-
-    public RaceType race(Race race) {
-        this.race = race;
-        return this;
-    }
-
-    public void setRace(Race race) {
-        this.race = race;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

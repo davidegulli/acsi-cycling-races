@@ -5,6 +5,7 @@ import it.acsi.cycling.races.domain.User;
 import it.acsi.cycling.races.repository.AcsiTeamRepository;
 import it.acsi.cycling.races.repository.UserRepository;
 import it.acsi.cycling.races.repository.search.AcsiTeamSearchRepository;
+import it.acsi.cycling.races.security.SecurityUtils;
 import it.acsi.cycling.races.service.dto.AcsiTeamDTO;
 import it.acsi.cycling.races.service.mapper.AcsiTeamMapper;
 import it.acsi.cycling.races.web.rest.errors.EmailAlreadyUsedException;
@@ -150,6 +151,19 @@ public class AcsiTeamService {
                     });
                 return result;
             });
+    }
+
+    public Optional<AcsiTeamDTO> getByLogin() {
+
+        Optional<User> user =
+            SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin);
+
+        if(user.isPresent()) {
+            return acsiTeamRepository.findByUserId(String.valueOf(user.get().getId()))
+                .map(acsiTeamMapper::toDto);
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**

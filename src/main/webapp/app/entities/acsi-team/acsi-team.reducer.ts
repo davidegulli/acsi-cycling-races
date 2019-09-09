@@ -10,6 +10,7 @@ export const ACTION_TYPES = {
   SEARCH_ACSITEAMS: 'acsiTeam/SEARCH_ACSITEAMS',
   FETCH_ACSITEAM_LIST: 'acsiTeam/FETCH_ACSITEAM_LIST',
   FETCH_ACSITEAM: 'acsiTeam/FETCH_ACSITEAM',
+  FETCH_ACSITEAM_BY_USER_LOGGED: 'acsiTeam/FETCH_ACSITEAM_BY_USER_LOGGED',
   CREATE_ACSITEAM: 'acsiTeam/CREATE_ACSITEAM',
   UPDATE_ACSITEAM: 'acsiTeam/UPDATE_ACSITEAM',
   DELETE_ACSITEAM: 'acsiTeam/DELETE_ACSITEAM',
@@ -35,6 +36,7 @@ export default (state: AcsiTeamState = initialState, action): AcsiTeamState => {
     case REQUEST(ACTION_TYPES.SEARCH_ACSITEAMS):
     case REQUEST(ACTION_TYPES.FETCH_ACSITEAM_LIST):
     case REQUEST(ACTION_TYPES.FETCH_ACSITEAM):
+    case REQUEST(ACTION_TYPES.FETCH_ACSITEAM_BY_USER_LOGGED):
       return {
         ...state,
         errorMessage: null,
@@ -56,6 +58,7 @@ export default (state: AcsiTeamState = initialState, action): AcsiTeamState => {
     case FAILURE(ACTION_TYPES.CREATE_ACSITEAM):
     case FAILURE(ACTION_TYPES.UPDATE_ACSITEAM):
     case FAILURE(ACTION_TYPES.DELETE_ACSITEAM):
+    case FAILURE(ACTION_TYPES.FETCH_ACSITEAM_BY_USER_LOGGED):
       return {
         ...state,
         loading: false,
@@ -72,6 +75,7 @@ export default (state: AcsiTeamState = initialState, action): AcsiTeamState => {
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
     case SUCCESS(ACTION_TYPES.FETCH_ACSITEAM):
+    case SUCCESS(ACTION_TYPES.FETCH_ACSITEAM_BY_USER_LOGGED):
       return {
         ...state,
         loading: false,
@@ -123,6 +127,14 @@ export const getEntity: ICrudGetAction<IAcsiTeam> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_ACSITEAM,
+    payload: axios.get<IAcsiTeam>(requestUrl)
+  };
+};
+
+export const getEntityByUserLogged: ICrudGetAction<IAcsiTeam> = () => {
+  const requestUrl = `${apiUrl}/by-user-logged`;
+  return {
+    type: ACTION_TYPES.FETCH_ACSITEAM_BY_USER_LOGGED,
     payload: axios.get<IAcsiTeam>(requestUrl)
   };
 };

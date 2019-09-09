@@ -14,6 +14,10 @@ export const RacesMenu = props => (
         <FontAwesomeIcon icon="flag-checkered" />
         <span>Gestione Gare</span>
       </NavLink>
+      <NavLink tag={Link} to="/entity/race-type" className="d-flex align-items-center left-menu-item">
+        <FontAwesomeIcon icon="bars" />
+        <span>Discipline</span>
+      </NavLink>
     </NavItem>
   </div>
 );

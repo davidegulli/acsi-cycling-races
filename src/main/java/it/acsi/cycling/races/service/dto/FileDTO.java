@@ -24,8 +24,8 @@ public class FileDTO implements Serializable {
     private byte[] binary;
 
     private String binaryContentType;
-    private String url;
 
+    private String url;
 
     private Long raceId;
 

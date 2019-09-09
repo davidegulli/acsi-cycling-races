@@ -8,14 +8,10 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link RaceType} and its DTO {@link RaceTypeDTO}.
  */
-@Mapper(componentModel = "spring", uses = {RaceMapper.class})
+@Mapper(componentModel = "spring", uses = {})
 public interface RaceTypeMapper extends EntityMapper<RaceTypeDTO, RaceType> {
 
-    @Mapping(source = "race.id", target = "raceId")
-    RaceTypeDTO toDto(RaceType raceType);
 
-    @Mapping(source = "raceId", target = "race")
-    RaceType toEntity(RaceTypeDTO raceTypeDTO);
 
     default RaceType fromId(Long id) {
         if (id == null) {

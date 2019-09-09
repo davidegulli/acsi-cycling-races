@@ -84,8 +84,9 @@ public class Race implements Serializable {
     @OneToMany(mappedBy = "race")
     private Set<RaceSubscription> subscriptions = new HashSet<>();
 
-    @OneToMany(mappedBy = "race")
-    private Set<RaceType> types = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties("races")
+    private RaceType type;
 
     @ManyToOne
     @JsonIgnoreProperties("races")
@@ -381,29 +382,17 @@ public class Race implements Serializable {
         this.subscriptions = raceSubscriptions;
     }
 
-    public Set<RaceType> getTypes() {
-        return types;
+    public RaceType getType() {
+        return type;
     }
 
-    public Race types(Set<RaceType> raceTypes) {
-        this.types = raceTypes;
+    public Race type(RaceType raceType) {
+        this.type = raceType;
         return this;
     }
 
-    public Race addType(RaceType raceType) {
-        this.types.add(raceType);
-        raceType.setRace(this);
-        return this;
-    }
-
-    public Race removeType(RaceType raceType) {
-        this.types.remove(raceType);
-        raceType.setRace(null);
-        return this;
-    }
-
-    public void setTypes(Set<RaceType> raceTypes) {
-        this.types = raceTypes;
+    public void setType(RaceType raceType) {
+        this.type = raceType;
     }
 
     public AcsiTeam getAcsiTeam() {

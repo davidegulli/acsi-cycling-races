@@ -35,6 +35,9 @@ import { faBuilding } from '@fortawesome/free-solid-svg-icons/faBuilding';
 import { faFrown } from '@fortawesome/free-solid-svg-icons/faFrown';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faBackspace } from '@fortawesome/free-solid-svg-icons/faBackspace';
+import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
+import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -76,6 +79,9 @@ export const loadIcons = () => {
     faBuilding,
     faFrown,
     faTimes,
-    faBackspace
+    faBackspace,
+    faBars,
+    faEnvelope,
+    faPhone
   );
 };

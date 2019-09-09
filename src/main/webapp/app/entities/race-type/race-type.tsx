@@ -12,6 +12,7 @@ import { getSearchEntities, getEntities } from './race-type.reducer';
 import { IRaceType } from 'app/shared/model/race-type.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import NoElementFound from 'app/shared/component/no-element-found';
 
 export interface IRaceTypeProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -46,12 +47,8 @@ export class RaceType extends React.Component<IRaceTypeProps, IRaceTypeState> {
     const { raceTypeList, match } = this.props;
     return (
       <div>
-        <h2 id="race-type-heading">
-          Race Types
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp; Create a new Race Type
-          </Link>
+        <h2 id="race-type-heading" className="list-title">
+          Discipline
         </h2>
         <Row>
           <Col sm="12">
@@ -59,12 +56,15 @@ export class RaceType extends React.Component<IRaceTypeProps, IRaceTypeState> {
               <AvGroup>
                 <InputGroup>
                   <AvInput type="text" name="search" value={this.state.search} onChange={this.handleSearch} placeholder="Search" />
-                  <Button className="input-group-addon">
+                  <Button className="input-group-addon ml-1">
                     <FontAwesomeIcon icon="search" />
                   </Button>
-                  <Button type="reset" className="input-group-addon" onClick={this.clear}>
+                  <Button type="reset" className="input-group-addon ml-1" onClick={this.clear}>
                     <FontAwesomeIcon icon="trash" />
                   </Button>
+                  <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity ml-1" id="jh-create-entity">
+                    <FontAwesomeIcon icon="plus" />
+                  </Link>
                 </InputGroup>
               </AvGroup>
             </AvForm>
@@ -75,34 +75,37 @@ export class RaceType extends React.Component<IRaceTypeProps, IRaceTypeState> {
             <Table responsive>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Name</th>
                   <th>Description</th>
-                  <th>Race</th>
                   <th />
                 </tr>
               </thead>
               <tbody>
                 {raceTypeList.map((raceType, i) => (
                   <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${raceType.id}`} color="link" size="sm">
-                        {raceType.id}
-                      </Button>
-                    </td>
                     <td>{raceType.name}</td>
                     <td>{raceType.description}</td>
-                    <td>{raceType.raceId ? <Link to={`race/${raceType.raceId}`}>{raceType.raceId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${raceType.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${raceType.id}/edit`}
+                          color="primary"
+                          size="sm"
+                          className="ml-1"
+                          title="Modifica"
+                        >
+                          <FontAwesomeIcon icon="pencil-alt" />
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${raceType.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${raceType.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${raceType.id}/delete`}
+                          color="danger"
+                          size="sm"
+                          className="ml-1"
+                          title="Elimina"
+                        >
+                          <FontAwesomeIcon icon="trash" />
                         </Button>
                       </div>
                     </td>
@@ -111,7 +114,7 @@ export class RaceType extends React.Component<IRaceTypeProps, IRaceTypeState> {
               </tbody>
             </Table>
           ) : (
-            <div className="alert alert-warning">No Race Types found</div>
+            <NoElementFound />
           )}
         </div>
       </div>

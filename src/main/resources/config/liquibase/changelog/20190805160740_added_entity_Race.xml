@@ -64,6 +64,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="type_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="acsi_team_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -109,5 +113,4 @@
         </loadData>
     </changeSet>
     -->
-
 </databaseChangeLog>

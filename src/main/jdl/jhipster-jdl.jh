@@ -140,7 +140,7 @@ relationship OneToMany {
     Race{subscription} to RaceSubscription{race}
 }
 
-relationship OneToMany {
+relationship ManyToOne {
     Race{type} to RaceType
 }
 

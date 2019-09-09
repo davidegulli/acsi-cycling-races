@@ -33,6 +33,6 @@
     <include file="config/liquibase/changelog/20190805160742_added_entity_constraints_PathType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190805160743_added_entity_constraints_RaceSubscription.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190805160741_added_entity_constraints_SubscriptionType.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20190811091254_added_entity_constraints_RaceType.xml" relativeToChangelogFile="false"/>
+    <!--<include file="config/liquibase/changelog/20190811091254_added_entity_constraints_RaceType.xml" relativeToChangelogFile="false"/>-->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

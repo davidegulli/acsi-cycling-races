@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import { ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GenericDeleteConfirmationDialog from '../../shared/component/generic-delete-confirmation-dialog';
 
 import { IRaceType } from 'app/shared/model/race-type.model';
 import { IRootState } from 'app/shared/reducers';
@@ -27,23 +28,7 @@ export class RaceTypeDeleteDialog extends React.Component<IRaceTypeDeleteDialogP
   };
 
   render() {
-    const { raceTypeEntity } = this.props;
-    return (
-      <Modal isOpen toggle={this.handleClose}>
-        <ModalHeader toggle={this.handleClose}>Confirm delete operation</ModalHeader>
-        <ModalBody id="acsiCyclingRacesApp.raceType.delete.question">Are you sure you want to delete this RaceType?</ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={this.handleClose}>
-            <FontAwesomeIcon icon="ban" />
-            &nbsp; Cancel
-          </Button>
-          <Button id="jhi-confirm-delete-raceType" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp; Delete
-          </Button>
-        </ModalFooter>
-      </Modal>
-    );
+    return <GenericDeleteConfirmationDialog close={this.handleClose} confirm={this.confirmDelete} entityName="della disciplina" />;
   }
 }
 

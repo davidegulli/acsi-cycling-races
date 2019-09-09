@@ -14,8 +14,6 @@ public class RaceTypeDTO implements Serializable {
     private String description;
 
 
-    private Long raceId;
-
     public Long getId() {
         return id;
     }
@@ -38,14 +36,6 @@ public class RaceTypeDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getRaceId() {
-        return raceId;
-    }
-
-    public void setRaceId(Long raceId) {
-        this.raceId = raceId;
     }
 
     @Override
@@ -75,7 +65,6 @@ public class RaceTypeDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", race=" + getRaceId() +
             "}";
     }
 }

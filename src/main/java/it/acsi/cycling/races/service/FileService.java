@@ -49,10 +49,44 @@ public class FileService {
     public FileDTO save(FileDTO fileDTO) {
         log.debug("Request to save File : {}", fileDTO);
         File file = fileMapper.toEntity(fileDTO);
+        setFileUrl(file);
+
         file = fileRepository.save(file);
         FileDTO result = fileMapper.toDto(file);
         fileSearchRepository.save(file);
         return result;
+    }
+
+    /**
+     * Save a file.
+     *
+     * @param fileDTO the entity to save.
+     * @return the persisted entity.
+     */
+    public FileDTO saveWithoutIndexing(FileDTO fileDTO) {
+        log.debug("Request to save File : {}", fileDTO);
+        File file = fileMapper.toEntity(fileDTO);
+        setFileUrl(file);
+
+        file = fileRepository.save(file);
+        FileDTO result = fileMapper.toDto(file);
+
+        return result;
+    }
+
+    public File setFileUrl(File file) {
+
+        if (file.getUrl() == null || file.getUrl().isEmpty()) {
+            String url = new StringBuilder()
+                .append("/api/files/")
+                .append(file.getId())
+                .append("/download")
+                .toString();
+
+            file.setUrl(url);
+        }
+
+        return file;
     }
 
     /**

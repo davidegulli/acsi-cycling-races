@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, InputGroup, Col, Row, Table } from 'reactstrap';
 import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import NoElementFound from '../../shared/component/no-element-found';
+import Pagination from '../../shared/component/pagination';
 // tslint:disable-next-line:no-unused-variable
 import {
   ICrudSearchAction,
@@ -85,12 +87,8 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
     const { raceList, match, totalItems } = this.props;
     return (
       <div>
-        <h2 id="race-heading">
-          Races
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp; Create a new Race
-          </Link>
+        <h2 id="race-heading" className="list-title">
+          Gare Organizzate
         </h2>
         <Row>
           <Col sm="12">
@@ -98,12 +96,15 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
               <AvGroup>
                 <InputGroup>
                   <AvInput type="text" name="search" value={this.state.search} onChange={this.handleSearch} placeholder="Search" />
-                  <Button className="input-group-addon">
+                  <Button className="input-group-addon ml-1">
                     <FontAwesomeIcon icon="search" />
                   </Button>
-                  <Button type="reset" className="input-group-addon" onClick={this.clear}>
+                  <Button type="reset" className="input-group-addon ml-1" onClick={this.clear}>
                     <FontAwesomeIcon icon="trash" />
                   </Button>
+                  <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity ml-1" id="jh-create-entity">
+                    <FontAwesomeIcon icon="plus" />
+                  </Link>
                 </InputGroup>
               </AvGroup>
             </AvForm>
@@ -114,47 +115,24 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
             <Table responsive>
               <thead>
                 <tr>
-                  <th className="hand" onClick={this.sort('id')}>
-                    ID <FontAwesomeIcon icon="sort" />
-                  </th>
+                  <th className="hand">Logo</th>
                   <th className="hand" onClick={this.sort('name')}>
-                    Name <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('date')}>
-                    Date <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('location')}>
-                    Location <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('description')}>
-                    Description <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('info')}>
-                    Info <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('address')}>
-                    Address <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('latitude')}>
-                    Latitude <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('longitude')}>
-                    Longitude <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('rules')}>
-                    Rules <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('subscriptionExpirationDate')}>
-                    Subscription Expiration Date <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('attributes')}>
-                    Attributes <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('status')}>
-                    Status <FontAwesomeIcon icon="sort" />
+                    Gara <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    Acsi Team <FontAwesomeIcon icon="sort" />
+                    Disciplina <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('date')}>
+                    Data <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('location')}>
+                    Luogo <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('subscriptionExpirationDate')}>
+                    Scadenza Iscrizioni <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('status')}>
+                    Stato <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -163,37 +141,28 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
                 {raceList.map((race, i) => (
                   <tr key={`entity-${i}`}>
                     <td>
-                      <Button tag={Link} to={`${match.url}/${race.id}`} color="link" size="sm">
-                        {race.id}
-                      </Button>
+                      <img src={race.binaryLogoUrl} style={{ height: '45px', with: '45px' }} />
                     </td>
                     <td>{race.name}</td>
+                    <td>{race.typeName}</td>
                     <td>
                       <TextFormat type="date" value={race.date} format={APP_LOCAL_DATE_FORMAT} />
                     </td>
                     <td>{race.location}</td>
-                    <td>{race.description}</td>
-                    <td>{race.info}</td>
-                    <td>{race.address}</td>
-                    <td>{race.latitude}</td>
-                    <td>{race.longitude}</td>
-                    <td>{race.rules}</td>
                     <td>
-                      <TextFormat type="date" value={race.subscriptionExpirationDate} format={APP_DATE_FORMAT} />
+                      <TextFormat type="date" value={race.subscriptionExpirationDate} format={APP_LOCAL_DATE_FORMAT} />
                     </td>
-                    <td>{race.attributes}</td>
                     <td>{race.status}</td>
-                    <td>{race.acsiTeamId ? <Link to={`acsi-team/${race.acsiTeamId}`}>{race.acsiTeamId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${race.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
+                        <Button tag={Link} to={`${match.url}/${race.id}`} color="info" size="sm" className="ml-1" title="Anteprima">
+                          <FontAwesomeIcon icon="eye" />
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${race.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
+                        <Button tag={Link} to={`${match.url}/${race.id}/edit`} color="primary" size="sm" className="ml-1" title="Modifica">
+                          <FontAwesomeIcon icon="pencil-alt" />
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${race.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
+                        <Button tag={Link} to={`${match.url}/${race.id}/delete`} color="danger" size="sm" className="ml-1" title="Elimina">
+                          <FontAwesomeIcon icon="trash" />
                         </Button>
                       </div>
                     </td>
@@ -202,22 +171,16 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
               </tbody>
             </Table>
           ) : (
-            <div className="alert alert-warning">No Races found</div>
+            <NoElementFound />
           )}
         </div>
         <div className={raceList && raceList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={this.state.activePage}
-              onSelect={this.handlePagination}
-              maxButtons={5}
-              itemsPerPage={this.state.itemsPerPage}
-              totalItems={this.props.totalItems}
-            />
-          </Row>
+          <Pagination
+            activePage={this.state.activePage}
+            totalItems={totalItems}
+            handlePagination={this.handlePagination}
+            itemsPerPage={this.state.itemsPerPage}
+          />
         </div>
       </div>
     );

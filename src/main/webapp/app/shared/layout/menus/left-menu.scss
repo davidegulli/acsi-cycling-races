@@ -1,7 +1,15 @@
 @import '../../../colors-variables.scss';
 
 .left-menu {
-  background-color: $left-side-bar-color;
+  /*background-color: $left-side-bar-color;*/
+  background: rgb(39, 40, 51);
+  background: linear-gradient(
+    180deg,
+    rgba(39, 40, 51, 1) 44%,
+    rgba(80, 81, 89, 1) 66%,
+    rgba(136, 137, 142, 1) 84%,
+    rgba(230, 230, 230, 1) 100%
+  );
   color: white;
   position: absolute;
   left: 0px;

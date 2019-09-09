@@ -163,7 +163,7 @@ export class FileUpdate extends React.Component<IFileUpdateProps, IFileUpdateSta
                         </Row>
                       </div>
                     ) : null}
-                    <input id="file_binary" type="file" onChange={this.onBlobChange(false, 'binary')} />
+                    <input id="file_binary" type="file" onChange={this.onBlobChange(true, 'binary')} />
                     <AvInput type="hidden" name="binary" value={binary} />
                   </AvGroup>
                 </AvGroup>

@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -104,6 +105,30 @@ public class FileResource {
         log.debug("REST request to get File : {}", id);
         Optional<FileDTO> fileDTO = fileService.findOne(id);
         return ResponseUtil.wrapOrNotFound(fileDTO);
+    }
+
+    /**
+     * {@code GET  /files/:id} : get the "id" file.
+     *
+     * @param id the id of the fileDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the fileDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(
+        value = "/files/{id}/download",
+        produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity getBinary(@PathVariable Long id) {
+
+        log.debug("REST request to get File : {}", id);
+
+        Optional<FileDTO> fileDTO = fileService.findOne(id);
+
+        if(fileDTO.isPresent()) {
+            FileDTO result = fileDTO.get();
+            MediaType mediaType = MediaType.parseMediaType(result.getMimeType());
+            return ResponseEntity.ok().contentType(mediaType).body(fileDTO.get().getBinary());
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     /**

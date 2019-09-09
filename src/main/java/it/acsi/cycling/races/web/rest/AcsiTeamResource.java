@@ -56,8 +56,11 @@ public class AcsiTeamResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/acsi-teams")
-    public ResponseEntity<AcsiTeamDTO> createAcsiTeam(@Valid @RequestBody AcsiTeamDTO acsiTeamDTO) throws URISyntaxException {
+    public ResponseEntity<AcsiTeamDTO> createAcsiTeam(
+            @Valid @RequestBody AcsiTeamDTO acsiTeamDTO) throws URISyntaxException {
+
         log.debug("REST request to save AcsiTeam : {}", acsiTeamDTO);
+
         if (acsiTeamDTO.getId() != null) {
             throw new BadRequestAlertException("A new acsiTeam cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -118,6 +121,20 @@ public class AcsiTeamResource {
     }
 
     /**
+     * {@code GET  /acsi-team} : get acsi team by user logged.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of acsiTeams in body.
+     */
+    @GetMapping("/acsi-teams/by-user-logged")
+    public ResponseEntity<AcsiTeamDTO> getAllAcsiTeam() {
+
+        log.debug("REST request to get a AcsiTeam by user logged");
+
+        Optional<AcsiTeamDTO> acsiTeamDTO = acsiTeamService.getByLogin();
+        return ResponseUtil.wrapOrNotFound(acsiTeamDTO);
+    }
+
+    /**
      * {@code DELETE  /acsi-teams/:id} : delete the "id" acsiTeam.
      *
      * @param id the id of the acsiTeamDTO to delete.
@@ -125,9 +142,14 @@ public class AcsiTeamResource {
      */
     @DeleteMapping("/acsi-teams/{id}")
     public ResponseEntity<Void> deleteAcsiTeam(@PathVariable Long id) {
+
         log.debug("REST request to delete AcsiTeam : {}", id);
+
         acsiTeamService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(
+                applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     /**
@@ -139,10 +161,15 @@ public class AcsiTeamResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/acsi-teams")
-    public ResponseEntity<List<AcsiTeamDTO>> searchAcsiTeams(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<AcsiTeamDTO>> searchAcsiTeams(
+            @RequestParam String query, Pageable pageable) {
+
         log.debug("REST request to search for a page of AcsiTeams for query {}", query);
+
         Page<AcsiTeamDTO> page = acsiTeamService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers =
+            PaginationUtil.generatePaginationHttpHeaders(
+                ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

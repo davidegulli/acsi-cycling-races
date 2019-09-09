@@ -95,10 +95,11 @@
             "relationshipName": "subscription"
         },
         {
-            "relationshipType": "one-to-many",
+            "relationshipType": "many-to-one",
             "otherEntityName": "raceType",
             "otherEntityRelationshipName": "race",
-            "relationshipName": "type"
+            "relationshipName": "type",
+            "otherEntityField": "id"
         },
         {
             "relationshipType": "many-to-one",
