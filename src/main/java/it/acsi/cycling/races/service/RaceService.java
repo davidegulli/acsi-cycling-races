@@ -141,47 +141,6 @@ public class RaceService {
 
         return raceRepository.findById(id)
             .map(raceMapper::toDtoWithChildRelation);
-/*
-        if(optRace.isPresent()) {
-            Race race = optRace.get();
-            RaceDTO result = raceMapper.toDto(race);
-
-            race.getContacts()
-                .stream()
-                .findFirst()
-                .ifPresent(c -> {
-                    result.setContactName(c.getName());
-                    result.setContactEmail(c.getEmail());
-                    result.setContactPhone(c.getPhone());
-                });
-
-            race.getAttachments()
-                .stream()
-                .filter(f -> f.getType().equals(FileType.LOGO_IMAGE))
-                .forEach(f -> {
-                    result.setBinaryLogoUrl(f.getUrl());
-                });
-
-            race.getAttachments()
-                .stream()
-                .filter(f -> f.getType().equals(FileType.COVER_IMAGE))
-                .forEach(f -> {
-                    result.setBinaryCoverUrl(f.getUrl());
-                });
-
-            race.getAttachments()
-                .stream()
-                .filter(f -> f.getType().equals(FileType.PATH_IMAGE))
-                .forEach(f -> {
-                    result.setBinaryPathMapUrl(f.getUrl());
-                });
-
-            return Optional.of(result);
-        }
-
-        return Optional.empty();
-
- */
     }
 
     /**
@@ -190,9 +149,22 @@ public class RaceService {
      * @param id the id of the entity.
      */
     public void delete(Long id) {
+
         log.debug("Request to delete Race : {}", id);
-        raceRepository.deleteById(id);
-        raceSearchRepository.deleteById(id);
+
+        raceRepository.findById(id).ifPresent(e -> {
+
+            e.getAttachments().forEach(f -> {
+                fileRepository.deleteById(f.getId());
+            });
+
+            e.getContacts().forEach(c -> {
+                contactRepository.deleteById(c.getId());
+            });
+
+            raceRepository.deleteById(e.getId());
+            raceSearchRepository.deleteById(e.getId());
+        });
     }
 
     /**
