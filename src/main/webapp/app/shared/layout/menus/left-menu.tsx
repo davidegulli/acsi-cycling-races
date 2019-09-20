@@ -14,16 +14,14 @@ export interface ILeftMenuProps {
   isTeamManager: boolean;
 }
 
-const LeftMenu = (props: ILeftMenuProps) => {
-  return (
-    <div className="left-menu">
-      <Nav id="left-menu" vertical>
-        <RacesMenu />
-        {props.isAcsiAdmin || props.isAdmin ? <TeamsMenu /> : null}
-        {props.isAcsiAdmin || props.isAdmin ? <AthletesMenu /> : null}
-      </Nav>
-    </div>
-  );
-};
+const LeftMenu = (props: ILeftMenuProps) => (
+  <div className="left-menu">
+    <Nav id="left-menu" vertical>
+      <RacesMenu isAcsiAdmin={props.isAcsiAdmin} isAdmin={props.isAdmin} />
+      {props.isAcsiAdmin || props.isAdmin ? <TeamsMenu /> : null}
+      {props.isAcsiAdmin || props.isAdmin ? <AthletesMenu /> : null}
+    </Nav>
+  </div>
+);
 
 export default LeftMenu;

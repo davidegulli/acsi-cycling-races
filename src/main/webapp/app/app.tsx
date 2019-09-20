@@ -35,7 +35,7 @@ export const App = (props: IAppProps) => {
 
   let leftMenu = null;
 
-  if (props.isAuthenticated) {
+  if (props.isAdmin || props.isAcsiAdmin || props.isTeamManager) {
     leftMenu = (
       <LeftMenu
         isAuthenticated={props.isAuthenticated}

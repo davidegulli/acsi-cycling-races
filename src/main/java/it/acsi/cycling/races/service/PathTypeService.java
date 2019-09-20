@@ -68,7 +68,6 @@ public class PathTypeService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one pathType by id.
      *
@@ -80,6 +79,19 @@ public class PathTypeService {
         log.debug("Request to get PathType : {}", id);
         return pathTypeRepository.findById(id)
             .map(pathTypeMapper::toDto);
+    }
+
+    /**
+     * Get all the pathTypes.
+     *
+     * @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<PathTypeDTO> findByRaceId(Long raceId) {
+        log.debug("Request to get all PathTypes");
+        return pathTypeRepository.findByRaceId(raceId).stream()
+            .map(pathTypeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

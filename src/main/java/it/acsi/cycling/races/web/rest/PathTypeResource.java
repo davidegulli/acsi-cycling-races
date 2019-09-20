@@ -107,6 +107,17 @@ public class PathTypeResource {
     }
 
     /**
+     * {@code GET  /path-types} : get all the pathTypes.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of pathTypes in body.
+     */
+    @GetMapping("/path-types/race/{raceId}")
+    public List<PathTypeDTO> getPathTypesByRaceId(@PathVariable Long raceId) {
+        log.debug("REST request to get PathTypes by raceId");
+        return pathTypeService.findByRaceId(raceId);
+    }
+
+    /**
      * {@code DELETE  /path-types/:id} : delete the "id" pathType.
      *
      * @param id the id of the pathTypeDTO to delete.

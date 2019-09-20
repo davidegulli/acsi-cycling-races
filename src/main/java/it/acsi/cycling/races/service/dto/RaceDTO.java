@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -70,6 +71,8 @@ public class RaceDTO implements Serializable {
     private String binaryPathMapFileName;
     private String binaryPathMapUrl;
 
+    private List<SubscriptionTypeDTO> subscriptionTypes;
+    private List<PathTypeDTO> pathTypes;
 
     public Long getId() {
         return id;
@@ -317,6 +320,22 @@ public class RaceDTO implements Serializable {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public List<SubscriptionTypeDTO> getSubscriptionTypes() {
+        return subscriptionTypes;
+    }
+
+    public void setSubscriptionTypes(List<SubscriptionTypeDTO> subscriptionTypes) {
+        this.subscriptionTypes = subscriptionTypes;
+    }
+
+    public List<PathTypeDTO> getPathTypes() {
+        return pathTypes;
+    }
+
+    public void setPathTypes(List<PathTypeDTO> pathTypes) {
+        this.pathTypes = pathTypes;
     }
 
     @Override

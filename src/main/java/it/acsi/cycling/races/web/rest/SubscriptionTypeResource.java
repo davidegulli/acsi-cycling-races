@@ -85,7 +85,6 @@ public class SubscriptionTypeResource {
     /**
      * {@code GET  /subscription-types} : get all the subscriptionTypes.
      *
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of subscriptionTypes in body.
      */
     @GetMapping("/subscription-types")
@@ -105,6 +104,18 @@ public class SubscriptionTypeResource {
         log.debug("REST request to get SubscriptionType : {}", id);
         Optional<SubscriptionTypeDTO> subscriptionTypeDTO = subscriptionTypeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(subscriptionTypeDTO);
+    }
+
+    /**
+     * {@code GET  /subscription-types} : get the subscriptionTypes by race id.
+     *
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of subscriptionTypes in body.
+     */
+    @GetMapping("/subscription-types/race/{raceId}")
+    public List<SubscriptionTypeDTO> getSubscriptionTypesByRaceId(@PathVariable Long raceId) {
+        log.debug("REST request to get SubscriptionTypes by raceId");
+        return subscriptionTypeService.findByRaceId(raceId);
     }
 
     /**

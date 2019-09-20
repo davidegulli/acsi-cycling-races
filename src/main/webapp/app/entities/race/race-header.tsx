@@ -6,7 +6,7 @@ import { TextFormat } from 'react-jhipster';
 import { Link } from 'react-router-dom';
 
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { height } from '@fortawesome/free-solid-svg-icons/faAsterisk';
+import moment from 'moment';
 
 export interface IRaceHeader {
   entity: any;
@@ -25,9 +25,13 @@ const raceHeader = (props: IRaceHeader) => {
 
   let button = null;
 
-  if (showButton) {
+  console.log(entity.subscriptionExpirationDate);
+  console.log(moment());
+  console.log(moment().diff(entity.subscriptionExpirationDate));
+
+  if (showButton && moment().diff(entity.subscriptionExpirationDate) < 0) {
     button = (
-      <Button tag={Link} to={`/entity/race-subscription/${entity.id}/new`} className="race-subscription-button">
+      <Button tag={Link} to={`/subscription/${entity.id}`} className="race-subscription-button">
         Iscriviti Ora
       </Button>
     );

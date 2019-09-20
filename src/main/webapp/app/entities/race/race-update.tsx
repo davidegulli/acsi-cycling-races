@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
@@ -12,12 +12,27 @@ import { IRaceType } from 'app/shared/model/race-type.model';
 import { getEntities as getRaceTypes } from 'app/entities/race-type/race-type.reducer';
 import { IAcsiTeam } from 'app/shared/model/acsi-team.model';
 import { getEntityByUserLogged as getAcsiTeam } from 'app/entities/acsi-team/acsi-team.reducer';
-import { getEntity, updateEntity, createEntity, setBlob, reset } from './race.reducer';
+// tslint:disable-next-line:no-duplicate-imports
+import { getEntity, updateEntity, createEntity, setBlob } from './race.reducer';
+import { addSubscriptionType, removeSubscriptionType, addPathType, removePathType, reset } from './race.reducer';
 import { IRace } from 'app/shared/model/race.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import ImageUploader from '../../shared/component/image-uploader';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+
+import GeneralDataSection from './data-section/genaral-data-section';
+import RaceDataSection from './data-section/race-data-section';
+import ImagesDataSection from './data-section/images-data-section';
+import SubscriptionDataSection from './data-section/subscription-data-section';
+import race from './race';
+import { StepIcon } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
 
 export interface IRaceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -25,6 +40,23 @@ export interface IRaceUpdateState {
   isNew: boolean;
   typeId: string;
   acsiTeamId: string;
+  step: number;
+  values: any;
+  errors: any;
+  pathTypeRows: any;
+}
+
+const IconLabel = withStyles({
+  active: {
+    color: '#007bff !important'
+  },
+  completed: {
+    color: '#007bff !important'
+  }
+})(StepIcon);
+
+function getSteps() {
+  return ['Generali', 'Gara', 'Immagini', 'Iscrizioni'];
 }
 
 export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateState> {
@@ -33,7 +65,11 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
     this.state = {
       typeId: '0',
       acsiTeamId: '0',
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
+      step: 0,
+      values: {},
+      errors: [],
+      pathTypeRows: []
     };
   }
 
@@ -54,7 +90,7 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
     this.props.getAcsiTeam(0);
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (errors, values) => {
     values.subscriptionExpirationDate = convertDateTimeToServer(values.subscriptionExpirationDate);
 
     if (errors.length === 0) {
@@ -96,9 +132,52 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
     setFileData(event, (contentType, data) => this.props.setBlob('binaryPathMap', data, contentType), true);
   };
 
+  onAddSubscriptionTypeHandler = subscriptionTypeRow => {
+    this.props.addSubscriptionType(subscriptionTypeRow);
+  };
+
+  onRemoveSubscriptionTypeHandler = index => {
+    this.props.removeSubscriptionType(index);
+  };
+
+  onAddPathTypeHandler = pathTypeRow => {
+    this.props.addPathType(pathTypeRow);
+  };
+
+  onRemovePathTypeHandler = index => {
+    this.props.removePathType(index);
+  };
+
+  nextStepHandler = (event, errors, values) => {
+    if (errors.length === 0) {
+      const currentErrors = this.state.errors;
+      const updateErrors = [...currentErrors, ...errors];
+
+      const currentValues = this.state.values;
+      const updatedValues = { ...currentValues, ...values };
+      updatedValues['pathTypes'] = this.state.pathTypeRows;
+
+      this.setState({ values: updatedValues, errors: updateErrors });
+
+      if (this.state.step === 3) {
+        this.saveEntity(updateErrors, updatedValues);
+      } else {
+        const currentState = this.state.step;
+        this.setState({ step: currentState + 1 });
+      }
+    }
+  };
+
+  prevStepHandler = () => {
+    const currentState = this.state.step;
+    this.setState({ step: currentState - 1 });
+  };
+
   render() {
     const { raceEntity, raceTypes, acsiTeam, loading, updating } = this.props;
-    const { isNew } = this.state;
+    const { isNew, step } = this.state;
+    const steps = getSteps();
+    const cancelUrl = '/entity/race';
 
     return (
       <div>
@@ -114,173 +193,70 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : raceEntity} onSubmit={this.saveEntity}>
-                <AvGroup>
-                  <Label id="nameLabel" for="race-name">
-                    Nome
-                  </Label>
-                  <AvField
-                    id="race-name"
-                    type="text"
-                    name="name"
-                    validate={{
-                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
-                    }}
-                  />
-                </AvGroup>
-                <h4 className="sheet-title">Dati Associazione</h4>
-                <AvGroup>
-                  <Label for="race-acsiTeamCode">Codice</Label>
-                  <AvField id="race-acsiTeamId" type="hidden" name="acsiTeamId" value={acsiTeam.id} />
-                  <AvField id="race-acsiTeamCode" type="text" className="form-control" name="acsiTeamCode" readOnly value={acsiTeam.code} />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="race-acsiTeamName">Nome</Label>
-                  <AvField id="race-acsiTeamName" type="text" className="form-control" name="acsiTeamName" readOnly value={acsiTeam.name} />
-                </AvGroup>
-                <h4 className="sheet-title">Contatti Organizzatore</h4>
-                <AvGroup>
-                  <Label for="race-contactName">Nominativo</Label>
-                  <AvField
-                    id="race-contactName"
-                    type="text"
-                    className="form-control"
-                    name="contactName"
-                    helpMessage="Inserisci il nominativo del contatto responsabile dell'organizzazione della gara"
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="race-contactEmail">E-Mail</Label>
-                  <AvField id="race-contactEmail" type="text" className="form-control" name="contactEmail" />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="race-contactPhone">Telefono</Label>
-                  <AvField id="race-contactPhone" type="text" className="form-control" name="contactPhone" />
-                </AvGroup>
-                <h4 className="sheet-title">Informazioni Gara</h4>
-                <AvGroup>
-                  <Label id="dateLabel" for="race-date">
-                    Data
-                  </Label>
-                  <AvField
-                    id="race-date"
-                    type="date"
-                    className="form-control"
-                    name="date"
-                    placeholder={'GG-MM-AAAA'}
-                    validate={{
-                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="locationLabel" for="race-location">
-                    Luogo
-                  </Label>
-                  <AvField
-                    id="race-location"
-                    type="text"
-                    name="location"
-                    validate={{
-                      required: { value: true, errorMessage: 'Il campo è obbligatorio' }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="addressLabel" for="race-address">
-                    Indirizzo
-                  </Label>
-                  <AvField
-                    id="race-address"
-                    type="text"
-                    name="address"
-                    validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="descriptionLabel" for="race-description">
-                    Descrizione
-                  </Label>
-                  <AvField id="race-description" type="textarea" name="description" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="infoLabel" for="race-info">
-                    Informazioni Utili
-                  </Label>
-                  <AvField id="race-info" type="textarea" name="info" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="rulesLabel" for="race-rules">
-                    Regolamento
-                  </Label>
-                  <AvField id="race-rules" type="textarea" name="rules" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="subscriptionExpirationDateLabel" for="race-subscriptionExpirationDate">
-                    Data Chiusura Iscrizioni
-                  </Label>
-                  <AvField
-                    id="race-subscriptionExpirationDate"
-                    type="date"
-                    className="form-control"
-                    name="subscriptionExpirationDate"
-                    placeholder={'GG-MM-AAAA'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.raceEntity.subscriptionExpirationDate)}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="race-type">Disciplina</Label>
-                  <AvField id="race-type" type="select" className="form-control" name="typeId">
-                    <option value="" key="0" />
-                    {raceTypes
-                      ? raceTypes.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
-                          </option>
-                        ))
-                      : null}
-                  </AvField>
-                </AvGroup>
-                <h4 className="sheet-title">Immagini</h4>
-                <div style={{ marginBottom: '1rem' }}>
-                  <Label for="race-logoImage">Logo</Label>
-                  <ImageUploader
-                    id="race-logoImage"
-                    onDrop={this.onDropLogoImage}
-                    previewUrl={!this.state.isNew ? this.props.raceEntity.binaryLogoUrl : null}
-                  />
-                </div>
-                <div style={{ marginBottom: '1rem' }}>
-                  <Label for="race-coverImage">Immagine di Copertina</Label>
-                  <ImageUploader
-                    id="race-coverImage"
-                    onDrop={this.onDropCoverImage}
-                    previewUrl={!this.state.isNew ? this.props.raceEntity.binaryCoverUrl : null}
-                  />
-                </div>
-                <div style={{ marginBottom: '1rem' }}>
-                  <Label for="race-mapPathImage">Mappa del Percorso</Label>
-                  <ImageUploader
-                    id="race-mapPathImage"
-                    onDrop={this.onDropPathMapImage}
-                    previewUrl={!this.state.isNew ? this.props.raceEntity.binaryPathMapUrl : null}
-                  />
-                </div>
-                <div className="form-button-holder">
-                  <Button tag={Link} id="cancel-save" to="/entity/race" replace>
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
-                    <span className="d-none d-md-inline">Indietro</span>
-                  </Button>
-                  &nbsp;
-                  <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                    <FontAwesomeIcon icon="save" />
-                    &nbsp; Salva
-                  </Button>
-                </div>
-              </AvForm>
+              <Fragment>
+                <Stepper activeStep={step} alternativeLabel>
+                  {steps.map(label => (
+                    <Step key={label}>
+                      <StepLabel StepIconComponent={IconLabel}>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+                <GeneralDataSection
+                  activeStep={this.state.step}
+                  stepIndex={0}
+                  stepsLength={4}
+                  entity={raceEntity}
+                  isNew={isNew}
+                  updating={updating}
+                  nextStepHandler={this.nextStepHandler}
+                  prevStepHandler={this.prevStepHandler}
+                  acsiTeam={acsiTeam}
+                  cancelUrl={cancelUrl}
+                />
+                <RaceDataSection
+                  activeStep={this.state.step}
+                  stepIndex={1}
+                  stepsLength={4}
+                  entity={raceEntity}
+                  isNew={isNew}
+                  updating={updating}
+                  nextStepHandler={this.nextStepHandler}
+                  prevStepHandler={this.prevStepHandler}
+                  raceTypes={raceTypes}
+                  cancelUrl={cancelUrl}
+                />
+                <ImagesDataSection
+                  activeStep={this.state.step}
+                  stepIndex={2}
+                  stepsLength={4}
+                  entity={raceEntity}
+                  isNew={isNew}
+                  updating={updating}
+                  nextStepHandler={this.nextStepHandler}
+                  prevStepHandler={this.prevStepHandler}
+                  onDropLogoImage={this.onDropLogoImage}
+                  onDropCoverImage={this.onDropCoverImage}
+                  onDropPathMapImage={this.onDropPathMapImage}
+                  cancelUrl={cancelUrl}
+                />
+                <SubscriptionDataSection
+                  activeStep={this.state.step}
+                  stepIndex={3}
+                  stepsLength={4}
+                  entity={raceEntity}
+                  isNew={isNew}
+                  updating={updating}
+                  nextStepHandler={this.nextStepHandler}
+                  prevStepHandler={this.prevStepHandler}
+                  subscriptionTypeRows={raceEntity.subscriptionTypes}
+                  addSubscriptionTypeHandler={this.onAddSubscriptionTypeHandler}
+                  removeSubscriptionTypeHandler={this.onRemoveSubscriptionTypeHandler}
+                  pathTypeRows={raceEntity.pathTypes}
+                  addPathTypeHandler={this.onAddPathTypeHandler}
+                  removePathTypeHandler={this.onRemovePathTypeHandler}
+                  cancelUrl={cancelUrl}
+                />
+              </Fragment>
             )}
           </Col>
         </Row>
@@ -288,59 +264,6 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
     );
   }
 }
-
-/*
-               <AvGroup>
-                  <Label id="addressLabel" for="race-address">
-                    Address
-                  </Label>
-                  <AvField
-                    id="race-address"
-                    type="text"
-                    name="address"
-                    validate={{
-                      required: { value: true, errorMessage: 'This field is required.' }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="latitudeLabel" for="race-latitude">
-                    Latitude
-                  </Label>
-                  <AvField id="race-latitude" type="string" className="form-control" name="latitude" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="longitudeLabel" for="race-longitude">
-                    Longitude
-                  </Label>
-                  <AvField id="race-longitude" type="string" className="form-control" name="longitude" />
-                </AvGroup>
-
-                <AvGroup>
-                  <Label id="attributesLabel" for="race-attributes">
-                    Attributes
-                  </Label>
-                  <AvField id="race-attributes" type="text" name="attributes" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="statusLabel" for="race-status">
-                    Status
-                  </Label>
-                  <AvInput
-                    id="race-status"
-                    type="select"
-                    className="form-control"
-                    name="status"
-                    value={(!isNew && raceEntity.status) || 'PUBLISHED'}
-                  >
-                    <option value="PUBLISHED">PUBLISHED</option>
-                    <option value="DRAFT">DRAFT</option>
-                    <option value="CANCELED">CANCELED</option>
-                    <option value="UNPUBLISHED">UNPUBLISHED</option>
-                  </AvInput>
-                </AvGroup>
-
-*/
 
 const mapStateToProps = (storeState: IRootState) => ({
   raceTypes: storeState.raceType.entities,
@@ -358,6 +281,10 @@ const mapDispatchToProps = {
   updateEntity,
   createEntity,
   setBlob,
+  addSubscriptionType,
+  removeSubscriptionType,
+  addPathType,
+  removePathType,
   reset
 };
 

@@ -63,7 +63,8 @@ export default (state: AuthenticationState = initialState, action): Authenticati
     case SUCCESS(ACTION_TYPES.LOGOUT):
       return {
         ...initialState,
-        showModalLogin: true
+        showModalLogin: true,
+        logoutUrl: '/'
       };
     case SUCCESS(ACTION_TYPES.GET_SESSION): {
       const isAuthenticated = action.payload && action.payload.data && action.payload.data.activated;

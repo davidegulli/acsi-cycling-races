@@ -17,7 +17,10 @@ export const Login = (props: ILoginProps) => {
 
   const handleLogin = (username, password, rememberMe = false) => props.login(username, password, rememberMe);
 
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => {
+    setShowModal(false);
+    window.location.href = '/';
+  };
 
   const { location, isAuthenticated } = props;
   const { from } = location.state || { from: { pathname: '/', search: location.search } };

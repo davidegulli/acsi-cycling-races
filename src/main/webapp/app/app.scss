@@ -11,9 +11,10 @@ body {
 body {
   background: $background-color;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol';
-  font-size: 1rem;
+  font-size: 0.85rem;
+  font-weight: 400;
   color: $body-font-color;
 }
 
@@ -60,6 +61,13 @@ h4.sheet-title {
   word-wrap: break-word;
   display: block;
   position: relative;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .container {
@@ -116,6 +124,16 @@ label {
   font-size: 0.65rem;
   margin-left: 5px;
   vertical-align: top;
+}
+
+.box {
+  margin-bottom: 1em;
+}
+
+.box-data {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 10px 20px;
 }
 
 * {

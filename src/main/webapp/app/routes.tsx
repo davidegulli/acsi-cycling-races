@@ -14,6 +14,9 @@ import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
+import Race from './entities/race';
+import Detail from './entities/race/race-detail';
+import EventSubscription from './entities/race-subscription/race-subscription-update';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -36,6 +39,7 @@ const Routes = () => (
       <ErrorBoundaryRoute path="/activate/:key?" component={Activate} />
       <ErrorBoundaryRoute path="/reset/request" component={PasswordResetInit} />
       <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
+      <ErrorBoundaryRoute path="/entity/race" exact component={Race} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute
@@ -44,6 +48,8 @@ const Routes = () => (
         hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.ACSI_ADMIN, AUTHORITIES.TEAM_MANAGER]}
       />
       <ErrorBoundaryRoute path="/" exact component={Home} />
+      <ErrorBoundaryRoute path={`/event/:id`} component={Detail} />
+      <ErrorBoundaryRoute path={`/subscription/:raceId`} component={EventSubscription} />
       <ErrorBoundaryRoute component={PageNotFound} />
     </Switch>
   </div>

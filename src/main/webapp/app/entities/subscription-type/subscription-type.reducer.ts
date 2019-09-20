@@ -9,6 +9,7 @@ import { ISubscriptionType, defaultValue } from 'app/shared/model/subscription-t
 export const ACTION_TYPES = {
   SEARCH_SUBSCRIPTIONTYPES: 'subscriptionType/SEARCH_SUBSCRIPTIONTYPES',
   FETCH_SUBSCRIPTIONTYPE_LIST: 'subscriptionType/FETCH_SUBSCRIPTIONTYPE_LIST',
+  FETCH_SUBSCRIPTIONTYPE_LIST_BY_RACE: 'subscriptionType/FETCH_SUBSCRIPTIONTYPE_LIST_BY_RACE',
   FETCH_SUBSCRIPTIONTYPE: 'subscriptionType/FETCH_SUBSCRIPTIONTYPE',
   CREATE_SUBSCRIPTIONTYPE: 'subscriptionType/CREATE_SUBSCRIPTIONTYPE',
   UPDATE_SUBSCRIPTIONTYPE: 'subscriptionType/UPDATE_SUBSCRIPTIONTYPE',
@@ -33,6 +34,7 @@ export default (state: SubscriptionTypeState = initialState, action): Subscripti
   switch (action.type) {
     case REQUEST(ACTION_TYPES.SEARCH_SUBSCRIPTIONTYPES):
     case REQUEST(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST_BY_RACE):
     case REQUEST(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE):
       return {
         ...state,
@@ -51,6 +53,7 @@ export default (state: SubscriptionTypeState = initialState, action): Subscripti
       };
     case FAILURE(ACTION_TYPES.SEARCH_SUBSCRIPTIONTYPES):
     case FAILURE(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST_BY_RACE):
     case FAILURE(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE):
     case FAILURE(ACTION_TYPES.CREATE_SUBSCRIPTIONTYPE):
     case FAILURE(ACTION_TYPES.UPDATE_SUBSCRIPTIONTYPE):
@@ -64,6 +67,7 @@ export default (state: SubscriptionTypeState = initialState, action): Subscripti
       };
     case SUCCESS(ACTION_TYPES.SEARCH_SUBSCRIPTIONTYPES):
     case SUCCESS(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST):
+    case SUCCESS(ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST_BY_RACE):
       return {
         ...state,
         loading: false,
@@ -113,6 +117,14 @@ export const getEntities: ICrudGetAllAction<ISubscriptionType> = (page, size, so
   type: ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST,
   payload: axios.get<ISubscriptionType>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
 });
+
+export const getEntitiesByRace: ICrudGetAllAction<ISubscriptionType> = raceId => {
+  const requestUrl = `${apiUrl}/race/${raceId}`;
+  return {
+    type: ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST_BY_RACE,
+    payload: axios.get<ISubscriptionType>(requestUrl)
+  };
+};
 
 export const getEntity: ICrudGetAction<ISubscriptionType> = id => {
   const requestUrl = `${apiUrl}/${id}`;

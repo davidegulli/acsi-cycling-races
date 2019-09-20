@@ -21,11 +21,5 @@ export const AthletesMenu = props => (
         <span>Blacklist</span>
       </NavLink>
     </NavItem>
-    <NavItem>
-      <NavLink tag={Link} to="/entity/file" className="d-flex align-items-center left-menu-item">
-        <FontAwesomeIcon icon="ban" />
-        <span>File</span>
-      </NavLink>
-    </NavItem>
   </div>
 );

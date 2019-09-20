@@ -6,7 +6,12 @@ import { NavItem, NavLink } from 'reactstrap';
 import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const RacesMenu = props => (
+interface IRaceMenu {
+  isAdmin: boolean;
+  isAcsiAdmin: boolean;
+}
+
+export const RacesMenu = (props: IRaceMenu) => (
   <div className="left-menu-section">
     <span className="left-menu-section-title">Gare</span>
     <NavItem>
@@ -14,10 +19,12 @@ export const RacesMenu = props => (
         <FontAwesomeIcon icon="flag-checkered" />
         <span>Gestione Gare</span>
       </NavLink>
-      <NavLink tag={Link} to="/entity/race-type" className="d-flex align-items-center left-menu-item">
-        <FontAwesomeIcon icon="bars" />
-        <span>Discipline</span>
-      </NavLink>
+      {props.isAcsiAdmin || props.isAdmin ? (
+        <NavLink tag={Link} to="/entity/race-type" className="d-flex align-items-center left-menu-item">
+          <FontAwesomeIcon icon="bars" />
+          <span>Discipline</span>
+        </NavLink>
+      ) : null}
     </NavItem>
   </div>
 );

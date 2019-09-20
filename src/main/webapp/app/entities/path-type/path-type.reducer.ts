@@ -9,6 +9,7 @@ import { IPathType, defaultValue } from 'app/shared/model/path-type.model';
 export const ACTION_TYPES = {
   SEARCH_PATHTYPES: 'pathType/SEARCH_PATHTYPES',
   FETCH_PATHTYPE_LIST: 'pathType/FETCH_PATHTYPE_LIST',
+  FETCH_PATHTYPE_LIST_BY_RACE: 'pathType/FETCH_PATHTYPE_LIST_BY_RACE',
   FETCH_PATHTYPE: 'pathType/FETCH_PATHTYPE',
   CREATE_PATHTYPE: 'pathType/CREATE_PATHTYPE',
   UPDATE_PATHTYPE: 'pathType/UPDATE_PATHTYPE',
@@ -33,6 +34,7 @@ export default (state: PathTypeState = initialState, action): PathTypeState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.SEARCH_PATHTYPES):
     case REQUEST(ACTION_TYPES.FETCH_PATHTYPE_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_PATHTYPE_LIST_BY_RACE):
     case REQUEST(ACTION_TYPES.FETCH_PATHTYPE):
       return {
         ...state,
@@ -51,6 +53,7 @@ export default (state: PathTypeState = initialState, action): PathTypeState => {
       };
     case FAILURE(ACTION_TYPES.SEARCH_PATHTYPES):
     case FAILURE(ACTION_TYPES.FETCH_PATHTYPE_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_PATHTYPE_LIST_BY_RACE):
     case FAILURE(ACTION_TYPES.FETCH_PATHTYPE):
     case FAILURE(ACTION_TYPES.CREATE_PATHTYPE):
     case FAILURE(ACTION_TYPES.UPDATE_PATHTYPE):
@@ -64,6 +67,7 @@ export default (state: PathTypeState = initialState, action): PathTypeState => {
       };
     case SUCCESS(ACTION_TYPES.SEARCH_PATHTYPES):
     case SUCCESS(ACTION_TYPES.FETCH_PATHTYPE_LIST):
+    case SUCCESS(ACTION_TYPES.FETCH_PATHTYPE_LIST_BY_RACE):
       return {
         ...state,
         loading: false,
@@ -113,6 +117,14 @@ export const getEntities: ICrudGetAllAction<IPathType> = (page, size, sort) => (
   type: ACTION_TYPES.FETCH_PATHTYPE_LIST,
   payload: axios.get<IPathType>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
 });
+
+export const getEntitiesByRace: ICrudGetAllAction<IPathType> = raceId => {
+  const requestUrl = `${apiUrl}/race/${raceId}`;
+  return {
+    type: ACTION_TYPES.FETCH_PATHTYPE_LIST_BY_RACE,
+    payload: axios.get<IPathType>(requestUrl)
+  };
+};
 
 export const getEntity: ICrudGetAction<IPathType> = id => {
   const requestUrl = `${apiUrl}/${id}`;

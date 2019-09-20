@@ -83,6 +83,19 @@ public class SubscriptionTypeService {
     }
 
     /**
+     * Get all the subscriptionTypes.
+     *
+     * @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<SubscriptionTypeDTO> findByRaceId(Long raceId) {
+        log.debug("Request to get all SubscriptionTypes");
+        return subscriptionTypeRepository.findByRaceId(raceId).stream()
+            .map(subscriptionTypeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
      * Delete the subscriptionType by id.
      *
      * @param id the id of the entity.

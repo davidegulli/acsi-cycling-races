@@ -1,0 +1,178 @@
+import React, { Fragment } from 'react';
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { Button, Label } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+
+interface ISubscriptionType {
+  rows: any;
+  addRowHandler: any;
+  removeRowHandler: any;
+}
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      marginTop: theme.spacing(3),
+      overflowX: 'auto'
+    },
+    table: {
+      minWidth: 650
+    }
+  })
+);
+
+const subscriptionType = (props: ISubscriptionType) => {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const dialogForm = React.useRef(null);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const dialogFormSubmit = (event, errors, values) => {
+    console.log(values);
+
+    if (errors.length === 0) {
+      props.addRowHandler(values);
+
+      handleClose();
+    }
+  };
+
+  const insertData = () => {
+    dialogForm.current.submit();
+  };
+
+  const removeRow = index => {
+    props.removeRowHandler(index);
+  };
+
+  return (
+    <Fragment>
+      <div className="mt-5">
+        <span className="pt-5 section-title">Tipologie di Iscrizione</span>
+        {props.rows !== undefined && props.rows.length < 3 ? (
+          <Button color="primary" className="input-group-addon float-right mr-2" onClick={handleClickOpen}>
+            <FontAwesomeIcon icon="plus" />
+          </Button>
+        ) : null}
+      </div>
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Tipo di Iscrizione</TableCell>
+              <TableCell>Descrizione</TableCell>
+              <TableCell>Regolamento</TableCell>
+              <TableCell>Costo</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.rows !== undefined
+              ? props.rows.map((row, index) => (
+                  <TableRow key={index} className="align-top">
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.description}</TableCell>
+                    <TableCell>{row.rules}</TableCell>
+                    <TableCell align="right">{row.price}</TableCell>
+                    <TableCell>
+                      <Button className="input-group-addon float-right mr-2" onClick={() => removeRow(index)}>
+                        <FontAwesomeIcon icon="trash" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : null}
+          </TableBody>
+        </Table>
+        {props.rows === undefined || props.rows.length === 0 ? (
+          <div className="text-center pt-3">
+            <p className="text-muted">Ancora non è stata inserita nessuna tipologia di iscrizione</p>
+          </div>
+        ) : null}
+      </Paper>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Tipologia di Iscrizione</DialogTitle>
+        <AvForm id="subscriptionTypeForm" onSubmit={dialogFormSubmit} ref={dialogForm}>
+          <DialogContent>
+            <DialogContentText>
+              Per inserire una nuova tipologia di iscrizione con il relativo costo compila il seguente form:
+            </DialogContentText>
+            <AvGroup>
+              <Label id="nameLabel" for="subscriptionType-name">
+                Nome
+              </Label>
+              <AvField
+                id="subscriptionType-name"
+                type="text"
+                name="name"
+                validate={{
+                  required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                }}
+              />
+            </AvGroup>
+            <AvGroup>
+              <Label id="descriptionLabel" for="subscriptionType-description">
+                Descrizione
+              </Label>
+              <AvField
+                id="subscriptionType-description"
+                type="text"
+                name="description"
+                validate={{
+                  required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                }}
+              />
+            </AvGroup>
+            <AvGroup>
+              <Label id="rulesLabel" for="subscriptionType-rules">
+                Regole
+              </Label>
+              <AvField id="subscriptionType-rules" type="text" name="rules" />
+            </AvGroup>
+            <AvGroup>
+              <Label id="priceLabel" for="subscriptionType-price">
+                Costo
+              </Label>
+              <AvField
+                id="subscriptionType-price"
+                type="text"
+                name="price"
+                validate={{
+                  required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                }}
+              />
+            </AvGroup>
+          </DialogContent>
+          <DialogActions>
+            <Button>Cancel</Button>
+            <Button onClick={insertData} form="subscriptionTypeForm" color="primary">
+              Subscribe
+            </Button>
+          </DialogActions>
+        </AvForm>
+      </Dialog>
+    </Fragment>
+  );
+};
+
+export default subscriptionType;
