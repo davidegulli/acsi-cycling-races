@@ -139,13 +139,15 @@ export default (state: RaceState = initialState, action): RaceState => {
     case ACTION_TYPES.REMOVE_PATH_TYPE:
       const removingPathTypes = [...state.entity.pathTypes];
       removingPathTypes.splice(action.payload.index, 1);
-      return {
+
+      const result = {
         ...state,
         entity: {
           ...state.entity,
           pathTypes: [...removingPathTypes]
         }
       };
+      return result;
 
     case ACTION_TYPES.RESET:
       return {

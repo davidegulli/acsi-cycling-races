@@ -60,7 +60,7 @@ public class Race implements Serializable {
     private String rules;
 
     @Column(name = "subscription_expiration_date")
-    private Instant subscriptionExpirationDate;
+    private LocalDate subscriptionExpirationDate;
 
     @Column(name = "attributes")
     private String attributes;
@@ -218,16 +218,16 @@ public class Race implements Serializable {
         this.rules = rules;
     }
 
-    public Instant getSubscriptionExpirationDate() {
+    public LocalDate getSubscriptionExpirationDate() {
         return subscriptionExpirationDate;
     }
 
-    public Race subscriptionExpirationDate(Instant subscriptionExpirationDate) {
+    public Race subscriptionExpirationDate(LocalDate subscriptionExpirationDate) {
         this.subscriptionExpirationDate = subscriptionExpirationDate;
         return this;
     }
 
-    public void setSubscriptionExpirationDate(Instant subscriptionExpirationDate) {
+    public void setSubscriptionExpirationDate(LocalDate subscriptionExpirationDate) {
         this.subscriptionExpirationDate = subscriptionExpirationDate;
     }
 

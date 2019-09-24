@@ -17,4 +17,5 @@ public interface SubscriptionTypeRepository extends JpaRepository<SubscriptionTy
 
     List<SubscriptionType> findByRaceId(Long raceId);
 
+    List<SubscriptionType> deleteByRaceId(Long raceId);
 }

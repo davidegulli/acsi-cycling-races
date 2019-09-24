@@ -15,4 +15,6 @@ import java.util.List;
 public interface PathTypeRepository extends JpaRepository<PathType, Long> {
 
     List<PathType> findByRaceId(Long raceId);
+
+    List<PathType> deleteByRaceId(Long raceId);
 }

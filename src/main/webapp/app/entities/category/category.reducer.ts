@@ -10,6 +10,7 @@ export const ACTION_TYPES = {
   SEARCH_CATEGORIES: 'category/SEARCH_CATEGORIES',
   FETCH_CATEGORY_LIST: 'category/FETCH_CATEGORY_LIST',
   FETCH_CATEGORY: 'category/FETCH_CATEGORY',
+  FETCH_CATEGORY_BY_GENDER_BIRTH_DATE: 'category/FETCH_CATEGORY_BY_GENDER_BIRTH_DATE',
   CREATE_CATEGORY: 'category/CREATE_CATEGORY',
   UPDATE_CATEGORY: 'category/UPDATE_CATEGORY',
   DELETE_CATEGORY: 'category/DELETE_CATEGORY',
@@ -34,6 +35,7 @@ export default (state: CategoryState = initialState, action): CategoryState => {
     case REQUEST(ACTION_TYPES.SEARCH_CATEGORIES):
     case REQUEST(ACTION_TYPES.FETCH_CATEGORY_LIST):
     case REQUEST(ACTION_TYPES.FETCH_CATEGORY):
+    case REQUEST(ACTION_TYPES.FETCH_CATEGORY_BY_GENDER_BIRTH_DATE):
       return {
         ...state,
         errorMessage: null,
@@ -52,6 +54,7 @@ export default (state: CategoryState = initialState, action): CategoryState => {
     case FAILURE(ACTION_TYPES.SEARCH_CATEGORIES):
     case FAILURE(ACTION_TYPES.FETCH_CATEGORY_LIST):
     case FAILURE(ACTION_TYPES.FETCH_CATEGORY):
+    case FAILURE(ACTION_TYPES.FETCH_CATEGORY_BY_GENDER_BIRTH_DATE):
     case FAILURE(ACTION_TYPES.CREATE_CATEGORY):
     case FAILURE(ACTION_TYPES.UPDATE_CATEGORY):
     case FAILURE(ACTION_TYPES.DELETE_CATEGORY):
@@ -70,6 +73,7 @@ export default (state: CategoryState = initialState, action): CategoryState => {
         entities: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_CATEGORY):
+    case SUCCESS(ACTION_TYPES.FETCH_CATEGORY_BY_GENDER_BIRTH_DATE):
       return {
         ...state,
         loading: false,
@@ -118,6 +122,14 @@ export const getEntity: ICrudGetAction<ICategory> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_CATEGORY,
+    payload: axios.get<ICategory>(requestUrl)
+  };
+};
+
+export const getEntityByGenderAndBirthDate = (gender, birthDate) => {
+  const requestUrl = `${apiUrl}/gender/${gender}/birthdate/${birthDate}`;
+  return {
+    type: ACTION_TYPES.FETCH_CATEGORY_BY_GENDER_BIRTH_DATE,
     payload: axios.get<ICategory>(requestUrl)
   };
 };

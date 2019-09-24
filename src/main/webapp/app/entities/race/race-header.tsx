@@ -25,10 +25,6 @@ const raceHeader = (props: IRaceHeader) => {
 
   let button = null;
 
-  console.log(entity.subscriptionExpirationDate);
-  console.log(moment());
-  console.log(moment().diff(entity.subscriptionExpirationDate));
-
   if (showButton && moment().diff(entity.subscriptionExpirationDate) < 0) {
     button = (
       <Button tag={Link} to={`/subscription/${entity.id}`} className="race-subscription-button">

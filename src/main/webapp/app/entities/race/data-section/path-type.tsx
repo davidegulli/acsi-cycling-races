@@ -53,6 +53,7 @@ const pathType = (props: IPathType) => {
   };
 
   const dialogFormSubmit = (event, errors, values) => {
+    console.log(values);
     if (errors.length === 0) {
       props.addRowHandler(values);
 

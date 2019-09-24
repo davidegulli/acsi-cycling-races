@@ -55,7 +55,7 @@ entity Race {
     latitude Double,
     longitude Double,
     rules String,
-    subscriptionExpirationDate Instant,
+    subscriptionExpirationDate LocalDate,
     attributes String,
     status RaceStatus
 }
@@ -85,7 +85,7 @@ entity RaceSubscription {
 	id Long,
     name String required,
     surname String required,
-    birthDate String required,
+    birthDate LocalDate required,
     birthPlace String required,
     gender GenderType required,
     taxCode String required,

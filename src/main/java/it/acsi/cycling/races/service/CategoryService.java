@@ -1,16 +1,19 @@
 package it.acsi.cycling.races.service;
 
 import it.acsi.cycling.races.domain.Category;
+import it.acsi.cycling.races.domain.enumeration.GenderType;
 import it.acsi.cycling.races.repository.CategoryRepository;
 import it.acsi.cycling.races.repository.search.CategorySearchRepository;
 import it.acsi.cycling.races.service.dto.CategoryDTO;
 import it.acsi.cycling.races.service.mapper.CategoryMapper;
+import it.acsi.cycling.races.service.util.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +71,6 @@ public class CategoryService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one category by id.
      *
@@ -79,6 +81,18 @@ public class CategoryService {
     public Optional<CategoryDTO> findOne(Long id) {
         log.debug("Request to get Category : {}", id);
         return categoryRepository.findById(id)
+            .map(categoryMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<CategoryDTO> findByGenderAndBirthDate(
+            GenderType genderTye, LocalDate birthDate) {
+
+        log.debug("Request to get Category : {} - {}", genderTye, birthDate);
+
+        Integer age = CommonUtil.getAgeFromBirthDate(birthDate);
+
+        return categoryRepository.findByGenderAndAge(genderTye, age)
             .map(categoryMapper::toDto);
     }
 

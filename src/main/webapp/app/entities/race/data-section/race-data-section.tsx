@@ -84,7 +84,9 @@ const raceDataSection = (props: IRaceDataSection) => (
           className="form-control"
           name="subscriptionExpirationDate"
           placeholder={'GG-MM-AAAA'}
-          value={props.isNew ? null : convertDateTimeFromServer(props.entity.subscriptionExpirationDate)}
+          validate={{
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+          }}
         />
       </AvGroup>
       <AvGroup>
@@ -113,3 +115,5 @@ const raceDataSection = (props: IRaceDataSection) => (
 );
 
 export default raceDataSection;
+
+//value={props.isNew ? null : convertDateTimeFromServer(props.entity.subscriptionExpirationDate)}

@@ -1,5 +1,7 @@
 package it.acsi.cycling.races.web.rest;
 
+import com.sun.tools.javac.jvm.Gen;
+import it.acsi.cycling.races.domain.enumeration.GenderType;
 import it.acsi.cycling.races.service.CategoryService;
 import it.acsi.cycling.races.web.rest.errors.BadRequestAlertException;
 import it.acsi.cycling.races.service.dto.CategoryDTO;
@@ -16,6 +18,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -103,6 +106,21 @@ public class CategoryResource {
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
         Optional<CategoryDTO> categoryDTO = categoryService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(categoryDTO);
+    }
+
+    @GetMapping("/categories/gender/{gender}/birthdate/{birthDate}")
+    public ResponseEntity<CategoryDTO> getCategoryByGenderAndBirthDate(
+            @PathVariable String gender,
+            @PathVariable LocalDate birthDate) {
+
+        log.debug("REST request to get Category : {} - {}", gender, birthDate);
+
+        GenderType genderType = GenderType.valueOf(gender.toUpperCase());
+        //LocalDate ldBirthDate = LocalDate.parse(birthDate);
+
+        Optional<CategoryDTO> categoryDTO =
+            categoryService.findByGenderAndBirthDate(genderType, birthDate);
         return ResponseUtil.wrapOrNotFound(categoryDTO);
     }
 

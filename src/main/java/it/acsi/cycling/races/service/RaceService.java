@@ -79,6 +79,8 @@ public class RaceService {
 
         log.debug("Request to save Race : {}", raceDTO);
 
+        boolean isNew = (raceDTO.getId() == null || raceDTO.getId() <= 0);
+
         Race race = raceMapper.toEntity(raceDTO);
         race = raceRepository.save(race);
         RaceDTO result = raceMapper.toDto(race);
@@ -130,6 +132,11 @@ public class RaceService {
         contactRepository.save(contact);
 
         final Race raceResult = raceSearchRepository.save(race);
+
+        if(!isNew) {
+            subscriptionTypeRepository.deleteByRaceId(raceResult.getId());
+            pathTypeRepository.deleteByRaceId(raceResult.getId());
+        }
 
         raceDTO.getSubscriptionTypes().stream()
             .map(subscriptionTypeMapper::toEntity)

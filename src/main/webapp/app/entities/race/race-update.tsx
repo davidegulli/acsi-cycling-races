@@ -141,6 +141,7 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
   };
 
   onAddPathTypeHandler = pathTypeRow => {
+    console.log(pathTypeRow);
     this.props.addPathType(pathTypeRow);
   };
 
@@ -155,7 +156,6 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
 
       const currentValues = this.state.values;
       const updatedValues = { ...currentValues, ...values };
-      updatedValues['pathTypes'] = this.state.pathTypeRows;
 
       this.setState({ values: updatedValues, errors: updateErrors });
 

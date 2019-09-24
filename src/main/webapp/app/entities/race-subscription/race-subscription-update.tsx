@@ -15,6 +15,7 @@ import { getEntity as getRace } from 'app/entities/race/race.reducer';
 import { getEntitiesByRace as getSubscriptionTypes } from 'app/entities/subscription-type/subscription-type.reducer';
 import { getEntitiesByRace as getPathTypes } from 'app/entities/path-type/path-type.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './race-subscription.reducer';
+import { getEntityByGenderAndBirthDate as getCategory } from 'app/entities/category/category.reducer';
 import { IRaceSubscription } from 'app/shared/model/race-subscription.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -27,7 +28,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 
 import PersonalDataSection from './data-section/personal-data-section';
-import ContactDataSection from './data-section/contacts-data-section';
+import DocumentsDataSection from './data-section/documents-data-section';
 import TeamDataSection from './data-section/team-data-section';
 import RaceDataSection from './data-section/race-data-section';
 import PaymentDataSection from './data-section/payment-data-section';
@@ -41,6 +42,8 @@ export interface IRaceSubscriptionUpdateState {
   isNew: boolean;
   raceId: string;
   step: number;
+  gender: string;
+  birthDate: string;
   values: any;
   errors: any;
 }
@@ -55,7 +58,7 @@ const IconLabel = withStyles({
 })(StepIcon);
 
 function getSteps() {
-  return ['Dati Persnali', 'Contatti', 'Associazione', 'Gara', 'Pagamento'];
+  return ['Dati Personali', 'Documenti', 'Associazione', 'Gara', 'Pagamento'];
 }
 
 export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpdateProps, IRaceSubscriptionUpdateState> {
@@ -65,6 +68,8 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
       raceId: this.props.match.params.raceId,
       isNew: !this.props.match.params || !this.props.match.params.id,
       step: 0,
+      gender: 'MALE',
+      birthDate: '',
       values: {},
       errors: []
     };
@@ -128,6 +133,31 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
     }
   };
 
+  onDropPersonalIdDoc = () => {};
+
+  onDropMedicalCertificationDoc = () => {};
+
+  onChangeGenderHandler = event => {
+    this.setState({ gender: event.target.value });
+    this.setCategory();
+  };
+
+  onChangeBirthDateHandler = event => {
+    this.setState({ birthDate: event.target.value });
+    this.setCategory();
+  };
+
+  setCategory = () => {
+    const { gender, birthDate } = this.state;
+    console.log(gender);
+    console.log(birthDate);
+
+    if (gender !== null && gender !== undefined && gender !== '' && birthDate !== null && birthDate !== undefined && birthDate !== '') {
+      console.log('Get Category');
+      this.props.getCategory(gender, birthDate);
+    }
+  };
+
   prevStepHandler = () => {
     const currentState = this.state.step;
     this.setState({ step: currentState - 1 });
@@ -166,8 +196,10 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                   prevStepHandler={this.prevStepHandler}
                   raceId={race.id}
                   cancelUrl={cancelUrl}
+                  onChangeGenderHandler={this.onChangeGenderHandler}
+                  onChangeBirthDateHandler={this.onChangeBirthDateHandler}
                 />
-                <ContactDataSection
+                <DocumentsDataSection
                   activeStep={this.state.step}
                   stepIndex={1}
                   stepsLength={5}
@@ -177,6 +209,8 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                   nextStepHandler={this.nextStepHandler}
                   prevStepHandler={this.prevStepHandler}
                   cancelUrl={cancelUrl}
+                  onDropPersonalIdDoc={this.onDropPersonalIdDoc}
+                  onDropMedicalCertificationDoc={this.onDropMedicalCertificationDoc}
                 />
                 <TeamDataSection
                   activeStep={this.state.step}
@@ -227,6 +261,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   subscriptionTypes: storeState.subscriptionType.entities,
   pathTypes: storeState.pathType.entities,
   raceSubscriptionEntity: storeState.raceSubscription.entity,
+  category: storeState.category.entity,
   loading: storeState.raceSubscription.loading,
   updating: storeState.raceSubscription.updating,
   updateSuccess: storeState.raceSubscription.updateSuccess
@@ -237,6 +272,7 @@ const mapDispatchToProps = {
   getSubscriptionTypes,
   getPathTypes,
   getEntity,
+  getCategory,
   updateEntity,
   createEntity,
   reset

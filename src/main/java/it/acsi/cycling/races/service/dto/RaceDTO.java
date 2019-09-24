@@ -39,7 +39,7 @@ public class RaceDTO implements Serializable {
 
     private String rules;
 
-    private Instant subscriptionExpirationDate;
+    private LocalDate subscriptionExpirationDate;
 
     private String attributes;
 
@@ -154,11 +154,11 @@ public class RaceDTO implements Serializable {
         this.rules = rules;
     }
 
-    public Instant getSubscriptionExpirationDate() {
+    public LocalDate getSubscriptionExpirationDate() {
         return subscriptionExpirationDate;
     }
 
-    public void setSubscriptionExpirationDate(Instant subscriptionExpirationDate) {
+    public void setSubscriptionExpirationDate(LocalDate subscriptionExpirationDate) {
         this.subscriptionExpirationDate = subscriptionExpirationDate;
     }
 
