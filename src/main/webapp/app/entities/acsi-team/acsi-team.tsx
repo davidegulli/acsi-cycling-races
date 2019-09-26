@@ -183,11 +183,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(AcsiTeam);
-
-/*
-                        <Button tag={Link} to={`${match.url}/${acsiTeam.id}`} color="info" size="sm" 
-                                className="ml-1">
-                          <FontAwesomeIcon icon="eye" />
-                        </Button>
-
-*/

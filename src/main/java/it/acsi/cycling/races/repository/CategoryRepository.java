@@ -16,7 +16,13 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query("select c from Category c where gender = :genderType and minAge >= :age and :age < maxAge order by minAge")
-    Optional<Category> findByGenderAndAge(@Param("genderType") GenderType genderType, @Param("age") Integer age);
+    @Query(value = "select * from category c " +
+                   "where gender = :genderType " +
+                   "and min_age >= :age " +
+                   "and :age < max_age " +
+                   "order by min_age " +
+                   "limit 1",
+           nativeQuery = true)
+    Optional<Category> findByGenderAndAge(@Param("genderType") String genderType, @Param("age") Integer age);
 
 }

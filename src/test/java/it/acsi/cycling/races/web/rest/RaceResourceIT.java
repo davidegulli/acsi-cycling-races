@@ -77,9 +77,9 @@ public class RaceResourceIT {
     private static final String DEFAULT_RULES = "AAAAAAAAAA";
     private static final String UPDATED_RULES = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_SUBSCRIPTION_EXPIRATION_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_SUBSCRIPTION_EXPIRATION_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-    private static final Instant SMALLER_SUBSCRIPTION_EXPIRATION_DATE = Instant.ofEpochMilli(-1L);
+    private static final LocalDate DEFAULT_SUBSCRIPTION_EXPIRATION_DATE = LocalDate.now();
+    private static final LocalDate UPDATED_SUBSCRIPTION_EXPIRATION_DATE = LocalDate.now();
+    private static final LocalDate SMALLER_SUBSCRIPTION_EXPIRATION_DATE = LocalDate.now();
 
     private static final String DEFAULT_ATTRIBUTES = "AAAAAAAAAA";
     private static final String UPDATED_ATTRIBUTES = "BBBBBBBBBB";

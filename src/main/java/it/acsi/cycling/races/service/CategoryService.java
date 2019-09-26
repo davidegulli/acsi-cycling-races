@@ -92,7 +92,7 @@ public class CategoryService {
 
         Integer age = CommonUtil.getAgeFromBirthDate(birthDate);
 
-        return categoryRepository.findByGenderAndAge(genderTye, age)
+        return categoryRepository.findByGenderAndAge(genderTye.toString(), age)
             .map(categoryMapper::toDto);
     }
 

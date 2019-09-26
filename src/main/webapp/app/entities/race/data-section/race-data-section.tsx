@@ -116,4 +116,4 @@ const raceDataSection = (props: IRaceDataSection) => (
 
 export default raceDataSection;
 
-//value={props.isNew ? null : convertDateTimeFromServer(props.entity.subscriptionExpirationDate)}
+// value={props.isNew ? null : convertDateTimeFromServer(props.entity.subscriptionExpirationDate)}

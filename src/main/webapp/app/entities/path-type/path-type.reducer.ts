@@ -118,7 +118,7 @@ export const getEntities: ICrudGetAllAction<IPathType> = (page, size, sort) => (
   payload: axios.get<IPathType>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
 });
 
-export const getEntitiesByRace: ICrudGetAllAction<IPathType> = raceId => {
+export const getEntitiesByRace = raceId => {
   const requestUrl = `${apiUrl}/race/${raceId}`;
   return {
     type: ACTION_TYPES.FETCH_PATHTYPE_LIST_BY_RACE,

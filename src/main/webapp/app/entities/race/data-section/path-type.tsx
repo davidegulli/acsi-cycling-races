@@ -1,18 +1,22 @@
 import React, { Fragment } from 'react';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  createStyles,
+  Theme,
+  makeStyles
+} from '@material-ui/core';
 import { Button, Label } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 
 interface IPathType {
@@ -53,7 +57,6 @@ const pathType = (props: IPathType) => {
   };
 
   const dialogFormSubmit = (event, errors, values) => {
-    console.log(values);
     if (errors.length === 0) {
       props.addRowHandler(values);
 
@@ -65,8 +68,8 @@ const pathType = (props: IPathType) => {
     dialogForm.current.submit();
   };
 
-  const removeRow = index => {
-    props.removeRowHandler(index);
+  const removeRow = event => {
+    props.removeRowHandler(event.target.id);
   };
 
   return (
@@ -96,7 +99,7 @@ const pathType = (props: IPathType) => {
                 <TableCell>{row.description}</TableCell>
                 <TableCell align="right">{row.distance}</TableCell>
                 <TableCell>
-                  <Button className="input-group-addon float-right mr-2" onClick={() => removeRow(index)}>
+                  <Button className="input-group-addon float-right mr-2" id={index} onClick={removeRow}>
                     <FontAwesomeIcon icon="trash" />
                   </Button>
                 </TableCell>
@@ -156,7 +159,7 @@ const pathType = (props: IPathType) => {
             </AvGroup>
           </DialogContent>
           <DialogActions>
-            <Button>Cancel</Button>
+            <Button onClick={handleClose}>Cancel</Button>
             <Button onClick={insertData} form="pathTypeForm" color="primary">
               Subscribe
             </Button>

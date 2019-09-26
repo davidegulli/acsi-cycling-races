@@ -13,25 +13,30 @@ import { getEntities as getRaceTypes } from 'app/entities/race-type/race-type.re
 import { IAcsiTeam } from 'app/shared/model/acsi-team.model';
 import { getEntityByUserLogged as getAcsiTeam } from 'app/entities/acsi-team/acsi-team.reducer';
 // tslint:disable-next-line:no-duplicate-imports
-import { getEntity, updateEntity, createEntity, setBlob } from './race.reducer';
-import { addSubscriptionType, removeSubscriptionType, addPathType, removePathType, reset } from './race.reducer';
+import {
+  getEntity,
+  updateEntity,
+  createEntity,
+  setBlob,
+  addSubscriptionType,
+  removeSubscriptionType,
+  addPathType,
+  removePathType,
+  reset
+} from './race.reducer';
+
 import { IRace } from 'app/shared/model/race.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import ImageUploader from '../../shared/component/image-uploader';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+import { Stepper, Step, StepLabel, StepIcon } from '@material-ui/core';
 
 import GeneralDataSection from './data-section/genaral-data-section';
 import RaceDataSection from './data-section/race-data-section';
 import ImagesDataSection from './data-section/images-data-section';
 import SubscriptionDataSection from './data-section/subscription-data-section';
 import race from './race';
-import { StepIcon } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 
 export interface IRaceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -141,7 +146,6 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
   };
 
   onAddPathTypeHandler = pathTypeRow => {
-    console.log(pathTypeRow);
     this.props.addPathType(pathTypeRow);
   };
 

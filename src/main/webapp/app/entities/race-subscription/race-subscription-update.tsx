@@ -21,20 +21,13 @@ import { IRaceSubscription } from 'app/shared/model/race-subscription.model';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import RaceHeader from '../race/race-header';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-
+import { Stepper, Step, StepLabel, StepIcon } from '@material-ui/core';
 import PersonalDataSection from './data-section/personal-data-section';
 import DocumentsDataSection from './data-section/documents-data-section';
 import TeamDataSection from './data-section/team-data-section';
 import RaceDataSection from './data-section/race-data-section';
 import PaymentDataSection from './data-section/payment-data-section';
-import { updateLocale } from 'moment';
 import { withStyles } from '@material-ui/styles';
-import { SvgIcon, StepIcon } from '@material-ui/core';
 
 export interface IRaceSubscriptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; raceId: string }> {}
 
@@ -138,22 +131,21 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
   onDropMedicalCertificationDoc = () => {};
 
   onChangeGenderHandler = event => {
-    this.setState({ gender: event.target.value });
-    this.setCategory();
+    const gender = event.target.value;
+    const { birthDate } = this.state;
+    this.setState({ gender });
+    this.setCategory(gender, birthDate);
   };
 
   onChangeBirthDateHandler = event => {
-    this.setState({ birthDate: event.target.value });
-    this.setCategory();
+    const birthDate = event.target.value;
+    const { gender } = this.state;
+    this.setState({ birthDate });
+    this.setCategory(gender, birthDate);
   };
 
-  setCategory = () => {
-    const { gender, birthDate } = this.state;
-    console.log(gender);
-    console.log(birthDate);
-
+  setCategory = (gender, birthDate) => {
     if (gender !== null && gender !== undefined && gender !== '' && birthDate !== null && birthDate !== undefined && birthDate !== '') {
-      console.log('Get Category');
       this.props.getCategory(gender, birthDate);
     }
   };
@@ -222,6 +214,7 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                   nextStepHandler={this.nextStepHandler}
                   prevStepHandler={this.prevStepHandler}
                   cancelUrl={cancelUrl}
+                  category={this.props.category}
                 />
                 <RaceDataSection
                   activeStep={this.state.step}

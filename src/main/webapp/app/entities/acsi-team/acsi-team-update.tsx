@@ -153,7 +153,8 @@ export class AcsiTeamUpdate extends React.Component<IAcsiTeamUpdateProps, IAcsiT
                     readOnly={!isNew}
                     helpMessage={
                       isNew
-                        ? "Inserisci l'indirizzo email del responsabile dell'associzione, all'indirizzo indicato verrà mandata una mail per l'accesso al portale di gestione delle gare acsi"
+                        ? "Inserisci l'indirizzo email del responsabile dell'associzione, " +
+                          "all'indirizzo indicato verrà mandata una mail per l'accesso al portale di gestione delle gare acsi"
                         : null
                     }
                   />

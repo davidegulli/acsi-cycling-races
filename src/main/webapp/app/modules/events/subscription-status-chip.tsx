@@ -1,6 +1,5 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Chip } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, Chip } from '@material-ui/core';
 import moment from 'moment';
 
 interface ISubscriptionStatusChip {

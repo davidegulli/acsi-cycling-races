@@ -118,7 +118,7 @@ export const getEntities: ICrudGetAllAction<ISubscriptionType> = (page, size, so
   payload: axios.get<ISubscriptionType>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
 });
 
-export const getEntitiesByRace: ICrudGetAllAction<ISubscriptionType> = raceId => {
+export const getEntitiesByRace = raceId => {
   const requestUrl = `${apiUrl}/race/${raceId}`;
   return {
     type: ACTION_TYPES.FETCH_SUBSCRIPTIONTYPE_LIST_BY_RACE,

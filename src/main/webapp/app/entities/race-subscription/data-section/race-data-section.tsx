@@ -2,7 +2,6 @@ import React from 'react';
 import { Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvRadioGroup, AvRadio } from 'availity-reactstrap-validation';
 import StepperButtons from '../../../shared/component/stepper-buttons';
-import { element } from 'prop-types';
 import { Box } from '@material-ui/core';
 
 interface IRaceDataSection {
@@ -31,26 +30,27 @@ const raceDataSection = (props: IRaceDataSection) => (
       <Row>
         <Col>
           <AvRadioGroup name="subcriptionTypeId" required errorMessage="Devi selezionare la tipologia di iscrizione">
-            {props.subscriptionTypes.map((element, index) => (
-              <Box className="box box-data">
+            // tslint:disable-next-line: no-shadowed-variable
+            {props.subscriptionTypes.map((item, index) => (
+              <Box className="box box-data" key={index}>
                 <Row>
                   <Col sm="1">
                     <Box display="flex" alignItems="center" css={{ height: '100%' }}>
                       <Box>
-                        <AvRadio label="" value={element.id} />
+                        <AvRadio label="" value={item.id} />
                       </Box>
                     </Box>
                   </Col>
                   <Col sm="9">
                     <Box fontWeight={500} fontSize="0.95rem">
-                      {element.name}
+                      {item.name}
                     </Box>
-                    <Box>{element.description}</Box>
+                    <Box>{item.description}</Box>
                   </Col>
                   <Col sm="2">
                     <Box display="flex" alignItems="center" justifyContent="flex-end" css={{ height: '100%' }}>
                       <Box fontWeight={500} fontSize="1.0rem" textAlign="center">
-                        {formatter.format(element.price)}
+                        {formatter.format(item.price)}
                       </Box>
                     </Box>
                   </Col>
@@ -64,26 +64,26 @@ const raceDataSection = (props: IRaceDataSection) => (
       <Row>
         <Col>
           <AvRadioGroup name="pathTypeId" required errorMessage="Devi selezionare la tipologia di percorso">
-            {props.pathTypes.map((element, index) => (
-              <Box className="box box-data">
+            {props.pathTypes.map((item, index) => (
+              <Box className="box box-data" key={index}>
                 <Row>
                   <Col sm="1">
                     <Box display="flex" alignItems="center" css={{ height: '100%' }}>
                       <Box>
-                        <AvRadio label="" value={element.id} />
+                        <AvRadio label="" value={item.id} />
                       </Box>
                     </Box>
                   </Col>
                   <Col sm="9">
                     <Box fontWeight={500} fontSize="0.95rem">
-                      {element.name}
+                      {item.name}
                     </Box>
-                    <Box>{element.description}</Box>
+                    <Box>{item.description}</Box>
                   </Col>
                   <Col sm="2">
                     <Box display="flex" alignItems="center" justifyContent="flex-end" css={{ height: '100%' }}>
                       <Box fontWeight={500} fontSize="1.0rem" textAlign="center">
-                        {element.distance} Km
+                        {item.distance} Km
                       </Box>
                     </Box>
                   </Col>

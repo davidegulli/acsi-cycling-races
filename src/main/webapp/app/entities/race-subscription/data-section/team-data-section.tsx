@@ -13,6 +13,7 @@ interface ITeamDataSection {
   nextStepHandler: any;
   prevStepHandler: any;
   cancelUrl: string;
+  category: any;
 }
 
 const teamDataSection = (props: ITeamDataSection) => (
@@ -75,7 +76,7 @@ const teamDataSection = (props: ITeamDataSection) => (
             <Label id="categoryLabel" for="race-subscription-category">
               Categoria
             </Label>
-            <AvField id="race-subscription-category" type="text" name="category" />
+            <AvField id="race-subscription-category" type="text" name="category" readOnly value={props.category.name} />
           </AvGroup>
         </Col>
       </Row>

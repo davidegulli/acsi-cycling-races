@@ -19,8 +19,8 @@ const thumb = {
   marginRight: 8,
   width: 100,
   height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
+  padding: 4
+  /*,boxSizing: 'border-box'*/
 };
 
 const thumbInner = {
@@ -70,14 +70,7 @@ const documentUploader = (props: IDocumentUploader) => {
   const [files, setFiles] = useState([{ name: '1', preview: props.previewUrl }]);
 
   const onDrop = useCallback(acceptedFiles => {
-    //props.onDrop(acceptedFiles);
-    setFiles(
-      acceptedFiles.map(file =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })
-      )
-    );
+    setFiles(acceptedFiles.map(file => ({ ...file, preview: URL.createObjectURL(file) })));
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
@@ -115,13 +108,7 @@ const documentUploader = (props: IDocumentUploader) => {
 
       props.onDrop(event, uploadedFiles[0]);
 
-      setFiles(
-        uploadedFiles.map(file =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
+      setFiles(uploadedFiles.map(file => ({ ...file, preview: URL.createObjectURL(file) })));
     }
   };
 

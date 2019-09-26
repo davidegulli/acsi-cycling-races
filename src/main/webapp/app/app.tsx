@@ -90,18 +90,6 @@ export const App = (props: IAppProps) => {
         <footer>
           <Footer isAuthenticated={props.isAuthenticated} />
         </footer>
-
-
-<div style={{ display: 'flex', width: '100%', alignItems: 'stretch' }}>
-                {leftMenu}
-                <div className="content">
-                  <Card className="jh-card">
-                    <ErrorBoundary>
-                      <AppRoutes />
-                    </ErrorBoundary>
-                  </Card>
-                </div>
-              </div>
 */
 
 const mapStateToProps = ({ authentication, applicationProfile }: IRootState) => ({

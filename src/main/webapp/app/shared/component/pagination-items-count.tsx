@@ -9,7 +9,7 @@ export interface IPaginationItmesCount {
 const paginationItemsCount = (props: IPaginationItmesCount) => {
   const { page, total, itemsPerPage } = props;
   return (
-    <span class="pagination-item-count">
+    <span className="pagination-item-count">
       {(page - 1) * itemsPerPage === 0 ? 1 : (page - 1) * itemsPerPage + 1} - {page * itemsPerPage < total ? page * itemsPerPage : total} di{' '}
       {total} elementi totali
     </span>

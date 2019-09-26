@@ -45,4 +45,10 @@ export interface IRace {
   binaryPathMapUrl?: string;
 }
 
-export const defaultValue: Readonly<IRace> = {};
+export const defaultValue: Readonly<IRace> = {
+  subscriptionTypes: [],
+  pathTypes: [],
+  attachments: [],
+  subscriptions: [],
+  contacts: []
+};
