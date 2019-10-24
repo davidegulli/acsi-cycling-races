@@ -69,7 +69,7 @@ public class RaceSubscription implements Serializable {
 
     @NotNull
     @Column(name = "path_type", nullable = false)
-    private Long pathType;
+    private Long pathTypeId;
 
     @NotNull
     @Column(name = "team_id", nullable = false)
@@ -243,17 +243,17 @@ public class RaceSubscription implements Serializable {
         this.subcriptionTypeId = subcriptionTypeId;
     }
 
-    public Long getPathType() {
-        return pathType;
+    public Long getPathTypeId() {
+        return pathTypeId;
     }
 
-    public RaceSubscription pathType(Long pathType) {
-        this.pathType = pathType;
+    public RaceSubscription pathTypeId(Long pathType) {
+        this.pathTypeId = pathTypeId;
         return this;
     }
 
-    public void setPathType(Long pathType) {
-        this.pathType = pathType;
+    public void setPathTypeId(Long pathTypeId) {
+        this.pathTypeId = pathTypeId;
     }
 
     public Long getTeamId() {
@@ -404,7 +404,7 @@ public class RaceSubscription implements Serializable {
             ", phone='" + getPhone() + "'" +
             ", category='" + getCategory() + "'" +
             ", subcriptionTypeId=" + getSubcriptionTypeId() +
-            ", pathType=" + getPathType() +
+            ", pathTypeId=" + getPathTypeId() +
             ", teamId=" + getTeamId() +
             ", athleteId='" + getAthleteId() + "'" +
             ", date='" + getDate() + "'" +

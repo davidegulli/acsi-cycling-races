@@ -10,6 +10,8 @@ export const ACTION_TYPES = {
   SEARCH_RACESUBSCRIPTIONS: 'raceSubscription/SEARCH_RACESUBSCRIPTIONS',
   FETCH_RACESUBSCRIPTION_LIST: 'raceSubscription/FETCH_RACESUBSCRIPTION_LIST',
   FETCH_RACESUBSCRIPTION: 'raceSubscription/FETCH_RACESUBSCRIPTION',
+  FETCH_TEAMS_SUGGESTIONS: 'raceSubscription/FETCH_TEAMS_SUGGESTIONS',
+  CLEAR_TEAMS_SUGGESTIONS: 'raceSubscription/CLEAR_TEAMS_SUGGESTIONS',
   CREATE_RACESUBSCRIPTION: 'raceSubscription/CREATE_RACESUBSCRIPTION',
   UPDATE_RACESUBSCRIPTION: 'raceSubscription/UPDATE_RACESUBSCRIPTION',
   DELETE_RACESUBSCRIPTION: 'raceSubscription/DELETE_RACESUBSCRIPTION',
@@ -23,7 +25,8 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  teams: []
 };
 
 export type RaceSubscriptionState = Readonly<typeof initialState>;
@@ -92,6 +95,16 @@ export default (state: RaceSubscriptionState = initialState, action): RaceSubscr
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FETCH_TEAMS_SUGGESTIONS):
+      return {
+        ...state,
+        teams: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.CLEAR_TEAMS_SUGGESTIONS):
+      return {
+        ...state,
+        teams: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -111,8 +124,8 @@ export const getSearchEntities: ICrudSearchAction<IRaceSubscription> = (query, p
   payload: axios.get<IRaceSubscription>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
 });
 
-export const getEntities: ICrudGetAllAction<IRaceSubscription> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+export const getEntities = (raceId, page, size, sort) => {
+  const requestUrl = `${apiUrl}/race/${raceId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_RACESUBSCRIPTION_LIST,
     payload: axios.get<IRaceSubscription>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
@@ -154,6 +167,27 @@ export const deleteEntity: ICrudDeleteAction<IRaceSubscription> = id => async di
   dispatch(getEntities());
   return result;
 };
+
+export const getTeamsSuggestions = code => async dispatch => {
+  const requestUrl = `${apiUrl}/teams/code/${code}`;
+  const result = dispatch({
+    type: ACTION_TYPES.FETCH_TEAMS_SUGGESTIONS,
+    payload: axios.get(requestUrl)
+  });
+
+  result.meta = {
+    debounce: {
+      time: 300
+    }
+  };
+
+  return result;
+};
+
+export const clearTeamsSuggestions = () => ({
+  type: ACTION_TYPES.FETCH_TEAMS_SUGGESTIONS,
+  payload: []
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET

@@ -43,7 +43,10 @@ const generalDataSection = (props: IGeneralDataSection) => (
           type="text"
           name="name"
           validate={{
-            required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+            pattern: { value: "^[A-Za-z0-9'àèùì ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici e numerici' },
+            minLength: { value: 3, errorMessage: 'Il campo deve esse composto da almeno 3 caratteri' },
+            maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
           }}
         />
       </AvGroup>
@@ -51,7 +54,16 @@ const generalDataSection = (props: IGeneralDataSection) => (
         <Label id="descriptionLabel" for="race-description">
           Descrizione
         </Label>
-        <AvField id="race-description" type="textarea" name="description" />
+        <AvField
+          id="race-description"
+          type="textarea"
+          name="description"
+          validate={{
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+            minLength: { value: 5, errorMessage: 'Il campo deve esse composto da almeno 5 caratteri' },
+            maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
+          }}
+        />
       </AvGroup>
       <h4 className="sheet-title">Contatti Organizzatore</h4>
       <AvGroup>
@@ -62,15 +74,33 @@ const generalDataSection = (props: IGeneralDataSection) => (
           className="form-control"
           name="contactName"
           helpMessage="Inserisci il nominativo del contatto responsabile dell'organizzazione della gara"
+          validate={{
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+            pattern: { value: "^[A-Za-z0-9'àèùì ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici e numerici' },
+            minLength: { value: 4, errorMessage: 'Il campo deve esse composto da almeno 4 caratteri' },
+            maxLength: { value: 30, errorMessage: 'Il campo può essere composto da un massimo di 30 caratteri' }
+          }}
         />
       </AvGroup>
       <AvGroup>
         <Label for="race-contactEmail">E-Mail</Label>
-        <AvField id="race-contactEmail" type="text" className="form-control" name="contactEmail" />
+        <AvField
+          id="race-contactEmail"
+          type="text"
+          className="form-control"
+          name="contactEmail"
+          validate={{ email: { value: true, errorMessage: "L'indirizo email inserito non è valido" } }}
+        />
       </AvGroup>
       <AvGroup>
         <Label for="race-contactPhone">Telefono</Label>
-        <AvField id="race-contactPhone" type="text" className="form-control" name="contactPhone" />
+        <AvField
+          id="race-contactPhone"
+          type="text"
+          className="form-control"
+          name="contactPhone"
+          validate={{ number: { value: true, errorMessage: 'Il numero di telefono inserito non è valido' } }}
+        />
       </AvGroup>
       <StepperButtons
         activeStep={props.activeStep}

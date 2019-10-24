@@ -1,0 +1,79 @@
+.react-autosuggest__container {
+}
+.react-autosuggest__container--open {
+}
+
+.react-autosuggest__input {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.react-autosuggest__input--open {
+}
+
+.react-autosuggest__input--focused {
+}
+
+.react-autosuggest__suggestions-container {
+}
+
+.react-autosuggest__suggestions-container--open {
+  left: 0;
+  right: 0;
+  z-index: 1;
+  position: absolute;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  background-color: #fff;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.react-autosuggest__suggestions-list {
+  margin-left: -40px;
+  margin-bottom: 2px;
+  padding-top: 3px;
+}
+
+.react-autosuggest__suggestion {
+  width: auto;
+  overflow: hidden;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  min-height: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+  padding-top: 4px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+  white-space: nowrap;
+  letter-spacing: 0.00938em;
+  color: $body-font-color;
+}
+
+.react-autosuggest__suggestion-first {
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background-color: rgba(0, 0, 0, 0.14);
+}
+
+.react-autosuggest__section-container {
+}
+
+.react-autosuggest__section-container-first {
+}
+
+.react-autosuggest__section-title {
+}

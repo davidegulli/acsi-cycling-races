@@ -8,7 +8,8 @@ import { IRace, defaultValue } from 'app/shared/model/race.model';
 
 export const ACTION_TYPES = {
   SEARCH_RACES: 'race/SEARCH_RACES',
-  FETCH_RACE_LIST: 'race/FETCH_RACE_LIST',
+  FETCH_NEXT_RACE_LIST: 'race/FETCH_NEXT_RACE_LIST',
+  FETCH_NEXT_RACE_BY_TEAM_LIST: 'race/FETCH_NEXT_RACE_BY_TEAM_LIST',
   FETCH_RACE: 'race/FETCH_RACE',
   CREATE_RACE: 'race/CREATE_RACE',
   UPDATE_RACE: 'race/UPDATE_RACE',
@@ -38,7 +39,8 @@ export type RaceState = Readonly<typeof initialState>;
 export default (state: RaceState = initialState, action): RaceState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.SEARCH_RACES):
-    case REQUEST(ACTION_TYPES.FETCH_RACE_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_NEXT_RACE_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_NEXT_RACE_BY_TEAM_LIST):
     case REQUEST(ACTION_TYPES.FETCH_RACE):
       return {
         ...state,
@@ -56,7 +58,8 @@ export default (state: RaceState = initialState, action): RaceState => {
         updating: true
       };
     case FAILURE(ACTION_TYPES.SEARCH_RACES):
-    case FAILURE(ACTION_TYPES.FETCH_RACE_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_NEXT_RACE_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_NEXT_RACE_BY_TEAM_LIST):
     case FAILURE(ACTION_TYPES.FETCH_RACE):
     case FAILURE(ACTION_TYPES.CREATE_RACE):
     case FAILURE(ACTION_TYPES.UPDATE_RACE):
@@ -69,7 +72,8 @@ export default (state: RaceState = initialState, action): RaceState => {
         errorMessage: action.payload
       };
     case SUCCESS(ACTION_TYPES.SEARCH_RACES):
-    case SUCCESS(ACTION_TYPES.FETCH_RACE_LIST):
+    case SUCCESS(ACTION_TYPES.FETCH_NEXT_RACE_LIST):
+    case SUCCESS(ACTION_TYPES.FETCH_NEXT_RACE_BY_TEAM_LIST):
       return {
         ...state,
         loading: false,
@@ -169,9 +173,17 @@ export const getSearchEntities: ICrudSearchAction<IRace> = (query, page, size, s
 });
 
 export const getEntities: ICrudGetAllAction<IRace> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  const requestUrl = `${apiUrl}/next${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
-    type: ACTION_TYPES.FETCH_RACE_LIST,
+    type: ACTION_TYPES.FETCH_NEXT_RACE_LIST,
+    payload: axios.get<IRace>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEntitiesByTeam: ICrudGetAllAction<IRace> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}/next/team${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_NEXT_RACE_BY_TEAM_LIST,
     payload: axios.get<IRace>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
@@ -189,7 +201,7 @@ export const createEntity: ICrudPutAction<IRace> = entity => async dispatch => {
     type: ACTION_TYPES.CREATE_RACE,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEntitiesByTeam());
   return result;
 };
 

@@ -21,8 +21,12 @@ import { IRaceSubscription } from 'app/shared/model/race-subscription.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import Pagination from '../../shared/component/pagination';
+import NoElementFound from '../../shared/component/no-element-found';
 
-export interface IRaceSubscriptionProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IRaceSubscriptionProps extends StateProps, DispatchProps, RouteComponentProps<{ raceId: string }> {
+  context: any;
+}
 
 export interface IRaceSubscriptionState extends IPaginationBaseState {
   search: string;
@@ -77,7 +81,7 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
     if (search) {
       this.props.getSearchEntities(search, activePage - 1, itemsPerPage, `${sort},${order}`);
     } else {
-      this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+      this.props.getEntities(this.props.match.params.raceId, activePage - 1, itemsPerPage, `${sort},${order}`);
     }
   };
 
@@ -85,12 +89,8 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
     const { raceSubscriptionList, match, totalItems } = this.props;
     return (
       <div>
-        <h2 id="race-subscription-heading">
-          Race Subscriptions
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp; Create a new Race Subscription
-          </Link>
+        <h2 id="race-subscription-heading" className="list-title">
+          Iscrizioni
         </h2>
         <Row>
           <Col sm="12">
@@ -98,12 +98,26 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
               <AvGroup>
                 <InputGroup>
                   <AvInput type="text" name="search" value={this.state.search} onChange={this.handleSearch} placeholder="Search" />
-                  <Button className="input-group-addon">
+                  <Button className="input-group-addon ml-1">
                     <FontAwesomeIcon icon="search" />
                   </Button>
-                  <Button type="reset" className="input-group-addon" onClick={this.clear}>
+                  <Button type="reset" className="input-group-addon ml-1" onClick={this.clear}>
                     <FontAwesomeIcon icon="trash" />
                   </Button>
+                  <a
+                    href={`/api/race-subscriptions/race/${this.props.match.params.raceId}/list/excel/download`}
+                    className="btn btn-primary  jh-create-entity ml-3"
+                    title="Esporta Excel"
+                  >
+                    <FontAwesomeIcon icon="file-excel" />
+                  </a>
+                  <a
+                    href={`/api/race-subscriptions/race/${this.props.match.params.raceId}/list/pdf/download`}
+                    className="btn btn-primary  jh-create-entity ml-1"
+                    title="Esporta Pdf"
+                  >
+                    <FontAwesomeIcon icon="file-pdf" />
+                  </a>
                 </InputGroup>
               </AvGroup>
             </AvForm>
@@ -114,68 +128,18 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
             <Table responsive>
               <thead>
                 <tr>
-                  <th className="hand" onClick={this.sort('id')}>
-                    ID <FontAwesomeIcon icon="sort" />
+                  <th className="hand" onClick={this.sort('date')}>
+                    Data Iscrizione <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={this.sort('name')}>
-                    Name <FontAwesomeIcon icon="sort" />
+                    Atleta <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th className="hand" onClick={this.sort('surname')}>
-                    Surname <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('birthDate')}>
-                    Birth Date <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('birthPlace')}>
-                    Birth Place <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('gender')}>
-                    Gender <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('taxCode')}>
-                    Tax Code <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('email')}>
-                    Email <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('phone')}>
-                    Phone <FontAwesomeIcon icon="sort" />
-                  </th>
+                  <th className="hand">Contatti</th>
                   <th className="hand" onClick={this.sort('category')}>
-                    Category <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('subcriptionTypeId')}>
-                    Subcription Type Id <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('pathType')}>
-                    Path Type <FontAwesomeIcon icon="sort" />
+                    Categoria <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={this.sort('teamId')}>
-                    Team Id <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('athleteId')}>
-                    Athlete Id <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('date')}>
-                    Date <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('attribute')}>
-                    Attribute <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('paymentType')}>
-                    Payment Type <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('paymentReceivedCode')}>
-                    Payment Received Code <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('payed')}>
-                    Payed <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('payedPrice')}>
-                    Payed Price <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th>
-                    Race <FontAwesomeIcon icon="sort" />
+                    Società <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -184,42 +148,32 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
                 {raceSubscriptionList.map((raceSubscription, i) => (
                   <tr key={`entity-${i}`}>
                     <td>
-                      <Button tag={Link} to={`${match.url}/${raceSubscription.id}`} color="link" size="sm">
-                        {raceSubscription.id}
-                      </Button>
-                    </td>
-                    <td>{raceSubscription.name}</td>
-                    <td>{raceSubscription.surname}</td>
-                    <td>{raceSubscription.birthDate}</td>
-                    <td>{raceSubscription.birthPlace}</td>
-                    <td>{raceSubscription.gender}</td>
-                    <td>{raceSubscription.taxCode}</td>
-                    <td>{raceSubscription.email}</td>
-                    <td>{raceSubscription.phone}</td>
-                    <td>{raceSubscription.category}</td>
-                    <td>{raceSubscription.subcriptionTypeId}</td>
-                    <td>{raceSubscription.pathType}</td>
-                    <td>{raceSubscription.teamId}</td>
-                    <td>{raceSubscription.athleteId}</td>
-                    <td>
                       <TextFormat type="date" value={raceSubscription.date} format={APP_DATE_FORMAT} />
                     </td>
-                    <td>{raceSubscription.attribute}</td>
-                    <td>{raceSubscription.paymentType}</td>
-                    <td>{raceSubscription.paymentReceivedCode}</td>
-                    <td>{raceSubscription.payed ? 'true' : 'false'}</td>
-                    <td>{raceSubscription.payedPrice}</td>
-                    <td>{raceSubscription.raceId ? <Link to={`race/${raceSubscription.raceId}`}>{raceSubscription.raceId}</Link> : ''}</td>
+                    <td>
+                      <div>
+                        <span className="pr-1">{raceSubscription.name}</span>
+                        <span>{raceSubscription.surname}</span>
+                      </div>
+                      <div>{raceSubscription.birthDate}</div>
+                    </td>
+                    <td>
+                      <div>{raceSubscription.email}</div>
+                      <div>{raceSubscription.phone}</div>
+                    </td>
+                    <td>{raceSubscription.category}</td>
+                    <td>{raceSubscription.teamName}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${raceSubscription.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${raceSubscription.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${raceSubscription.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
+                        <Button
+                          tag={Link}
+                          to={`/entity/race-subscription/${raceSubscription.id}`}
+                          color="info"
+                          size="sm"
+                          className="ml-1"
+                          title="Dettaglio"
+                        >
+                          <FontAwesomeIcon icon="eye" />
                         </Button>
                       </div>
                     </td>
@@ -228,22 +182,16 @@ export class RaceSubscription extends React.Component<IRaceSubscriptionProps, IR
               </tbody>
             </Table>
           ) : (
-            <div className="alert alert-warning">No Race Subscriptions found</div>
+            <NoElementFound />
           )}
         </div>
         <div className={raceSubscriptionList && raceSubscriptionList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={this.state.activePage}
-              onSelect={this.handlePagination}
-              maxButtons={5}
-              itemsPerPage={this.state.itemsPerPage}
-              totalItems={this.props.totalItems}
-            />
-          </Row>
+          <Pagination
+            activePage={this.state.activePage}
+            handlePagination={this.handlePagination}
+            itemsPerPage={this.state.itemsPerPage}
+            totalItems={this.props.totalItems}
+          />
         </div>
       </div>
     );
@@ -267,3 +215,30 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(RaceSubscription);
+
+/*
+                  <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity ml-1" id="jh-create-entity">
+                    <FontAwesomeIcon icon="plus" />
+                  </Link>
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${raceSubscription.id}/edit`}
+                          color="primary"
+                          size="sm"
+                          className="ml-1"
+                          title="Modifica"
+                        >
+                          <FontAwesomeIcon icon="pencil-alt" />
+                        </Button>
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${raceSubscription.id}/delete`}
+                          color="danger"
+                          size="sm"
+                          className="ml-1"
+                          title="Elimina"
+                        >
+                          <FontAwesomeIcon icon="trash" />
+                        </Button>
+
+*/

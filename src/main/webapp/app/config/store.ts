@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
+import createDebounce from 'redux-debounced';
 import reducer, { IRootState } from 'app/shared/reducers';
 import DevTools from './devtools';
 import errorMiddleware from './error-middleware';
@@ -9,6 +10,7 @@ import loggerMiddleware from './logger-middleware';
 import { loadingBarMiddleware } from 'react-redux-loading-bar';
 
 const defaultMiddlewares = [
+  createDebounce(),
   thunkMiddleware,
   errorMiddleware,
   notificationMiddleware,

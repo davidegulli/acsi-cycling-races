@@ -14,7 +14,7 @@ import { IRace } from 'app/shared/model/race.model';
 import { getEntity as getRace } from 'app/entities/race/race.reducer';
 import { getEntitiesByRace as getSubscriptionTypes } from 'app/entities/subscription-type/subscription-type.reducer';
 import { getEntitiesByRace as getPathTypes } from 'app/entities/path-type/path-type.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './race-subscription.reducer';
+import { getEntity, getTeamsSuggestions, clearTeamsSuggestions, updateEntity, createEntity, reset } from './race-subscription.reducer';
 import { getEntityByGenderAndBirthDate as getCategory } from 'app/entities/category/category.reducer';
 import { IRaceSubscription } from 'app/shared/model/race-subscription.model';
 // tslint:disable-next-line:no-unused-variable
@@ -28,6 +28,7 @@ import TeamDataSection from './data-section/team-data-section';
 import RaceDataSection from './data-section/race-data-section';
 import PaymentDataSection from './data-section/payment-data-section';
 import { withStyles } from '@material-ui/styles';
+import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 export interface IRaceSubscriptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; raceId: string }> {}
 
@@ -70,7 +71,8 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      this.handleClose();
+      // TODO handle success state
+      // this.handleClose();
     }
   }
 
@@ -144,6 +146,14 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
     this.setCategory(gender, birthDate);
   };
 
+  onTeamSuggestionSearchHandler = input => {
+    this.props.getTeamsSuggestions(input.value);
+  };
+
+  onTeamSuggestionClearHandler = () => {
+    this.props.clearTeamsSuggestions();
+  };
+
   setCategory = (gender, birthDate) => {
     if (gender !== null && gender !== undefined && gender !== '' && birthDate !== null && birthDate !== undefined && birthDate !== '') {
       this.props.getCategory(gender, birthDate);
@@ -156,7 +166,7 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
   };
 
   render() {
-    const { raceSubscriptionEntity, subscriptionTypes, pathTypes, race, loading, updating } = this.props;
+    const { raceSubscriptionEntity, teams, subscriptionTypes, pathTypes, race, loading, updating } = this.props;
     const { step } = this.state;
     const steps = getSteps();
     const cancelUrl = '/event/' + this.state.raceId;
@@ -215,6 +225,9 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                   prevStepHandler={this.prevStepHandler}
                   cancelUrl={cancelUrl}
                   category={this.props.category}
+                  onTeamSuggestionSearchHandler={this.onTeamSuggestionSearchHandler}
+                  onTeamSuggestionClearRequested={this.onTeamSuggestionClearHandler}
+                  teamsSuggestions={teams}
                 />
                 <RaceDataSection
                   activeStep={this.state.step}
@@ -254,6 +267,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   subscriptionTypes: storeState.subscriptionType.entities,
   pathTypes: storeState.pathType.entities,
   raceSubscriptionEntity: storeState.raceSubscription.entity,
+  teams: storeState.raceSubscription.teams,
   category: storeState.category.entity,
   loading: storeState.raceSubscription.loading,
   updating: storeState.raceSubscription.updating,
@@ -265,6 +279,8 @@ const mapDispatchToProps = {
   getSubscriptionTypes,
   getPathTypes,
   getEntity,
+  getTeamsSuggestions,
+  clearTeamsSuggestions,
   getCategory,
   updateEntity,
   createEntity,

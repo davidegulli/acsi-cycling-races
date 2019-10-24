@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -98,10 +99,58 @@ public class RaceResource {
      */
     @GetMapping("/races")
     public ResponseEntity<List<RaceDTO>> getAllRaces(Pageable pageable) {
+
         log.debug("REST request to get a page of Races");
+
         Page<RaceDTO> page = raceService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+
+        HttpHeaders headers =
+            PaginationUtil.generatePaginationHttpHeaders(
+                ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(
+                page.getContent());
+    }
+
+    @GetMapping("/races/next")
+    public ResponseEntity<List<RaceDTO>> getNextRace(Pageable pageable) {
+
+        log.debug("REST request to get a page of Races");
+
+        LocalDate today = LocalDate.now();
+
+        Page<RaceDTO> page = raceService.findNextOrdered(today, pageable);
+
+        HttpHeaders headers =
+            PaginationUtil.generatePaginationHttpHeaders(
+                ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(
+                page.getContent());
+    }
+
+    @GetMapping("/races/next/team")
+    public ResponseEntity<List<RaceDTO>> getNextRaceByLoggedTeam(
+        Pageable pageable) {
+
+        log.debug("REST request to get a page of Races");
+
+        LocalDate today = LocalDate.now();
+
+        Page<RaceDTO> page = raceService.findNextByTeamOrdered(today, pageable);
+
+        HttpHeaders headers =
+            PaginationUtil.generatePaginationHttpHeaders(
+                ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(
+                page.getContent());
     }
 
     /**

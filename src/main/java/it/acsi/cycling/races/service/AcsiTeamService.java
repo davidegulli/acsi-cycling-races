@@ -153,6 +153,15 @@ public class AcsiTeamService {
             });
     }
 
+    @Transactional(readOnly = true)
+    public Optional<AcsiTeamDTO> findByCode(String code) {
+
+        log.debug("Request to get by code AcsiTeamDTO : {}", code);
+
+        return acsiTeamRepository.findByCode(code)
+            .map(acsiTeamMapper::toDto);
+    }
+
     public Optional<AcsiTeamDTO> getByLogin() {
 
         Optional<User> user =

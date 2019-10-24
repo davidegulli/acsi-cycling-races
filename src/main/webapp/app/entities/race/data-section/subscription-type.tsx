@@ -128,7 +128,9 @@ const subscriptionType = (props: ISubscriptionType) => {
                 type="text"
                 name="name"
                 validate={{
-                  required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                  required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                  minLength: { value: 5, errorMessage: 'Il campo deve esse composto da almeno 5 caratteri' },
+                  maxLength: { value: 30, errorMessage: 'Il campo può essere composto da un massimo di 30 caratteri' }
                 }}
               />
             </AvGroup>
@@ -141,7 +143,9 @@ const subscriptionType = (props: ISubscriptionType) => {
                 type="text"
                 name="description"
                 validate={{
-                  required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                  required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                  minLength: { value: 5, errorMessage: 'Il campo deve esse composto da almeno 5 caratteri' },
+                  maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
                 }}
               />
             </AvGroup>
@@ -149,7 +153,15 @@ const subscriptionType = (props: ISubscriptionType) => {
               <Label id="rulesLabel" for="subscriptionType-rules">
                 Regole
               </Label>
-              <AvField id="subscriptionType-rules" type="text" name="rules" />
+              <AvField
+                id="subscriptionType-rules"
+                type="text"
+                name="rules"
+                validate={{
+                  minLength: { value: 5, errorMessage: 'Il campo deve esse composto da almeno 5 caratteri' },
+                  maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
+                }}
+              />
             </AvGroup>
             <AvGroup>
               <Label id="priceLabel" for="subscriptionType-price">
@@ -160,7 +172,8 @@ const subscriptionType = (props: ISubscriptionType) => {
                 type="text"
                 name="price"
                 validate={{
-                  required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                  required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                  number: { value: true, errorMessage: 'Inserire una cifra valida' }
                 }}
               />
             </AvGroup>

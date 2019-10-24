@@ -126,6 +126,9 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
   };
 
   onDropLogoImage = (event, acceptedFiles) => {
+    console.log('onDropLogoImage');
+    console.log(event);
+    console.log(acceptedFiles);
     setFileData(event, (contentType, data) => this.props.setBlob('binaryLogo', data, contentType), true);
   };
 

@@ -1,11 +1,13 @@
 package it.acsi.cycling.races.service;
 
+import it.acsi.cycling.races.domain.AcsiTeam;
 import it.acsi.cycling.races.domain.Contact;
 import it.acsi.cycling.races.domain.File;
 import it.acsi.cycling.races.domain.Race;
 import it.acsi.cycling.races.domain.enumeration.FileType;
 import it.acsi.cycling.races.repository.*;
 import it.acsi.cycling.races.repository.search.RaceSearchRepository;
+import it.acsi.cycling.races.service.dto.AcsiTeamDTO;
 import it.acsi.cycling.races.service.dto.RaceDTO;
 import it.acsi.cycling.races.service.mapper.PathTypeMapper;
 import it.acsi.cycling.races.service.mapper.RaceMapper;
@@ -18,6 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -45,17 +50,20 @@ public class RaceService {
 
     private final RaceSearchRepository raceSearchRepository;
 
-    private final FileService fileService;
-
     private final SubscriptionTypeRepository subscriptionTypeRepository;
 
     private final PathTypeRepository pathTypeRepository;
+
+    private final FileService fileService;
+
+    private final AcsiTeamService acsiTeamService;
 
     public RaceService(
         RaceMapper raceMapper, SubscriptionTypeMapper subscriptionTypeMapper, PathTypeMapper pathTypeMapper,
         RaceRepository raceRepository, RaceSearchRepository raceSearchRepository,
         FileRepository fileRepository, ContactRepository contactRepository, FileService fileService,
-        SubscriptionTypeRepository subscriptionTypeRepository, PathTypeRepository pathTypeRepository) {
+        SubscriptionTypeRepository subscriptionTypeRepository, PathTypeRepository pathTypeRepository,
+        AcsiTeamService acsiTeamService) {
 
         this.raceMapper = raceMapper;
         this.subscriptionTypeMapper = subscriptionTypeMapper;
@@ -67,6 +75,7 @@ public class RaceService {
         this.fileService = fileService;
         this.subscriptionTypeRepository = subscriptionTypeRepository;
         this.pathTypeRepository = pathTypeRepository;
+        this.acsiTeamService = acsiTeamService;
     }
 
     /**
@@ -164,6 +173,30 @@ public class RaceService {
 
         return raceRepository.findAll(pageable)
             .map(raceMapper::toDtoWithChildRelation);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<RaceDTO> findNextOrdered(LocalDate date, Pageable pageable) {
+
+        log.debug("Request to get all Races");
+
+        return raceRepository.findByGreaterDateOrderedByDate(date, pageable)
+            .map(raceMapper::toDtoWithChildRelation);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<RaceDTO> findNextByTeamOrdered(LocalDate date, Pageable pageable) {
+
+        log.debug("Request to get all Races");
+
+        Optional<AcsiTeamDTO> acsiTeam = acsiTeamService.getByLogin();
+
+        if(acsiTeam.isPresent()) {
+            return raceRepository.findByGreaterEqualDateAndTeamIdOrderedByDate(date, acsiTeam.get().getId(), pageable)
+                .map(raceMapper::toDtoWithChildRelation);
+        } else {
+            return Page.empty();
+        }
     }
 
     /**

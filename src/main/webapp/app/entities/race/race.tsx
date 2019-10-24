@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, InputGroup, Col, Row, Table } from 'reactstrap';
@@ -18,13 +18,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getSearchEntities, getEntities } from './race.reducer';
+import { getSearchEntities, getEntities, getEntitiesByTeam } from './race.reducer';
 import { IRace } from 'app/shared/model/race.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import withAuthContext from '../../shared/context/with-auth-context';
+import IAuthContext from '../../shared/context/i-auth-context';
 
-export interface IRaceProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IRaceProps extends StateProps, DispatchProps, IAuthContext, RouteComponentProps<{ url: string }> {}
 
 export interface IRaceState extends IPaginationBaseState {
   search: string;
@@ -51,7 +53,7 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
 
   clear = () => {
     this.setState({ search: '', activePage: 1 }, () => {
-      this.props.getEntities();
+      this.props.getEntitiesByTeam();
     });
   };
 
@@ -79,12 +81,33 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
     if (search) {
       this.props.getSearchEntities(search, activePage - 1, itemsPerPage, `${sort},${order}`);
     } else {
-      this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+      if (this.props.isAcsiAdmin || this.props.isAdmin) {
+        this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+      } else {
+        this.props.getEntitiesByTeam(activePage - 1, itemsPerPage, `${sort},${order}`);
+      }
     }
   };
 
   render() {
-    const { raceList, match, totalItems } = this.props;
+    const { raceList, match, totalItems, isAcsiAdmin, isAdmin } = this.props;
+
+    let searchBar = null;
+
+    if (isAcsiAdmin || isAdmin) {
+      searchBar = (
+        <Fragment>
+          <AvInput type="text" name="search" value={this.state.search} onChange={this.handleSearch} placeholder="Search" />
+          <Button className="input-group-addon ml-1">
+            <FontAwesomeIcon icon="search" />
+          </Button>
+          <Button type="reset" className="input-group-addon ml-1" onClick={this.clear}>
+            <FontAwesomeIcon icon="trash" />
+          </Button>
+        </Fragment>
+      );
+    }
+
     return (
       <div>
         <h2 id="race-heading" className="list-title">
@@ -93,15 +116,9 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
         <Row>
           <Col sm="12">
             <AvForm onSubmit={this.search}>
-              <AvGroup>
+              <AvGroup className={!isAcsiAdmin && !isAdmin ? 'float-right' : ''}>
                 <InputGroup>
-                  <AvInput type="text" name="search" value={this.state.search} onChange={this.handleSearch} placeholder="Search" />
-                  <Button className="input-group-addon ml-1">
-                    <FontAwesomeIcon icon="search" />
-                  </Button>
-                  <Button type="reset" className="input-group-addon ml-1" onClick={this.clear}>
-                    <FontAwesomeIcon icon="trash" />
-                  </Button>
+                  {searchBar}
                   <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity ml-1" id="jh-create-entity">
                     <FontAwesomeIcon icon="plus" />
                   </Link>
@@ -141,7 +158,7 @@ export class Race extends React.Component<IRaceProps, IRaceState> {
                 {raceList.map((race, i) => (
                   <tr key={`entity-${i}`}>
                     <td>
-                      <img src={race.binaryLogoUrl} style={{ height: '45px', with: '45px' }} />
+                      <img src={race.binaryLogoUrl} style={{ height: '45px', width: '45px' }} />
                     </td>
                     <td>{race.name}</td>
                     <td>{race.typeName}</td>
@@ -194,7 +211,8 @@ const mapStateToProps = ({ race }: IRootState) => ({
 
 const mapDispatchToProps = {
   getSearchEntities,
-  getEntities
+  getEntities,
+  getEntitiesByTeam
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
@@ -203,4 +221,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Race);
+)(withAuthContext(Race));

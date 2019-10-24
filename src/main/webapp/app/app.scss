@@ -2,6 +2,7 @@
 // Import Bootstrap source files from node_modules
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'colors-variables.scss';
+@import 'shared/component/autosuggest.module.scss';
 
 html,
 body {

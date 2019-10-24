@@ -28,7 +28,7 @@ const paymentDataSection = (props: IPaymentDataSection) => (
                   <Row>
                     <Col>
                       <div className="payment-method-radio">
-                        <AvRadio label="Paypal" value="paypal" />
+                        <AvRadio label="Paypal" value="PAYPAL" />
                       </div>
                     </Col>
                     <Col>
@@ -42,7 +42,7 @@ const paymentDataSection = (props: IPaymentDataSection) => (
                   <Row>
                     <Col>
                       <div className="payment-method-radio">
-                        <AvRadio label="Bonifico Bancario" value="bonifico" />
+                        <AvRadio label="Bonifico Bancario" value="CREDIT-TRANSFER" />
                       </div>
                     </Col>
                     <Col>

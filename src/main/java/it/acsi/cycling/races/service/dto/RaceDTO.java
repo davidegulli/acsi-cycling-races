@@ -50,6 +50,8 @@ public class RaceDTO implements Serializable {
 
     private Long acsiTeamId;
 
+    private AcsiTeamDTO acsiTeam;
+
     private String contactName;
 
     private String contactEmail;
@@ -336,6 +338,14 @@ public class RaceDTO implements Serializable {
 
     public void setPathTypes(List<PathTypeDTO> pathTypes) {
         this.pathTypes = pathTypes;
+    }
+
+    public AcsiTeamDTO getAcsiTeam() {
+        return acsiTeam;
+    }
+
+    public void setAcsiTeam(AcsiTeamDTO acsiTeam) {
+        this.acsiTeam = acsiTeam;
     }
 
     @Override

@@ -24,6 +24,8 @@ export interface IRaceSubscription {
   subcriptionTypeId?: number;
   pathType?: number;
   teamId?: number;
+  teamCode?: string;
+  teamName?: string;
   athleteId?: string;
   date?: Moment;
   attribute?: string;

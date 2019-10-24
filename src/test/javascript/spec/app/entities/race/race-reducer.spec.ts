@@ -64,7 +64,7 @@ describe('Entities reducer tests', () => {
   describe('Requests', () => {
     it('should set state to loading', () => {
       testMultipleTypes(
-        [REQUEST(ACTION_TYPES.FETCH_RACE_LIST), REQUEST(ACTION_TYPES.SEARCH_RACES), REQUEST(ACTION_TYPES.FETCH_RACE)],
+        [REQUEST(ACTION_TYPES.FETCH_NEXT_RACE_LIST), REQUEST(ACTION_TYPES.SEARCH_RACES), REQUEST(ACTION_TYPES.FETCH_RACE)],
         {},
         state => {
           expect(state).toMatchObject({
@@ -108,7 +108,7 @@ describe('Entities reducer tests', () => {
     it('should set a message in errorMessage', () => {
       testMultipleTypes(
         [
-          FAILURE(ACTION_TYPES.FETCH_RACE_LIST),
+          FAILURE(ACTION_TYPES.FETCH_NEXT_RACE_LIST),
           FAILURE(ACTION_TYPES.SEARCH_RACES),
           FAILURE(ACTION_TYPES.FETCH_RACE),
           FAILURE(ACTION_TYPES.CREATE_RACE),
@@ -132,7 +132,7 @@ describe('Entities reducer tests', () => {
       const payload = { data: [{ 1: 'fake1' }, { 2: 'fake2' }], headers: { 'x-total-count': 123 } };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.FETCH_RACE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_NEXT_RACE_LIST),
           payload
         })
       ).toEqual({
@@ -212,13 +212,13 @@ describe('Entities reducer tests', () => {
       axios.delete = sinon.stub().returns(Promise.resolve(resolvedObject));
     });
 
-    it('dispatches ACTION_TYPES.FETCH_RACE_LIST actions', async () => {
+    it('dispatches ACTION_TYPES.FETCH_NEXT_RACE_LIST actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_RACE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_NEXT_RACE_LIST)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_RACE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_NEXT_RACE_LIST),
           payload: resolvedObject
         }
       ];
@@ -260,10 +260,10 @@ describe('Entities reducer tests', () => {
           payload: resolvedObject
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_RACE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_NEXT_RACE_LIST)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_RACE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_NEXT_RACE_LIST),
           payload: resolvedObject
         }
       ];
@@ -280,10 +280,10 @@ describe('Entities reducer tests', () => {
           payload: resolvedObject
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_RACE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_NEXT_RACE_LIST)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_RACE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_NEXT_RACE_LIST),
           payload: resolvedObject
         }
       ];
@@ -300,10 +300,10 @@ describe('Entities reducer tests', () => {
           payload: resolvedObject
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_RACE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_NEXT_RACE_LIST)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_RACE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_NEXT_RACE_LIST),
           payload: resolvedObject
         }
       ];

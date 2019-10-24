@@ -1,8 +1,11 @@
 package it.acsi.cycling.races.service.dto;
-import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import it.acsi.cycling.races.domain.AcsiTeam;
 import it.acsi.cycling.races.domain.enumeration.GenderType;
 import it.acsi.cycling.races.domain.enumeration.PaymentType;
 
@@ -43,16 +46,21 @@ public class RaceSubscriptionDTO implements Serializable {
     private Long subcriptionTypeId;
 
     @NotNull
-    private Long pathType;
+    private Long pathTypeId;
 
     @NotNull
     private Long teamId;
 
     @NotNull
-    private String athleteId;
+    private String teamCode;
 
     @NotNull
+    private String teamName;
+
     private Instant date;
+
+    @NotNull
+    private String athleteId;
 
     private String attribute;
 
@@ -64,7 +72,6 @@ public class RaceSubscriptionDTO implements Serializable {
     private Boolean payed;
 
     private Double payedPrice;
-
 
     private Long raceId;
 
@@ -156,12 +163,24 @@ public class RaceSubscriptionDTO implements Serializable {
         this.subcriptionTypeId = subcriptionTypeId;
     }
 
-    public Long getPathType() {
-        return pathType;
+    public Long getPathTypeId() {
+        return pathTypeId;
     }
 
-    public void setPathType(Long pathType) {
-        this.pathType = pathType;
+    public void setPathTypeId(Long pathType) {
+        this.pathTypeId = pathType;
+    }
+
+    public Instant getDate() {
+        return date;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
+    public Boolean getPayed() {
+        return payed;
     }
 
     public Long getTeamId() {
@@ -178,14 +197,6 @@ public class RaceSubscriptionDTO implements Serializable {
 
     public void setAthleteId(String athleteId) {
         this.athleteId = athleteId;
-    }
-
-    public Instant getDate() {
-        return date;
-    }
-
-    public void setDate(Instant date) {
-        this.date = date;
     }
 
     public String getAttribute() {
@@ -236,6 +247,22 @@ public class RaceSubscriptionDTO implements Serializable {
         this.raceId = raceId;
     }
 
+    public String getTeamCode() {
+        return teamCode;
+    }
+
+    public void setTeamCode(String teamCode) {
+        this.teamCode = teamCode;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -271,7 +298,6 @@ public class RaceSubscriptionDTO implements Serializable {
             ", phone='" + getPhone() + "'" +
             ", category='" + getCategory() + "'" +
             ", subcriptionTypeId=" + getSubcriptionTypeId() +
-            ", pathType=" + getPathType() +
             ", teamId=" + getTeamId() +
             ", athleteId='" + getAthleteId() + "'" +
             ", date='" + getDate() + "'" +

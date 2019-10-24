@@ -19,6 +19,7 @@ import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 import LeftMenu from './shared/layout/menus/left-menu';
 import { width } from '@fortawesome/free-solid-svg-icons/faUser';
+import AuthContext from 'app/shared/context/auth-context';
 
 const baseHref = document
   .querySelector('base')
@@ -73,9 +74,19 @@ export const App = (props: IAppProps) => {
             >
               <div className="container h-100">
                 <Card className="jh-card">
-                  <ErrorBoundary>
-                    <AppRoutes />
-                  </ErrorBoundary>
+                  <AuthContext.Provider
+                    value={{
+                      isAuthenticated: props.isAuthenticated,
+                      isAdmin: props.isAdmin,
+                      isAcsiAdmin: props.isAcsiAdmin,
+                      isTeamManager: props.isTeamManager,
+                      acsiTeam: {}
+                    }}
+                  >
+                    <ErrorBoundary>
+                      <AppRoutes />
+                    </ErrorBoundary>
+                  </AuthContext.Provider>
                 </Card>
               </div>
             </div>

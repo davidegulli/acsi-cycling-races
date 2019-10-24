@@ -14,8 +14,10 @@ import { IRace } from 'app/shared/model/race.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import RaceHeader from './race-header';
+import withAuthContext from '../../shared/context/with-auth-context';
+import IAuthContext from '../../shared/context/i-auth-context';
 
-export interface IRaceDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IRaceDetailProps extends StateProps, DispatchProps, IAuthContext, RouteComponentProps<{ id: string }> {}
 
 export class RaceDetail extends React.Component<IRaceDetailProps> {
   componentDidMount() {
@@ -23,12 +25,44 @@ export class RaceDetail extends React.Component<IRaceDetailProps> {
   }
 
   render() {
-    const { raceEntity } = this.props;
+    const { raceEntity, isAcsiAdmin, isAdmin, isTeamManager } = this.props;
+
+    let raceAdminPanel = null;
+
+    if (isAcsiAdmin || isAdmin || isTeamManager) {
+      raceAdminPanel = (
+        <div className="row">
+          <div className="col-12">
+            <h4 className="sheet-title">Amministrazione Gara</h4>
+            <div>
+              <span className="race-secondary-data-label">Iscritti:</span>
+              <span>67</span>
+            </div>
+            <div>
+              <span className="race-secondary-data-label">Pagamenti via Paypal:</span>
+              <span>34</span>
+            </div>
+            <div>
+              <span className="race-secondary-data-label">Incassi:</span>
+              <span>3450,89 €</span>
+            </div>
+            <div>
+              <span>
+                <Button tag={Link} to={`/entity/race-subscription/list/${raceEntity.id}`} className="race-subscription-button">
+                  Lista Iscrizioni
+                </Button>
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <Fragment>
         <RaceHeader entity={raceEntity} showButton />
         <div className="race-secondary-data container-fluid">
+          {raceAdminPanel}
           <div className="row">
             <div className="col-12">
               <h4 className="sheet-title">Informazioni Utili</h4>
@@ -97,4 +131,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RaceDetail);
+)(withAuthContext(RaceDetail));

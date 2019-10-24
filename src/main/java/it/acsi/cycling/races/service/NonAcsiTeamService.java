@@ -75,10 +75,22 @@ public class NonAcsiTeamService {
      */
     @Transactional(readOnly = true)
     public Optional<NonAcsiTeamDTO> findOne(Long id) {
+
         log.debug("Request to get NonAcsiTeam : {}", id);
+
         return nonAcsiTeamRepository.findById(id)
             .map(nonAcsiTeamMapper::toDto);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<NonAcsiTeamDTO> findByCode(String code) {
+
+        log.debug("Request to get by code NonAcsiTeam : {}", code);
+
+        return nonAcsiTeamRepository.findByCode(code)
+            .map(nonAcsiTeamMapper::toDto);
+    }
+
 
     /**
      * Delete the nonAcsiTeam by id.

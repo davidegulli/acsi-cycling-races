@@ -3,6 +3,8 @@ import { Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvRadioGroup, AvRadio } from 'availity-reactstrap-validation';
 import StepperButtons from '../../../shared/component/stepper-buttons';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
+import moment from 'moment';
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 interface IRaceDataSection {
   entity: any;
@@ -32,7 +34,13 @@ const raceDataSection = (props: IRaceDataSection) => (
           name="date"
           placeholder={'GG-MM-AAAA'}
           validate={{
-            required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+            dateRange: {
+              format: 'MM/DD/YYYY',
+              start: { value: 1, units: 'days' },
+              end: { value: 2, units: 'years' },
+              errorMessage: 'La data inserita non è validata, deve essere una data futura'
+            }
           }}
         />
       </AvGroup>
@@ -45,7 +53,10 @@ const raceDataSection = (props: IRaceDataSection) => (
           type="text"
           name="location"
           validate={{
-            required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+            pattern: { value: "^[A-Za-z'àèùì ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici e numerici' },
+            minLength: { value: 4, errorMessage: 'Il campo deve esse composto da almeno 4 caratteri' },
+            maxLength: { value: 30, errorMessage: 'Il campo può essere composto da un massimo di 30 caratteri' }
           }}
         />
       </AvGroup>
@@ -58,7 +69,10 @@ const raceDataSection = (props: IRaceDataSection) => (
           type="text"
           name="address"
           validate={{
-            required: { value: true, errorMessage: 'This field is required.' }
+            required: { value: true, errorMessage: 'This field is required.' },
+            pattern: { value: "^[A-Za-z0-9',àèùì ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici e numerici' },
+            minLength: { value: 4, errorMessage: 'Il campo deve esse composto da almeno 4 caratteri' },
+            maxLength: { value: 30, errorMessage: 'Il campo può essere composto da un massimo di 30 caratteri' }
           }}
         />
       </AvGroup>
@@ -66,13 +80,29 @@ const raceDataSection = (props: IRaceDataSection) => (
         <Label id="infoLabel" for="race-info">
           Informazioni Utili
         </Label>
-        <AvField id="race-info" type="textarea" name="info" />
+        <AvField
+          id="race-info"
+          type="textarea"
+          name="info"
+          validate={{
+            minLength: { value: 4, errorMessage: 'Il campo deve esse composto da almeno 4 caratteri' },
+            maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
+          }}
+        />
       </AvGroup>
       <AvGroup>
         <Label id="rulesLabel" for="race-rules">
           Regolamento
         </Label>
-        <AvField id="race-rules" type="textarea" name="rules" />
+        <AvField
+          id="race-rules"
+          type="textarea"
+          name="rules"
+          validate={{
+            minLength: { value: 4, errorMessage: 'Il campo deve esse composto da almeno 4 caratteri' },
+            maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
+          }}
+        />
       </AvGroup>
       <AvGroup>
         <Label id="subscriptionExpirationDateLabel" for="race-subscriptionExpirationDate">
@@ -85,13 +115,27 @@ const raceDataSection = (props: IRaceDataSection) => (
           name="subscriptionExpirationDate"
           placeholder={'GG-MM-AAAA'}
           validate={{
-            required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+            dateRange: {
+              format: 'MM/DD/YYYY',
+              start: { value: 60, units: 'days' },
+              end: { value: 2, units: 'years' },
+              errorMessage: 'La data inserita non è valida, deve essere una data maggiore di due mesi da oggi'
+            }
           }}
         />
       </AvGroup>
       <AvGroup>
         <Label for="race-type">Disciplina</Label>
-        <AvField id="race-type" type="select" className="form-control" name="typeId">
+        <AvField
+          id="race-type"
+          type="select"
+          className="form-control"
+          name="typeId"
+          validate={{
+            required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+          }}
+        >
           <option value="" key="0" />
           {props.raceTypes
             ? props.raceTypes.map(otherEntity => (

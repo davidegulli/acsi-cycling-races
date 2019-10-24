@@ -260,6 +260,10 @@ dependencies {
     }
     implementation "io.springfox:springfox-bean-validators"
     implementation "mysql:mysql-connector-java"
+    implementation "org.apache.poi:poi-ooxml:4.1.0"
+
+    implementation "com.lowagie:itext:4.2.2"
+
     liquibaseRuntime "mysql:mysql-connector-java"
     implementation "org.mapstruct:mapstruct:${mapstruct_version}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
