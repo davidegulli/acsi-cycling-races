@@ -140,6 +140,7 @@ const imageUploader = (props: IImageUploader) => {
       props.onDrop(event, uploadedFiles[0]);
 
       // setFiles(uploadedFiles.map(file => ({ ...file, preview: URL.createObjectURL(file) })));
+      setFiles([]);
       setLoaded(true);
     }
   };

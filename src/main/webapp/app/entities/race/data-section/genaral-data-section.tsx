@@ -44,7 +44,6 @@ const generalDataSection = (props: IGeneralDataSection) => (
           name="name"
           validate={{
             required: { value: true, errorMessage: 'Il campo è obbligatorio' },
-            pattern: { value: "^[A-Za-z0-9'àèùì ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici e numerici' },
             minLength: { value: 3, errorMessage: 'Il campo deve esse composto da almeno 3 caratteri' },
             maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
           }}
@@ -99,7 +98,9 @@ const generalDataSection = (props: IGeneralDataSection) => (
           type="text"
           className="form-control"
           name="contactPhone"
-          validate={{ number: { value: true, errorMessage: 'Il numero di telefono inserito non è valido' } }}
+          validate={{
+            pattern: { value: '^[0-9 -]+$', errorMessage: 'Il campo può contenere solamente caratteri numerici' }
+          }}
         />
       </AvGroup>
       <StepperButtons

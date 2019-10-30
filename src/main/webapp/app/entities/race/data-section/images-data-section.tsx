@@ -20,24 +20,27 @@ interface IImagesDataSection {
 }
 
 const imagesDataSection = (props: IImagesDataSection) => {
-  const [formConfirmed, setFormConfirmed] = useState(false);
-  const [logoUploaded, setLogoUploaded] = useState(false);
-  const [coverUploaded, setCoverUploaded] = useState(false);
+  const INITIAL_STATE = {
+    formConfirmed: false,
+    logoUploaded: !props.isNew,
+    coverUploaded: !props.isNew
+  };
+
+  const [state, setState] = useState(INITIAL_STATE);
 
   const onDropLogo = (event, acceptedFiles) => {
-    setLogoUploaded(true);
+    setState({ ...state, logoUploaded: true });
     props.onDropLogoImage(event, acceptedFiles);
   };
 
   const onDropCover = (event, acceptedFiles) => {
-    setCoverUploaded(true);
+    setState({ ...state, coverUploaded: true });
     props.onDropCoverImage(event, acceptedFiles);
   };
 
   const submit = (event, errors, values) => {
-    setFormConfirmed(true);
-
-    if (!logoUploaded || !coverUploaded) {
+    setState({ ...state, formConfirmed: true });
+    if (!state.logoUploaded || !state.coverUploaded) {
       return;
     }
 
@@ -58,7 +61,9 @@ const imagesDataSection = (props: IImagesDataSection) => {
                   un'immagine che abbia delle dimensioni approssimativamente di 300x400 pixel, così da garantirne
                   una corretta visualizzaione nella pagina di presentazione della gara"
           />
-          {formConfirmed && !logoUploaded ? <div className="invalid-feedback">L'immagine è obbligatoria, selezionane una!</div> : null}
+          {state.formConfirmed && !state.logoUploaded ? (
+            <div className="invalid-feedback">L'immagine è obbligatoria, selezionane una!</div>
+          ) : null}
         </div>
         <div style={{ marginBottom: '1rem' }}>
           <Label for="race-coverImage">Immagine di Copertina</Label>
@@ -70,7 +75,9 @@ const imagesDataSection = (props: IImagesDataSection) => {
                   un'immagine che abbia delle dimensioni approssimativamente di 300x1024 pixel, così da garantirne
                   una corretta visualizzaione nella pagina di presentazione della gara"
           />
-          {formConfirmed && !coverUploaded ? <div className="invalid-feedback">L'immagine è obbligatoria, selezionane una!</div> : null}
+          {state.formConfirmed && !state.coverUploaded ? (
+            <div className="invalid-feedback">L'immagine è obbligatoria, selezionane una!</div>
+          ) : null}
         </div>
         <div style={{ marginBottom: '1rem' }}>
           <Label for="race-mapPathImage">Mappa del Percorso</Label>

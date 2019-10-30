@@ -144,7 +144,7 @@ const pathType = (props: IPathType) => {
                 validate={{
                   required: { value: true, errorMessage: 'Il campo è obbligatorio' },
                   minLength: { value: 5, errorMessage: 'Il campo deve esse composto da almeno 5 caratteri' },
-                  maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200 caratteri' }
+                  maxLength: { value: 200, errorMessage: 'Il campo può essere composto da un massimo di 200g caratteri' }
                 }}
               />
             </AvGroup>

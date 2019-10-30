@@ -157,6 +157,7 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
   };
 
   nextStepHandler = (event, errors, values) => {
+    console.log('nextStepHandler');
     if (errors.length === 0) {
       const currentErrors = this.state.errors;
       const updateErrors = [...currentErrors, ...errors];

@@ -233,6 +233,9 @@ public class RaceService {
                 contactRepository.deleteById(c.getId());
             });
 
+            pathTypeRepository.deleteByRaceId(e.getId());
+            subscriptionTypeRepository.deleteByRaceId(e.getId());
+
             raceRepository.deleteById(e.getId());
             raceSearchRepository.deleteById(e.getId());
         });
