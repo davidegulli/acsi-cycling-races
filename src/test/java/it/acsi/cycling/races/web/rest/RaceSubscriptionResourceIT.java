@@ -4,6 +4,7 @@ import it.acsi.cycling.races.AcsiCyclingRacesApp;
 import it.acsi.cycling.races.domain.RaceSubscription;
 import it.acsi.cycling.races.repository.RaceSubscriptionRepository;
 import it.acsi.cycling.races.repository.search.RaceSubscriptionSearchRepository;
+import it.acsi.cycling.races.service.RaceService;
 import it.acsi.cycling.races.service.RaceSubscriptionService;
 import it.acsi.cycling.races.service.dto.RaceSubscriptionDTO;
 import it.acsi.cycling.races.service.mapper.RaceSubscriptionMapper;
@@ -26,6 +27,7 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
@@ -52,8 +54,8 @@ public class RaceSubscriptionResourceIT {
     private static final String DEFAULT_SURNAME = "AAAAAAAAAA";
     private static final String UPDATED_SURNAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_BIRTH_DATE = "AAAAAAAAAA";
-    private static final String UPDATED_BIRTH_DATE = "BBBBBBBBBB";
+    private static final LocalDate DEFAULT_BIRTH_DATE = LocalDate.now();
+    private static final LocalDate UPDATED_BIRTH_DATE = LocalDate.now();
 
     private static final String DEFAULT_BIRTH_PLACE = "AAAAAAAAAA";
     private static final String UPDATED_BIRTH_PLACE = "BBBBBBBBBB";
@@ -117,6 +119,9 @@ public class RaceSubscriptionResourceIT {
     @Autowired
     private RaceSubscriptionService raceSubscriptionService;
 
+    @Autowired
+    private RaceService raceService;
+
     /**
      * This repository is mocked in the it.acsi.cycling.races.repository.search test package.
      *
@@ -147,7 +152,8 @@ public class RaceSubscriptionResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final RaceSubscriptionResource raceSubscriptionResource = new RaceSubscriptionResource(raceSubscriptionService);
+        final RaceSubscriptionResource raceSubscriptionResource =
+            new RaceSubscriptionResource(raceSubscriptionService, raceService);
         this.restRaceSubscriptionMockMvc = MockMvcBuilders.standaloneSetup(raceSubscriptionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -174,7 +180,7 @@ public class RaceSubscriptionResourceIT {
             .phone(DEFAULT_PHONE)
             .category(DEFAULT_CATEGORY)
             .subcriptionTypeId(DEFAULT_SUBCRIPTION_TYPE_ID)
-            .pathType(DEFAULT_PATH_TYPE)
+            .pathTypeId(DEFAULT_PATH_TYPE)
             .teamId(DEFAULT_TEAM_ID)
             .athleteId(DEFAULT_ATHLETE_ID)
             .date(DEFAULT_DATE)
@@ -203,7 +209,7 @@ public class RaceSubscriptionResourceIT {
             .phone(UPDATED_PHONE)
             .category(UPDATED_CATEGORY)
             .subcriptionTypeId(UPDATED_SUBCRIPTION_TYPE_ID)
-            .pathType(UPDATED_PATH_TYPE)
+            .pathTypeId(UPDATED_PATH_TYPE)
             .teamId(UPDATED_TEAM_ID)
             .athleteId(UPDATED_ATHLETE_ID)
             .date(UPDATED_DATE)
@@ -246,7 +252,7 @@ public class RaceSubscriptionResourceIT {
         assertThat(testRaceSubscription.getPhone()).isEqualTo(DEFAULT_PHONE);
         assertThat(testRaceSubscription.getCategory()).isEqualTo(DEFAULT_CATEGORY);
         assertThat(testRaceSubscription.getSubcriptionTypeId()).isEqualTo(DEFAULT_SUBCRIPTION_TYPE_ID);
-        assertThat(testRaceSubscription.getPathType()).isEqualTo(DEFAULT_PATH_TYPE);
+        assertThat(testRaceSubscription.getPathTypeId()).isEqualTo(DEFAULT_PATH_TYPE);
         assertThat(testRaceSubscription.getTeamId()).isEqualTo(DEFAULT_TEAM_ID);
         assertThat(testRaceSubscription.getAthleteId()).isEqualTo(DEFAULT_ATHLETE_ID);
         assertThat(testRaceSubscription.getDate()).isEqualTo(DEFAULT_DATE);
@@ -460,7 +466,7 @@ public class RaceSubscriptionResourceIT {
     public void checkPathTypeIsRequired() throws Exception {
         int databaseSizeBeforeTest = raceSubscriptionRepository.findAll().size();
         // set the field null
-        raceSubscription.setPathType(null);
+        raceSubscription.setPathTypeId(null);
 
         // Create the RaceSubscription, which fails.
         RaceSubscriptionDTO raceSubscriptionDTO = raceSubscriptionMapper.toDto(raceSubscription);
@@ -645,7 +651,7 @@ public class RaceSubscriptionResourceIT {
             .phone(UPDATED_PHONE)
             .category(UPDATED_CATEGORY)
             .subcriptionTypeId(UPDATED_SUBCRIPTION_TYPE_ID)
-            .pathType(UPDATED_PATH_TYPE)
+            .pathTypeId(UPDATED_PATH_TYPE)
             .teamId(UPDATED_TEAM_ID)
             .athleteId(UPDATED_ATHLETE_ID)
             .date(UPDATED_DATE)
@@ -675,7 +681,7 @@ public class RaceSubscriptionResourceIT {
         assertThat(testRaceSubscription.getPhone()).isEqualTo(UPDATED_PHONE);
         assertThat(testRaceSubscription.getCategory()).isEqualTo(UPDATED_CATEGORY);
         assertThat(testRaceSubscription.getSubcriptionTypeId()).isEqualTo(UPDATED_SUBCRIPTION_TYPE_ID);
-        assertThat(testRaceSubscription.getPathType()).isEqualTo(UPDATED_PATH_TYPE);
+        assertThat(testRaceSubscription.getPathTypeId()).isEqualTo(UPDATED_PATH_TYPE);
         assertThat(testRaceSubscription.getTeamId()).isEqualTo(UPDATED_TEAM_ID);
         assertThat(testRaceSubscription.getAthleteId()).isEqualTo(UPDATED_ATHLETE_ID);
         assertThat(testRaceSubscription.getDate()).isEqualTo(UPDATED_DATE);

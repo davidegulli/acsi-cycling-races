@@ -28,17 +28,24 @@
         {
             "fieldName": "url",
             "fieldType": "String"
-        }
-    ],
-    "relationships": [
+        },
         {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "race",
-            "otherEntityRelationshipName": "attachment",
-            "relationshipName": "race",
-            "otherEntityField": "id"
+            "fieldName": "entityType",
+            "fieldType": "EntityType",
+            "fieldValues": "RACE,RACE_SUBSCRIPTION,ACSI_TEAM,NON_ACSI_TEAM,CONTACT,CATEGORY,RACE_TYPE,SUBSCRIPTION_TYPE,PATHTYPE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "entityId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
+    "relationships": [],
     "changelogDate": "20190805160737",
     "entityTableName": "file",
     "dto": "mapstruct",

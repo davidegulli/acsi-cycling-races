@@ -12,7 +12,6 @@ import Contact from './contact';
 import Category from './category';
 import Race from './race';
 import SubscriptionType from './subscription-type';
-import PathType from './path-type';
 import RaceSubscription from './race-subscription';
 import RaceType from './race-type';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
@@ -29,7 +28,6 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/category`} component={Category} />
       <ErrorBoundaryRoute path={`${match.url}/race`} component={Race} />
       <ErrorBoundaryRoute path={`${match.url}/subscription-type`} component={SubscriptionType} />
-      <ErrorBoundaryRoute path={`${match.url}/path-type`} component={PathType} />
       <ErrorBoundaryRoute path={`${match.url}/race-subscription`} component={RaceSubscription} />
       <ErrorBoundaryRoute path={`${match.url}/race-type`} component={RaceType} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}

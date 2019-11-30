@@ -20,11 +20,21 @@
             "fieldType": "String"
         },
         {
+            "fieldName": "distance",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "price",
             "fieldType": "Double"
         }
     ],
     "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "subscriptionDiscount",
+            "otherEntityRelationshipName": "subscriptionType",
+            "relationshipName": "discounts"
+        },
         {
             "relationshipType": "many-to-one",
             "otherEntityName": "race",

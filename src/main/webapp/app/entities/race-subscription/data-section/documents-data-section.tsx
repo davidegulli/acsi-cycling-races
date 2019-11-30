@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvRadioGroup, AvRadio } from 'availity-reactstrap-validation';
 import StepperButtons from '../../../shared/component/stepper-buttons';
-import DocumentUploader from '../../../shared/component/document-uploader';
+import FileUploader from '../../../shared/component/file-uploader';
 
 interface IDocumentsDataSection {
   entity: any;
@@ -18,35 +18,64 @@ interface IDocumentsDataSection {
   onDropMedicalCertificationDoc: any;
 }
 
-const documentsDataSection = (props: IDocumentsDataSection) => (
-  <div className={props.activeStep !== props.stepIndex ? 'd-none' : ''}>
-    <AvForm model={props.isNew ? {} : props.entity} onSubmit={props.nextStepHandler}>
-      <h4 className="sheet-title">Documenti</h4>
-      <div style={{ marginBottom: '1rem' }}>
-        <Label for="race-personalIdDoc">Documento d'identità</Label>
-        <DocumentUploader
-          id="race-presonalIdDoc"
-          onDrop={props.onDropPersonalIdDoc}
-          previewUrl={!props.isNew ? props.entity.binaryLogoUrl : null}
+const documentsDataSection = (props: IDocumentsDataSection) => {
+  const INITIAL_STATE = {
+    formConfirmed: false,
+    personalIdDocUploaded: !props.isNew,
+    medicalCertificationDocUploaded: !props.isNew
+  };
+
+  const [state, setState] = useState(INITIAL_STATE);
+
+  const onDropPersonalIdDoc = (event, acceptedFiles) => {
+    setState({ ...state, personalIdDocUploaded: true });
+    props.onDropPersonalIdDoc(event, acceptedFiles);
+  };
+
+  const onDropMedicalCertificationDoc = (event, acceptedFiles) => {
+    setState({ ...state, medicalCertificationDocUploaded: true });
+    props.onDropMedicalCertificationDoc(event, acceptedFiles);
+  };
+
+  const submit = (event, errors, values) => {
+    setState({ ...state, formConfirmed: true });
+    if (!state.personalIdDocUploaded || !state.medicalCertificationDocUploaded) {
+      return;
+    }
+
+    props.nextStepHandler(event, errors, values);
+  };
+
+  return (
+    <div className={props.activeStep !== props.stepIndex ? 'd-none' : ''}>
+      <AvForm model={props.isNew ? {} : props.entity} onSubmit={submit}>
+        <h4 className="sheet-title">Documenti</h4>
+        <div style={{ marginBottom: '1rem' }}>
+          <Label for="race-personalIdDoc">Documento d'identità</Label>
+          <FileUploader
+            id="race-presonalIdDoc"
+            onDrop={onDropPersonalIdDoc}
+            previewUrl={!props.isNew ? props.entity.binaryLogoUrl : null}
+          />
+        </div>
+        <div style={{ marginBottom: '1rem' }}>
+          <Label for="race-medicalCertification">Certificato Medico</Label>
+          <FileUploader
+            id="race-medicalCertification"
+            onDrop={onDropMedicalCertificationDoc}
+            previewUrl={!props.isNew ? props.entity.binaryLogoUrl : null}
+          />
+        </div>
+        <StepperButtons
+          activeStep={props.activeStep}
+          stepsLength={props.stepsLength}
+          updating={props.updating}
+          prevStepHandler={props.prevStepHandler}
+          cancelUrl={props.cancelUrl}
         />
-      </div>
-      <div style={{ marginBottom: '1rem' }}>
-        <Label for="race-medicalCertification">Certificato Medico</Label>
-        <DocumentUploader
-          id="race-medicalCertification"
-          onDrop={props.onDropMedicalCertificationDoc}
-          previewUrl={!props.isNew ? props.entity.binaryLogoUrl : null}
-        />
-      </div>
-      <StepperButtons
-        activeStep={props.activeStep}
-        stepsLength={props.stepsLength}
-        updating={props.updating}
-        prevStepHandler={props.prevStepHandler}
-        cancelUrl={props.cancelUrl}
-      />
-    </AvForm>
-  </div>
-);
+      </AvForm>
+    </div>
+  );
+};
 
 export default documentsDataSection;

@@ -6,15 +6,21 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvRadioGroup, AvRadio } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { setFileData, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-
 import { IRace } from 'app/shared/model/race.model';
 import { getEntity as getRace } from 'app/entities/race/race.reducer';
 import { getEntitiesByRace as getSubscriptionTypes } from 'app/entities/subscription-type/subscription-type.reducer';
-import { getEntitiesByRace as getPathTypes } from 'app/entities/path-type/path-type.reducer';
-import { getEntity, getTeamsSuggestions, clearTeamsSuggestions, updateEntity, createEntity, reset } from './race-subscription.reducer';
+import {
+  getEntity,
+  getTeamsSuggestions,
+  clearTeamsSuggestions,
+  updateEntity,
+  createEntity,
+  setBlob,
+  reset
+} from './race-subscription.reducer';
 import { getEntityByGenderAndBirthDate as getCategory } from 'app/entities/category/category.reducer';
 import { IRaceSubscription } from 'app/shared/model/race-subscription.model';
 // tslint:disable-next-line:no-unused-variable
@@ -26,9 +32,10 @@ import PersonalDataSection from './data-section/personal-data-section';
 import DocumentsDataSection from './data-section/documents-data-section';
 import TeamDataSection from './data-section/team-data-section';
 import RaceDataSection from './data-section/race-data-section';
-import PaymentDataSection from './data-section/payment-data-section';
+import SummaryDataSection from './data-section/summary-data-section';
 import { withStyles } from '@material-ui/styles';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
+import debounce from 'lodash.debounce';
 
 export interface IRaceSubscriptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; raceId: string }> {}
 
@@ -56,6 +63,13 @@ function getSteps() {
 }
 
 export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpdateProps, IRaceSubscriptionUpdateState> {
+  onChangeBirthDateHandler = debounce((event, ctx) => {
+    const birthDate = ctx;
+    const { gender } = this.state;
+    this.setState({ birthDate });
+    this.setCategory(gender, birthDate);
+  }, 1000);
+
   constructor(props) {
     super(props);
     this.state = {
@@ -85,7 +99,6 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
 
     this.props.getRace(this.props.match.params.raceId);
     this.props.getSubscriptionTypes(this.props.match.params.raceId);
-    this.props.getPathTypes(this.props.match.params.raceId);
   }
 
   saveEntity = (errors, values) => {
@@ -119,8 +132,10 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
       const updatedValues = { ...currentValues, ...values };
       this.setState({ values: updatedValues, errors: updateErrors });
 
-      if (this.state.step === 4) {
+      if (this.state.step === 3) {
         this.saveEntity(updateErrors, updatedValues);
+        const currentState = this.state.step;
+        this.setState({ step: currentState + 1 });
       } else {
         const currentState = this.state.step;
         this.setState({ step: currentState + 1 });
@@ -128,21 +143,22 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
     }
   };
 
-  onDropPersonalIdDoc = () => {};
+  clearBlob = name => () => {
+    this.props.setBlob(name, undefined, undefined);
+  };
 
-  onDropMedicalCertificationDoc = () => {};
+  onDropPersonalIdDoc = () => {
+    setFileData(event, (contentType, data) => this.props.setBlob('binaryPersonalIdDoc', data, contentType), true);
+  };
+
+  onDropMedicalCertificationDoc = () => {
+    setFileData(event, (contentType, data) => this.props.setBlob('binaryMedicalCertificationDoc', data, contentType), true);
+  };
 
   onChangeGenderHandler = event => {
     const gender = event.target.value;
     const { birthDate } = this.state;
     this.setState({ gender });
-    this.setCategory(gender, birthDate);
-  };
-
-  onChangeBirthDateHandler = event => {
-    const birthDate = event.target.value;
-    const { gender } = this.state;
-    this.setState({ birthDate });
     this.setCategory(gender, birthDate);
   };
 
@@ -166,7 +182,7 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
   };
 
   render() {
-    const { raceSubscriptionEntity, teams, subscriptionTypes, pathTypes, race, loading, updating } = this.props;
+    const { raceSubscriptionEntity, teams, subscriptionTypes, race, loading, updating } = this.props;
     const { step } = this.state;
     const steps = getSteps();
     const cancelUrl = '/event/' + this.state.raceId;
@@ -239,19 +255,16 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                   nextStepHandler={this.nextStepHandler}
                   prevStepHandler={this.prevStepHandler}
                   subscriptionTypes={subscriptionTypes}
-                  pathTypes={pathTypes}
                   cancelUrl={cancelUrl}
                 />
-                <PaymentDataSection
+                <SummaryDataSection
                   activeStep={this.state.step}
                   stepIndex={4}
                   stepsLength={5}
                   entity={raceSubscriptionEntity}
                   isNew={this.state.isNew}
                   updating={updating}
-                  nextStepHandler={this.nextStepHandler}
-                  prevStepHandler={this.prevStepHandler}
-                  cancelUrl={cancelUrl}
+                  results={{ resul: 'success' }}
                 />
               </Fragment>
             )}
@@ -265,7 +278,6 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
 const mapStateToProps = (storeState: IRootState) => ({
   race: storeState.race.entity,
   subscriptionTypes: storeState.subscriptionType.entities,
-  pathTypes: storeState.pathType.entities,
   raceSubscriptionEntity: storeState.raceSubscription.entity,
   teams: storeState.raceSubscription.teams,
   category: storeState.category.entity,
@@ -277,13 +289,13 @@ const mapStateToProps = (storeState: IRootState) => ({
 const mapDispatchToProps = {
   getRace,
   getSubscriptionTypes,
-  getPathTypes,
   getEntity,
   getTeamsSuggestions,
   clearTeamsSuggestions,
   getCategory,
   updateEntity,
   createEntity,
+  setBlob,
   reset
 };
 

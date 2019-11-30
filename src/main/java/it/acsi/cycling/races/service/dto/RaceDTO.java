@@ -74,7 +74,6 @@ public class RaceDTO implements Serializable {
     private String binaryPathMapUrl;
 
     private List<SubscriptionTypeDTO> subscriptionTypes;
-    private List<PathTypeDTO> pathTypes;
 
     public Long getId() {
         return id;
@@ -330,14 +329,6 @@ public class RaceDTO implements Serializable {
 
     public void setSubscriptionTypes(List<SubscriptionTypeDTO> subscriptionTypes) {
         this.subscriptionTypes = subscriptionTypes;
-    }
-
-    public List<PathTypeDTO> getPathTypes() {
-        return pathTypes;
-    }
-
-    public void setPathTypes(List<PathTypeDTO> pathTypes) {
-        this.pathTypes = pathTypes;
     }
 
     public AcsiTeamDTO getAcsiTeam() {

@@ -36,8 +36,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import it.acsi.cycling.races.domain.enumeration.FileType;
+import it.acsi.cycling.races.domain.enumeration.EntityType;
 /**
- * Integration tests for the {@Link FileResource} REST controller.
+ * Integration tests for the {@link FileResource} REST controller.
  */
 @SpringBootTest(classes = AcsiCyclingRacesApp.class)
 public class FileResourceIT {
@@ -58,6 +59,13 @@ public class FileResourceIT {
 
     private static final String DEFAULT_URL = "AAAAAAAAAA";
     private static final String UPDATED_URL = "BBBBBBBBBB";
+
+    private static final EntityType DEFAULT_ENTITY_TYPE = EntityType.RACE;
+    private static final EntityType UPDATED_ENTITY_TYPE = EntityType.RACE_SUBSCRIPTION;
+
+    private static final Long DEFAULT_ENTITY_ID = 1L;
+    private static final Long UPDATED_ENTITY_ID = 2L;
+    private static final Long SMALLER_ENTITY_ID = 1L - 1L;
 
     @Autowired
     private FileRepository fileRepository;
@@ -120,7 +128,9 @@ public class FileResourceIT {
             .mimeType(DEFAULT_MIME_TYPE)
             .binary(DEFAULT_BINARY)
             .binaryContentType(DEFAULT_BINARY_CONTENT_TYPE)
-            .url(DEFAULT_URL);
+            .url(DEFAULT_URL)
+            .entityType(DEFAULT_ENTITY_TYPE)
+            .entityId(DEFAULT_ENTITY_ID);
         return file;
     }
     /**
@@ -136,7 +146,9 @@ public class FileResourceIT {
             .mimeType(UPDATED_MIME_TYPE)
             .binary(UPDATED_BINARY)
             .binaryContentType(UPDATED_BINARY_CONTENT_TYPE)
-            .url(UPDATED_URL);
+            .url(UPDATED_URL)
+            .entityType(UPDATED_ENTITY_TYPE)
+            .entityId(UPDATED_ENTITY_ID);
         return file;
     }
 
@@ -167,6 +179,8 @@ public class FileResourceIT {
         assertThat(testFile.getBinary()).isEqualTo(DEFAULT_BINARY);
         assertThat(testFile.getBinaryContentType()).isEqualTo(DEFAULT_BINARY_CONTENT_TYPE);
         assertThat(testFile.getUrl()).isEqualTo(DEFAULT_URL);
+        assertThat(testFile.getEntityType()).isEqualTo(DEFAULT_ENTITY_TYPE);
+        assertThat(testFile.getEntityId()).isEqualTo(DEFAULT_ENTITY_ID);
 
         // Validate the File in Elasticsearch
         verify(mockFileSearchRepository, times(1)).save(testFile);
@@ -236,6 +250,44 @@ public class FileResourceIT {
 
     @Test
     @Transactional
+    public void checkEntityTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = fileRepository.findAll().size();
+        // set the field null
+        file.setEntityType(null);
+
+        // Create the File, which fails.
+        FileDTO fileDTO = fileMapper.toDto(file);
+
+        restFileMockMvc.perform(post("/api/files")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(fileDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<File> fileList = fileRepository.findAll();
+        assertThat(fileList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkEntityIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = fileRepository.findAll().size();
+        // set the field null
+        file.setEntityId(null);
+
+        // Create the File, which fails.
+        FileDTO fileDTO = fileMapper.toDto(file);
+
+        restFileMockMvc.perform(post("/api/files")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(fileDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<File> fileList = fileRepository.findAll();
+        assertThat(fileList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllFiles() throws Exception {
         // Initialize the database
         fileRepository.saveAndFlush(file);
@@ -250,7 +302,9 @@ public class FileResourceIT {
             .andExpect(jsonPath("$.[*].mimeType").value(hasItem(DEFAULT_MIME_TYPE.toString())))
             .andExpect(jsonPath("$.[*].binaryContentType").value(hasItem(DEFAULT_BINARY_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].binary").value(hasItem(Base64Utils.encodeToString(DEFAULT_BINARY))))
-            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())));
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
+            .andExpect(jsonPath("$.[*].entityType").value(hasItem(DEFAULT_ENTITY_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].entityId").value(hasItem(DEFAULT_ENTITY_ID.intValue())));
     }
     
     @Test
@@ -269,7 +323,9 @@ public class FileResourceIT {
             .andExpect(jsonPath("$.mimeType").value(DEFAULT_MIME_TYPE.toString()))
             .andExpect(jsonPath("$.binaryContentType").value(DEFAULT_BINARY_CONTENT_TYPE))
             .andExpect(jsonPath("$.binary").value(Base64Utils.encodeToString(DEFAULT_BINARY)))
-            .andExpect(jsonPath("$.url").value(DEFAULT_URL.toString()));
+            .andExpect(jsonPath("$.url").value(DEFAULT_URL.toString()))
+            .andExpect(jsonPath("$.entityType").value(DEFAULT_ENTITY_TYPE.toString()))
+            .andExpect(jsonPath("$.entityId").value(DEFAULT_ENTITY_ID.intValue()));
     }
 
     @Test
@@ -298,7 +354,9 @@ public class FileResourceIT {
             .mimeType(UPDATED_MIME_TYPE)
             .binary(UPDATED_BINARY)
             .binaryContentType(UPDATED_BINARY_CONTENT_TYPE)
-            .url(UPDATED_URL);
+            .url(UPDATED_URL)
+            .entityType(UPDATED_ENTITY_TYPE)
+            .entityId(UPDATED_ENTITY_ID);
         FileDTO fileDTO = fileMapper.toDto(updatedFile);
 
         restFileMockMvc.perform(put("/api/files")
@@ -316,6 +374,8 @@ public class FileResourceIT {
         assertThat(testFile.getBinary()).isEqualTo(UPDATED_BINARY);
         assertThat(testFile.getBinaryContentType()).isEqualTo(UPDATED_BINARY_CONTENT_TYPE);
         assertThat(testFile.getUrl()).isEqualTo(UPDATED_URL);
+        assertThat(testFile.getEntityType()).isEqualTo(UPDATED_ENTITY_TYPE);
+        assertThat(testFile.getEntityId()).isEqualTo(UPDATED_ENTITY_ID);
 
         // Validate the File in Elasticsearch
         verify(mockFileSearchRepository, times(1)).save(testFile);
@@ -381,7 +441,9 @@ public class FileResourceIT {
             .andExpect(jsonPath("$.[*].mimeType").value(hasItem(DEFAULT_MIME_TYPE)))
             .andExpect(jsonPath("$.[*].binaryContentType").value(hasItem(DEFAULT_BINARY_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].binary").value(hasItem(Base64Utils.encodeToString(DEFAULT_BINARY))))
-            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)));
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)))
+            .andExpect(jsonPath("$.[*].entityType").value(hasItem(DEFAULT_ENTITY_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].entityId").value(hasItem(DEFAULT_ENTITY_ID.intValue())));
     }
 
     @Test

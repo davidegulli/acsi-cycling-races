@@ -15,6 +15,7 @@ export const ACTION_TYPES = {
   CREATE_RACESUBSCRIPTION: 'raceSubscription/CREATE_RACESUBSCRIPTION',
   UPDATE_RACESUBSCRIPTION: 'raceSubscription/UPDATE_RACESUBSCRIPTION',
   DELETE_RACESUBSCRIPTION: 'raceSubscription/DELETE_RACESUBSCRIPTION',
+  SET_BLOB: 'raceSubscription/SET_BLOB',
   RESET: 'raceSubscription/RESET'
 };
 
@@ -105,6 +106,17 @@ export default (state: RaceSubscriptionState = initialState, action): RaceSubscr
         ...state,
         teams: action.payload.data
       };
+    case ACTION_TYPES.SET_BLOB:
+      const { name, data, contentType } = action.payload;
+      return {
+        ...state,
+        entity: {
+          ...state.entity,
+          [name + 'File']: data,
+          [name + 'ContentType']: contentType,
+          [name + 'FileName']: name
+        }
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -124,7 +136,7 @@ export const getSearchEntities: ICrudSearchAction<IRaceSubscription> = (query, p
   payload: axios.get<IRaceSubscription>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
 });
 
-export const getEntities = (raceId, page, size, sort) => {
+export const getEntities = (raceId, page?, size?, sort?) => {
   const requestUrl = `${apiUrl}/race/${raceId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_RACESUBSCRIPTION_LIST,
@@ -145,7 +157,7 @@ export const createEntity: ICrudPutAction<IRaceSubscription> = entity => async d
     type: ACTION_TYPES.CREATE_RACESUBSCRIPTION,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEntities(entity.raceId));
   return result;
 };
 
@@ -154,7 +166,7 @@ export const updateEntity: ICrudPutAction<IRaceSubscription> = entity => async d
     type: ACTION_TYPES.UPDATE_RACESUBSCRIPTION,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEntities(entity.raceId));
   return result;
 };
 
@@ -164,7 +176,7 @@ export const deleteEntity: ICrudDeleteAction<IRaceSubscription> = id => async di
     type: ACTION_TYPES.DELETE_RACESUBSCRIPTION,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getEntities(id));
   return result;
 };
 
@@ -174,19 +186,21 @@ export const getTeamsSuggestions = code => async dispatch => {
     type: ACTION_TYPES.FETCH_TEAMS_SUGGESTIONS,
     payload: axios.get(requestUrl)
   });
-
-  result.meta = {
-    debounce: {
-      time: 300
-    }
-  };
-
   return result;
 };
 
 export const clearTeamsSuggestions = () => ({
   type: ACTION_TYPES.FETCH_TEAMS_SUGGESTIONS,
   payload: []
+});
+
+export const setBlob = (name, data, contentType?) => ({
+  type: ACTION_TYPES.SET_BLOB,
+  payload: {
+    name,
+    data,
+    contentType
+  }
 });
 
 export const reset = () => ({

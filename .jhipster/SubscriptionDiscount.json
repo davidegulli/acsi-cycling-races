@@ -1,0 +1,43 @@
+{
+    "name": "SubscriptionDiscount",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "discount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "DiscountType",
+            "fieldValues": "PERCENT,AMOUNT"
+        },
+        {
+            "fieldName": "expirationDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "subscriptionType",
+            "otherEntityRelationshipName": "discounts",
+            "relationshipName": "subscriptionType",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191128210609",
+    "entityTableName": "subscription_discount",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

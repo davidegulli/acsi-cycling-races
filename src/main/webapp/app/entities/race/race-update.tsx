@@ -13,17 +13,7 @@ import { getEntities as getRaceTypes } from 'app/entities/race-type/race-type.re
 import { IAcsiTeam } from 'app/shared/model/acsi-team.model';
 import { getEntityByUserLogged as getAcsiTeam } from 'app/entities/acsi-team/acsi-team.reducer';
 // tslint:disable-next-line:no-duplicate-imports
-import {
-  getEntity,
-  updateEntity,
-  createEntity,
-  setBlob,
-  addSubscriptionType,
-  removeSubscriptionType,
-  addPathType,
-  removePathType,
-  reset
-} from './race.reducer';
+import { getEntity, updateEntity, createEntity, setBlob, addSubscriptionType, removeSubscriptionType, reset } from './race.reducer';
 
 import { IRace } from 'app/shared/model/race.model';
 // tslint:disable-next-line:no-unused-variable
@@ -117,18 +107,11 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
     this.props.history.push('/entity/race');
   };
 
-  onBlobChange = (isAnImage, name) => event => {
-    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
-  };
-
   clearBlob = name => () => {
     this.props.setBlob(name, undefined, undefined);
   };
 
   onDropLogoImage = (event, acceptedFiles) => {
-    console.log('onDropLogoImage');
-    console.log(event);
-    console.log(acceptedFiles);
     setFileData(event, (contentType, data) => this.props.setBlob('binaryLogo', data, contentType), true);
   };
 
@@ -148,16 +131,7 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
     this.props.removeSubscriptionType(index);
   };
 
-  onAddPathTypeHandler = pathTypeRow => {
-    this.props.addPathType(pathTypeRow);
-  };
-
-  onRemovePathTypeHandler = index => {
-    this.props.removePathType(index);
-  };
-
   nextStepHandler = (event, errors, values) => {
-    console.log('nextStepHandler');
     if (errors.length === 0) {
       const currentErrors = this.state.errors;
       const updateErrors = [...currentErrors, ...errors];
@@ -259,9 +233,6 @@ export class RaceUpdate extends React.Component<IRaceUpdateProps, IRaceUpdateSta
                   subscriptionTypeRows={raceEntity.subscriptionTypes}
                   addSubscriptionTypeHandler={this.onAddSubscriptionTypeHandler}
                   removeSubscriptionTypeHandler={this.onRemoveSubscriptionTypeHandler}
-                  pathTypeRows={raceEntity.pathTypes}
-                  addPathTypeHandler={this.onAddPathTypeHandler}
-                  removePathTypeHandler={this.onRemovePathTypeHandler}
                   cancelUrl={cancelUrl}
                 />
               </Fragment>
@@ -291,8 +262,6 @@ const mapDispatchToProps = {
   setBlob,
   addSubscriptionType,
   removeSubscriptionType,
-  addPathType,
-  removePathType,
   reset
 };
 

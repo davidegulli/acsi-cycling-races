@@ -34,6 +34,10 @@ export interface IRaceSubscription {
   payed?: boolean;
   payedPrice?: number;
   raceId?: number;
+  binaryPersonalIdDoc?: any;
+  binaryPersonalIdDocContentType?: string;
+  binaryMedicalCertificationDoc?: any;
+  binaryMedicalCertificationDocContentType?: string;
 }
 
 export const defaultValue: Readonly<IRaceSubscription> = {

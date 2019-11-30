@@ -1,5 +1,4 @@
 package it.acsi.cycling.races.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -8,6 +7,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 
 import it.acsi.cycling.races.domain.enumeration.FileType;
+
+import it.acsi.cycling.races.domain.enumeration.EntityType;
 
 /**
  * A File.
@@ -46,9 +47,14 @@ public class File implements Serializable {
     @Column(name = "url")
     private String url;
 
-    @ManyToOne
-    @JsonIgnoreProperties("attachments")
-    private Race race;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "entity_type", nullable = false)
+    private EntityType entityType;
+
+    @NotNull
+    @Column(name = "entity_id", nullable = false)
+    private Long entityId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -137,17 +143,30 @@ public class File implements Serializable {
         this.url = url;
     }
 
-    public Race getRace() {
-        return race;
+    public EntityType getEntityType() {
+        return entityType;
     }
 
-    public File race(Race race) {
-        this.race = race;
+    public File entityType(EntityType entityType) {
+        this.entityType = entityType;
         return this;
     }
 
-    public void setRace(Race race) {
-        this.race = race;
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public File entityId(Long entityId) {
+        this.entityId = entityId;
+        return this;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -177,6 +196,8 @@ public class File implements Serializable {
             ", binary='" + getBinary() + "'" +
             ", binaryContentType='" + getBinaryContentType() + "'" +
             ", url='" + getUrl() + "'" +
+            ", entityType='" + getEntityType() + "'" +
+            ", entityId=" + getEntityId() +
             "}";
     }
 }

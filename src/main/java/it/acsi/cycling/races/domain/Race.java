@@ -6,7 +6,6 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -69,14 +68,11 @@ public class Race implements Serializable {
     @Column(name = "status")
     private RaceStatus status;
 
-    @OneToMany(mappedBy = "race")
-    private Set<Contact> contacts = new HashSet<>();
-
-    @OneToMany(mappedBy = "race")
+    @Transient
     private Set<File> attachments = new HashSet<>();
 
     @OneToMany(mappedBy = "race")
-    private Set<PathType> pathTypes = new HashSet<>();
+    private Set<Contact> contacts = new HashSet<>();
 
     @OneToMany(mappedBy = "race")
     private Set<SubscriptionType> subscriptionTypes = new HashSet<>();
@@ -282,56 +278,6 @@ public class Race implements Serializable {
         this.contacts = contacts;
     }
 
-    public Set<File> getAttachments() {
-        return attachments;
-    }
-
-    public Race attachments(Set<File> files) {
-        this.attachments = files;
-        return this;
-    }
-
-    public Race addAttachment(File file) {
-        this.attachments.add(file);
-        file.setRace(this);
-        return this;
-    }
-
-    public Race removeAttachment(File file) {
-        this.attachments.remove(file);
-        file.setRace(null);
-        return this;
-    }
-
-    public void setAttachments(Set<File> files) {
-        this.attachments = files;
-    }
-
-    public Set<PathType> getPathTypes() {
-        return pathTypes;
-    }
-
-    public Race pathTypes(Set<PathType> pathTypes) {
-        this.pathTypes = pathTypes;
-        return this;
-    }
-
-    public Race addPathType(PathType pathType) {
-        this.pathTypes.add(pathType);
-        pathType.setRace(this);
-        return this;
-    }
-
-    public Race removePathType(PathType pathType) {
-        this.pathTypes.remove(pathType);
-        pathType.setRace(null);
-        return this;
-    }
-
-    public void setPathTypes(Set<PathType> pathTypes) {
-        this.pathTypes = pathTypes;
-    }
-
     public Set<SubscriptionType> getSubscriptionTypes() {
         return subscriptionTypes;
     }
@@ -402,6 +348,29 @@ public class Race implements Serializable {
     public Race acsiTeam(AcsiTeam acsiTeam) {
         this.acsiTeam = acsiTeam;
         return this;
+    }
+
+    public Set<File> getAttachments() {
+        return attachments;
+    }
+
+    public Race attachments(Set<File> files) {
+        this.attachments = files;
+        return this;
+    }
+
+    public Race addAttachment(File file) {
+        this.attachments.add(file);
+        return this;
+    }
+
+    public Race removeAttachment(File file) {
+        this.attachments.remove(file);
+        return this;
+    }
+
+    public void setAttachments(Set<File> files) {
+        this.attachments = files;
     }
 
     public void setAcsiTeam(AcsiTeam acsiTeam) {

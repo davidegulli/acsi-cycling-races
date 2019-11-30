@@ -17,8 +17,6 @@ export const ACTION_TYPES = {
   SET_BLOB: 'race/SET_BLOB',
   ADD_SUBSCRIPTION_TYPE: 'race/ADD_SUBSCRIPTION_TYPE',
   REMOVE_SUBSCRIPTION_TYPE: 'race/REMOVE_SUBSCRIPTION_TYPE',
-  ADD_PATH_TYPE: 'race/ADD_SUBSCRIPTION',
-  REMOVE_PATH_TYPE: 'race/REMOVE_SUBSCRIPTION',
   RESET: 'race/RESET'
 };
 
@@ -131,28 +129,6 @@ export default (state: RaceState = initialState, action): RaceState => {
           subscriptionTypes: [...removingSubscriptionTypes]
         }
       };
-    case ACTION_TYPES.ADD_PATH_TYPE:
-      const { pathType } = action.payload;
-      return {
-        ...state,
-        entity: {
-          ...state.entity,
-          pathTypes: [...state.entity.pathTypes, pathType]
-        }
-      };
-    case ACTION_TYPES.REMOVE_PATH_TYPE:
-      const removingPathTypes = [...state.entity.pathTypes];
-      removingPathTypes.splice(action.payload.index, 1);
-
-      const result = {
-        ...state,
-        entity: {
-          ...state.entity,
-          pathTypes: [...removingPathTypes]
-        }
-      };
-      return result;
-
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -233,20 +209,6 @@ export const addSubscriptionType = subscriptionType => ({
 
 export const removeSubscriptionType = index => ({
   type: ACTION_TYPES.REMOVE_SUBSCRIPTION_TYPE,
-  payload: {
-    index
-  }
-});
-
-export const addPathType = pathType => ({
-  type: ACTION_TYPES.ADD_PATH_TYPE,
-  payload: {
-    pathType
-  }
-});
-
-export const removePathType = index => ({
-  type: ACTION_TYPES.REMOVE_PATH_TYPE,
   payload: {
     index
   }

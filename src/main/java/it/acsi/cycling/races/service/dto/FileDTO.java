@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
 import it.acsi.cycling.races.domain.enumeration.FileType;
+import it.acsi.cycling.races.domain.enumeration.EntityType;
 
 /**
  * A DTO for the {@link it.acsi.cycling.races.domain.File} entity.
@@ -24,10 +25,14 @@ public class FileDTO implements Serializable {
     private byte[] binary;
 
     private String binaryContentType;
-
     private String url;
 
-    private Long raceId;
+    @NotNull
+    private EntityType entityType;
+
+    @NotNull
+    private Long entityId;
+
 
     public Long getId() {
         return id;
@@ -85,12 +90,20 @@ public class FileDTO implements Serializable {
         this.url = url;
     }
 
-    public Long getRaceId() {
-        return raceId;
+    public EntityType getEntityType() {
+        return entityType;
     }
 
-    public void setRaceId(Long raceId) {
-        this.raceId = raceId;
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
     }
 
     @Override
@@ -123,7 +136,8 @@ public class FileDTO implements Serializable {
             ", mimeType='" + getMimeType() + "'" +
             ", binary='" + getBinary() + "'" +
             ", url='" + getUrl() + "'" +
-            ", race=" + getRaceId() +
+            ", entityType='" + getEntityType() + "'" +
+            ", entityId=" + getEntityId() +
             "}";
     }
 }

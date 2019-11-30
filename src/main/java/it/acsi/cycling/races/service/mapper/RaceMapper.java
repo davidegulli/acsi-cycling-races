@@ -21,8 +21,6 @@ public interface RaceMapper extends EntityMapper<RaceDTO, Race> {
     @Mapping(target = "removeContact", ignore = true)
     @Mapping(target = "attachments", ignore = true)
     @Mapping(target = "removeAttachment", ignore = true)
-    @Mapping(target = "pathTypes", ignore = true)
-    @Mapping(target = "removePathType", ignore = true)
     @Mapping(target = "subscriptionTypes", ignore = true)
     @Mapping(target = "removeSubscriptionType", ignore = true)
     @Mapping(target = "subscriptions", ignore = true)

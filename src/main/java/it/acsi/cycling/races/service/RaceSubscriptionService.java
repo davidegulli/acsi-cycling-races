@@ -1,9 +1,10 @@
 package it.acsi.cycling.races.service;
 
-import it.acsi.cycling.races.domain.AcsiTeam;
-import it.acsi.cycling.races.domain.NonAcsiTeam;
-import it.acsi.cycling.races.domain.RaceSubscription;
+import it.acsi.cycling.races.domain.*;
+import it.acsi.cycling.races.domain.enumeration.EntityType;
+import it.acsi.cycling.races.domain.enumeration.FileType;
 import it.acsi.cycling.races.repository.AcsiTeamRepository;
+import it.acsi.cycling.races.repository.FileRepository;
 import it.acsi.cycling.races.repository.NonAcsiTeamRepository;
 import it.acsi.cycling.races.repository.RaceSubscriptionRepository;
 import it.acsi.cycling.races.repository.search.RaceSubscriptionSearchRepository;
@@ -40,14 +41,15 @@ public class RaceSubscriptionService {
     private final RaceSubscriptionRepository raceSubscriptionRepository;
     private final AcsiTeamRepository acsiTeamRepository;
     private final NonAcsiTeamRepository nonAcsiTeamRepository;
+    private final RaceSubscriptionSearchRepository raceSubscriptionSearchRepository;
+    private final FileRepository fileRepository;
 
     private final RaceSubscriptionMapper raceSubscriptionMapper;
     private final NonAcsiTeamMapper nonAcsiTeamMapper;
 
-    private final RaceSubscriptionSearchRepository raceSubscriptionSearchRepository;
-
     private final AcsiTeamService acsiTeamService;
     private final NonAcsiTeamService nonAcsiTeamService;
+    private final FileService fileService;
 
     private final ExcelReportHandler excelReportHandler;
     private final PdfReportHandler pdfReportHandler;
@@ -56,22 +58,26 @@ public class RaceSubscriptionService {
         RaceSubscriptionRepository raceSubscriptionRepository,
         AcsiTeamRepository acsiTeamRepository,
         NonAcsiTeamRepository nonAcsiTeamRepository,
+        FileRepository fileRepository,
         RaceSubscriptionMapper raceSubscriptionMapper,
         NonAcsiTeamMapper nonAcsiTeamMapper,
         RaceSubscriptionSearchRepository raceSubscriptionSearchRepository,
         AcsiTeamService acsiTeamService,
         NonAcsiTeamService nonAcsiTeamService,
+        FileService fileService,
         ExcelReportHandler excelReportHandler,
         PdfReportHandler pdfReportHandler) {
 
         this.raceSubscriptionRepository = raceSubscriptionRepository;
         this.acsiTeamRepository = acsiTeamRepository;
         this.nonAcsiTeamRepository = nonAcsiTeamRepository;
+        this.fileRepository = fileRepository;
         this.raceSubscriptionMapper = raceSubscriptionMapper;
         this.nonAcsiTeamMapper = nonAcsiTeamMapper;
         this.raceSubscriptionSearchRepository = raceSubscriptionSearchRepository;
         this.acsiTeamService = acsiTeamService;
         this.nonAcsiTeamService = nonAcsiTeamService;
+        this.fileService = fileService;
         this.excelReportHandler = excelReportHandler;
         this.pdfReportHandler = pdfReportHandler;
     }
@@ -91,19 +97,51 @@ public class RaceSubscriptionService {
         RaceSubscription raceSubscription = raceSubscriptionMapper.toEntity(raceSubscriptionDTO);
         raceSubscription.setDate(Instant.now());
         raceSubscription.setTeamId(teamId);
-        raceSubscription.setPathTypeId(raceSubscriptionDTO.getPathTypeId());
 
         raceSubscription = raceSubscriptionRepository.save(raceSubscription);
+        raceSubscriptionSearchRepository.save(raceSubscription);
 
         RaceSubscriptionDTO result = raceSubscriptionMapper.toDto(raceSubscription);
-        raceSubscriptionSearchRepository.save(raceSubscription);
+
+        Race race = new Race();
+        race.setId(raceSubscription.getId());
+
+        if(isPersonalIdDocPresent(raceSubscriptionDTO)) {
+            File personalIdDoc = new File()
+                .mimeType(raceSubscriptionDTO.getBinaryPersonalIdDocContentType())
+                .title(raceSubscriptionDTO.getBinaryPersonalIdDocFileName())
+                .binary(raceSubscriptionDTO.getBinaryPersonalIdDocFile())
+                .binaryContentType(raceSubscriptionDTO.getBinaryPersonalIdDocContentType())
+                .type(FileType.ATHLETE_ID_DOC)
+                .entityType(EntityType.RACE_SUBSCRIPTION)
+                .entityId(raceSubscription.getId());
+            personalIdDoc = fileRepository.save(personalIdDoc);
+            fileService.setFileUrl(personalIdDoc);
+            fileRepository.save(personalIdDoc);
+        }
+
+        if(isMedicalCertificationDocPresent(raceSubscriptionDTO)) {
+            File medicalCertificationDoc = new File()
+                .mimeType(raceSubscriptionDTO.getBinaryMedicalCertificationDocContentType())
+                .title(raceSubscriptionDTO.getBinaryMedicalCertificationDocFileName())
+                .binary(raceSubscriptionDTO.getBinaryMedicalCertificationDocFile())
+                .binaryContentType(raceSubscriptionDTO.getBinaryMedicalCertificationDocContentType())
+                .type(FileType.MEDICAL_CERTIFICATION)
+                .entityType(EntityType.RACE_SUBSCRIPTION)
+                .entityId(raceSubscription.getId());
+            medicalCertificationDoc = fileRepository.save(medicalCertificationDoc);
+            fileService.setFileUrl(medicalCertificationDoc);
+            fileRepository.save(medicalCertificationDoc);
+        }
 
         return result;
     }
 
     private Long handleTeam(RaceSubscriptionDTO raceSubscriptionDTO) {
 
-        if(raceSubscriptionDTO.getTeamId() != 0) {
+        if(raceSubscriptionDTO.getTeamId() != null &&
+            raceSubscriptionDTO.getTeamId() != 0) {
+
            return raceSubscriptionDTO.getTeamId();
         }
 
@@ -255,6 +293,22 @@ public class RaceSubscriptionService {
         }
 
         return raceSubscriptionDTO;
+    }
+
+    private boolean isPersonalIdDocPresent(RaceSubscriptionDTO raceSubscriptionDTO) {
+        return (raceSubscriptionDTO != null &&
+            raceSubscriptionDTO.getBinaryPersonalIdDocFile() != null &&
+            raceSubscriptionDTO.getBinaryPersonalIdDocFile().length > 0 &&
+            raceSubscriptionDTO.getBinaryPersonalIdDocContentType() != null &&
+            !raceSubscriptionDTO.getBinaryPersonalIdDocContentType().isEmpty());
+    }
+
+    private boolean isMedicalCertificationDocPresent(RaceSubscriptionDTO raceSubscriptionDTO) {
+        return (raceSubscriptionDTO != null &&
+            raceSubscriptionDTO.getBinaryMedicalCertificationDocFile() != null &&
+            raceSubscriptionDTO.getBinaryMedicalCertificationDocFile().length > 0 &&
+            raceSubscriptionDTO.getBinaryMedicalCertificationDocContentType() != null &&
+            !raceSubscriptionDTO.getBinaryMedicalCertificationDocContentType().isEmpty());
     }
 
 }

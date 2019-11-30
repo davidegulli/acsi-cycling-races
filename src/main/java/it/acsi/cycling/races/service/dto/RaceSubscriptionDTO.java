@@ -45,10 +45,6 @@ public class RaceSubscriptionDTO implements Serializable {
     @NotNull
     private Long subcriptionTypeId;
 
-    @NotNull
-    private Long pathTypeId;
-
-    @NotNull
     private Long teamId;
 
     @NotNull
@@ -74,6 +70,18 @@ public class RaceSubscriptionDTO implements Serializable {
     private Double payedPrice;
 
     private Long raceId;
+
+    private byte[] binaryPersonalIdDocFile;
+
+    private String binaryPersonalIdDocContentType;
+
+    private String binaryPersonalIdDocFileName;
+
+    private byte[] binaryMedicalCertificationDocFile;
+
+    private String binaryMedicalCertificationDocContentType;
+
+    private String binaryMedicalCertificationDocFileName;
 
     public Long getId() {
         return id;
@@ -161,14 +169,6 @@ public class RaceSubscriptionDTO implements Serializable {
 
     public void setSubcriptionTypeId(Long subcriptionTypeId) {
         this.subcriptionTypeId = subcriptionTypeId;
-    }
-
-    public Long getPathTypeId() {
-        return pathTypeId;
-    }
-
-    public void setPathTypeId(Long pathType) {
-        this.pathTypeId = pathType;
     }
 
     public Instant getDate() {
@@ -261,6 +261,54 @@ public class RaceSubscriptionDTO implements Serializable {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public byte[] getBinaryPersonalIdDocFile() {
+        return binaryPersonalIdDocFile;
+    }
+
+    public void setBinaryPersonalIdDocFile(byte[] binaryPersonalIdDocFile) {
+        this.binaryPersonalIdDocFile = binaryPersonalIdDocFile;
+    }
+
+    public String getBinaryPersonalIdDocContentType() {
+        return binaryPersonalIdDocContentType;
+    }
+
+    public void setBinaryPersonalIdDocContentType(String binaryPersonalIdDocContentType) {
+        this.binaryPersonalIdDocContentType = binaryPersonalIdDocContentType;
+    }
+
+    public byte[] getBinaryMedicalCertificationDocFile() {
+        return binaryMedicalCertificationDocFile;
+    }
+
+    public void setBinaryMedicalCertificationDocFile(byte[] binaryMedicalCertificationDocFile) {
+        this.binaryMedicalCertificationDocFile = binaryMedicalCertificationDocFile;
+    }
+
+    public String getBinaryMedicalCertificationDocContentType() {
+        return binaryMedicalCertificationDocContentType;
+    }
+
+    public void setBinaryMedicalCertificationDocContentType(String binaryMedicalCertificationDocContentType) {
+        this.binaryMedicalCertificationDocContentType = binaryMedicalCertificationDocContentType;
+    }
+
+    public String getBinaryPersonalIdDocFileName() {
+        return binaryPersonalIdDocFileName;
+    }
+
+    public void setBinaryPersonalIdDocFileName(String binaryPersonalIdDocFileName) {
+        this.binaryPersonalIdDocFileName = binaryPersonalIdDocFileName;
+    }
+
+    public String getBinaryMedicalCertificationDocFileName() {
+        return binaryMedicalCertificationDocFileName;
+    }
+
+    public void setBinaryMedicalCertificationDocFileName(String binaryMedicalCertificationDocFileName) {
+        this.binaryMedicalCertificationDocFileName = binaryMedicalCertificationDocFileName;
     }
 
     @Override

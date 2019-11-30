@@ -45,10 +45,6 @@ import subscriptionType, {
   SubscriptionTypeState
 } from 'app/entities/subscription-type/subscription-type.reducer';
 // prettier-ignore
-import pathType, {
-  PathTypeState
-} from 'app/entities/path-type/path-type.reducer';
-// prettier-ignore
 import raceSubscription, {
   RaceSubscriptionState
 } from 'app/entities/race-subscription/race-subscription.reducer';
@@ -56,6 +52,10 @@ import raceSubscription, {
 import raceType, {
   RaceTypeState
 } from 'app/entities/race-type/race-type.reducer';
+// prettier-ignore
+import subscriptionDiscount, {
+  SubscriptionDiscountState
+} from 'app/entities/subscription-discount/subscription-discount.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -77,9 +77,9 @@ export interface IRootState {
   readonly category: CategoryState;
   readonly race: RaceState;
   readonly subscriptionType: SubscriptionTypeState;
-  readonly pathType: PathTypeState;
   readonly raceSubscription: RaceSubscriptionState;
   readonly raceType: RaceTypeState;
+  readonly subscriptionDiscount: SubscriptionDiscountState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -103,9 +103,9 @@ const rootReducer = combineReducers<IRootState>({
   category,
   race,
   subscriptionType,
-  pathType,
   raceSubscription,
   raceType,
+  subscriptionDiscount,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

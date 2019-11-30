@@ -51,7 +51,7 @@
         },
         {
             "fieldName": "subscriptionExpirationDate",
-            "fieldType": "Instant"
+            "fieldType": "LocalDate"
         },
         {
             "fieldName": "attributes",
@@ -69,18 +69,6 @@
             "otherEntityName": "contact",
             "otherEntityRelationshipName": "race",
             "relationshipName": "contact"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "file",
-            "otherEntityRelationshipName": "race",
-            "relationshipName": "attachment"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "pathType",
-            "otherEntityRelationshipName": "race",
-            "relationshipName": "pathType"
         },
         {
             "relationshipType": "one-to-many",

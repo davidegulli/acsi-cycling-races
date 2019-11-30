@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 import it.acsi.cycling.races.domain.enumeration.GenderType;
 
@@ -37,7 +38,7 @@ public class RaceSubscription implements Serializable {
 
     @NotNull
     @Column(name = "birth_date", nullable = false)
-    private String birthDate;
+    private LocalDate birthDate;
 
     @NotNull
     @Column(name = "birth_place", nullable = false)
@@ -66,10 +67,6 @@ public class RaceSubscription implements Serializable {
     @NotNull
     @Column(name = "subcription_type_id", nullable = false)
     private Long subcriptionTypeId;
-
-    @NotNull
-    @Column(name = "path_type", nullable = false)
-    private Long pathTypeId;
 
     @NotNull
     @Column(name = "team_id", nullable = false)
@@ -139,16 +136,16 @@ public class RaceSubscription implements Serializable {
         this.surname = surname;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public RaceSubscription birthDate(String birthDate) {
+    public RaceSubscription birthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
         return this;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -241,19 +238,6 @@ public class RaceSubscription implements Serializable {
 
     public void setSubcriptionTypeId(Long subcriptionTypeId) {
         this.subcriptionTypeId = subcriptionTypeId;
-    }
-
-    public Long getPathTypeId() {
-        return pathTypeId;
-    }
-
-    public RaceSubscription pathTypeId(Long pathType) {
-        this.pathTypeId = pathTypeId;
-        return this;
-    }
-
-    public void setPathTypeId(Long pathTypeId) {
-        this.pathTypeId = pathTypeId;
     }
 
     public Long getTeamId() {
@@ -404,7 +388,6 @@ public class RaceSubscription implements Serializable {
             ", phone='" + getPhone() + "'" +
             ", category='" + getCategory() + "'" +
             ", subcriptionTypeId=" + getSubcriptionTypeId() +
-            ", pathTypeId=" + getPathTypeId() +
             ", teamId=" + getTeamId() +
             ", athleteId='" + getAthleteId() + "'" +
             ", date='" + getDate() + "'" +

@@ -1,31 +1,28 @@
 package it.acsi.cycling.races.service;
 
-import it.acsi.cycling.races.domain.AcsiTeam;
 import it.acsi.cycling.races.domain.Contact;
 import it.acsi.cycling.races.domain.File;
 import it.acsi.cycling.races.domain.Race;
+import it.acsi.cycling.races.domain.enumeration.EntityType;
 import it.acsi.cycling.races.domain.enumeration.FileType;
 import it.acsi.cycling.races.repository.*;
 import it.acsi.cycling.races.repository.search.RaceSearchRepository;
 import it.acsi.cycling.races.service.dto.AcsiTeamDTO;
 import it.acsi.cycling.races.service.dto.RaceDTO;
-import it.acsi.cycling.races.service.mapper.PathTypeMapper;
 import it.acsi.cycling.races.service.mapper.RaceMapper;
+import it.acsi.cycling.races.service.mapper.SubscriptionDiscountMapper;
 import it.acsi.cycling.races.service.mapper.SubscriptionTypeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Collections;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing {@link Race}.
@@ -40,7 +37,7 @@ public class RaceService {
 
     private final SubscriptionTypeMapper subscriptionTypeMapper;
 
-    private final PathTypeMapper pathTypeMapper;
+    private final SubscriptionDiscountMapper subscriptionDiscountMapper;
 
     private final RaceRepository raceRepository;
 
@@ -52,29 +49,34 @@ public class RaceService {
 
     private final SubscriptionTypeRepository subscriptionTypeRepository;
 
-    private final PathTypeRepository pathTypeRepository;
+    private final SubscriptionDiscountRepository subscriptionDiscountRepository;
 
     private final FileService fileService;
 
     private final AcsiTeamService acsiTeamService;
 
     public RaceService(
-        RaceMapper raceMapper, SubscriptionTypeMapper subscriptionTypeMapper, PathTypeMapper pathTypeMapper,
-        RaceRepository raceRepository, RaceSearchRepository raceSearchRepository,
-        FileRepository fileRepository, ContactRepository contactRepository, FileService fileService,
-        SubscriptionTypeRepository subscriptionTypeRepository, PathTypeRepository pathTypeRepository,
+        RaceMapper raceMapper,
+        SubscriptionTypeMapper subscriptionTypeMapper,
+        SubscriptionDiscountMapper subscriptionDiscountMapper,
+        RaceRepository raceRepository,
+        RaceSearchRepository raceSearchRepository,
+        FileRepository fileRepository,
+        ContactRepository contactRepository, FileService fileService,
+        SubscriptionDiscountRepository subscriptionDiscountRepository,
+        SubscriptionTypeRepository subscriptionTypeRepository,
         AcsiTeamService acsiTeamService) {
 
         this.raceMapper = raceMapper;
         this.subscriptionTypeMapper = subscriptionTypeMapper;
-        this.pathTypeMapper = pathTypeMapper;
+        this.subscriptionDiscountMapper = subscriptionDiscountMapper;
         this.raceRepository = raceRepository;
         this.fileRepository = fileRepository;
         this.contactRepository = contactRepository;
         this.raceSearchRepository = raceSearchRepository;
         this.fileService = fileService;
         this.subscriptionTypeRepository = subscriptionTypeRepository;
-        this.pathTypeRepository = pathTypeRepository;
+        this.subscriptionDiscountRepository = subscriptionDiscountRepository;
         this.acsiTeamService = acsiTeamService;
     }
 
@@ -101,7 +103,8 @@ public class RaceService {
                 .binary(raceDTO.getBinaryLogoImage())
                 .binaryContentType(raceDTO.getBinaryLogoContentType())
                 .type(FileType.LOGO_IMAGE)
-                .race(race);
+                .entityType(EntityType.RACE)
+                .entityId(race.getId());
             logoImage = fileRepository.save(logoImage);
             fileService.setFileUrl(logoImage);
             fileRepository.save(logoImage);
@@ -114,7 +117,8 @@ public class RaceService {
                 .binary(raceDTO.getBinaryCoverImage())
                 .binaryContentType(raceDTO.getBinaryCoverContentType())
                 .type(FileType.COVER_IMAGE)
-                .race(race);
+                .entityType(EntityType.RACE)
+                .entityId(race.getId());
             coverImage = fileRepository.save(coverImage);
             fileService.setFileUrl(coverImage);
             fileRepository.save(coverImage);
@@ -127,7 +131,8 @@ public class RaceService {
                 .binary(raceDTO.getBinaryPathMapImage())
                 .binaryContentType(raceDTO.getBinaryPathMapContentType())
                 .type(FileType.PATH_IMAGE)
-                .race(race);
+                .entityType(EntityType.RACE)
+                .entityId(race.getId());
             pathMapImage = fileRepository.save(pathMapImage);
             fileService.setFileUrl(pathMapImage);
             fileRepository.save(pathMapImage);
@@ -144,18 +149,13 @@ public class RaceService {
 
         if(!isNew) {
             subscriptionTypeRepository.deleteByRaceId(raceResult.getId());
-            pathTypeRepository.deleteByRaceId(raceResult.getId());
+
         }
 
         raceDTO.getSubscriptionTypes().stream()
             .map(subscriptionTypeMapper::toEntity)
             .map(subscriptionType -> subscriptionType.race(raceResult))
             .forEach(subscriptionTypeRepository::save);
-
-        raceDTO.getPathTypes().stream()
-            .map(pathTypeMapper::toEntity)
-            .map(pathType -> pathType.race(raceResult))
-            .forEach(pathTypeRepository::save);
 
         return result;
     }
@@ -172,6 +172,7 @@ public class RaceService {
         log.debug("Request to get all Races");
 
         return raceRepository.findAll(pageable)
+            .map(this::setAttachment)
             .map(raceMapper::toDtoWithChildRelation);
     }
 
@@ -181,6 +182,7 @@ public class RaceService {
         log.debug("Request to get all Races");
 
         return raceRepository.findByGreaterDateOrderedByDate(date, pageable)
+            .map(this::setAttachment)
             .map(raceMapper::toDtoWithChildRelation);
     }
 
@@ -192,7 +194,9 @@ public class RaceService {
         Optional<AcsiTeamDTO> acsiTeam = acsiTeamService.getByLogin();
 
         if(acsiTeam.isPresent()) {
-            return raceRepository.findByGreaterEqualDateAndTeamIdOrderedByDate(date, acsiTeam.get().getId(), pageable)
+            return raceRepository.findByGreaterEqualDateAndTeamIdOrderedByDate(
+                    date, acsiTeam.get().getId(), pageable)
+                .map(this::setAttachment)
                 .map(raceMapper::toDtoWithChildRelation);
         } else {
             return Page.empty();
@@ -211,6 +215,7 @@ public class RaceService {
         log.debug("Request to get Race : {}", id);
 
         return raceRepository.findById(id)
+            .map(this::setAttachment)
             .map(raceMapper::toDtoWithChildRelation);
     }
 
@@ -233,7 +238,6 @@ public class RaceService {
                 contactRepository.deleteById(c.getId());
             });
 
-            pathTypeRepository.deleteByRaceId(e.getId());
             subscriptionTypeRepository.deleteByRaceId(e.getId());
 
             raceRepository.deleteById(e.getId());
@@ -253,6 +257,12 @@ public class RaceService {
         log.debug("Request to search for a page of Races for query {}", query);
         return raceSearchRepository.search(queryStringQuery(query), pageable)
             .map(raceMapper::toDto);
+    }
+
+    private Race setAttachment(Race race) {
+        return race.attachments(
+            fileRepository.findByEntityTypeAndEntityId(
+                EntityType.RACE, race.getId()));
     }
 
     private boolean isLogoImagePresent(RaceDTO raceDTO) {
