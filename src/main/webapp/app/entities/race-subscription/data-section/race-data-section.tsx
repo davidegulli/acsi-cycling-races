@@ -2,10 +2,14 @@ import React from 'react';
 import { Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvRadioGroup, AvRadio } from 'availity-reactstrap-validation';
 import StepperButtons from '../../../shared/component/stepper-buttons';
+import PaymentMethodType from '../component/payment-method-type';
+import SubscriptionType from '../component/subscription-type';
 import { Box } from '@material-ui/core';
+import race from 'app/entities/race/race';
 
 interface IRaceDataSection {
   entity: any;
+  race: any;
   isNew: boolean;
   updating: boolean;
   stepIndex: number;
@@ -29,73 +33,62 @@ const raceDataSection = (props: IRaceDataSection) => (
       <Row>
         <Col>
           <AvRadioGroup name="subcriptionTypeId" required errorMessage="Devi selezionare la tipologia di iscrizione">
-            {props.subscriptionTypes.map((item, index) => (
-              <Box className="box box-data" key={index}>
-                <Row>
-                  <Col sm="1">
-                    <Box display="flex" alignItems="center" css={{ height: '100%' }}>
-                      <Box>
-                        <AvRadio label="" value={item.id} />
-                      </Box>
-                    </Box>
-                  </Col>
-                  <Col sm="9">
-                    <Box fontWeight={500} fontSize="0.95rem">
-                      {item.name}
-                    </Box>
-                    <Box>{item.description}</Box>
-                  </Col>
-                  <Col sm="2">
-                    <Box display="flex" alignItems="center" justifyContent="flex-end" css={{ height: '100%' }}>
-                      <Box fontWeight={500} fontSize="1.0rem" textAlign="center">
-                        {formatter.format(item.price)}
-                      </Box>
-                    </Box>
-                  </Col>
-                </Row>
-              </Box>
-            ))}
+            <Row>
+              <Col md="4">
+                {props.subscriptionTypes.map((item, index) => (
+                  <SubscriptionType key={index} id={item.id} name={item.name} description={item.description} price={item.price} />
+                ))}
+              </Col>
+            </Row>
           </AvRadioGroup>
         </Col>
       </Row>
       <h4 className="sheet-title">Metodo di Pagamento</h4>
       <Row>
-        <AvGroup>
-          <AvRadioGroup name="paymentType" required errorMessage="Pick one!">
-            <div className="payment-method-radio-box">
-              <Row>
-                <Col>
-                  <div className="payment-method-radio-section">
-                    <Row>
-                      <Col>
-                        <div className="payment-method-radio">
-                          <AvRadio label="Paypal" value="PAYPAL" />
-                        </div>
-                      </Col>
-                      <Col>
-                        <img src="content/images/paypal.png" className="payment-method-image" />
-                      </Col>
-                    </Row>
-                  </div>
-                </Col>
-                <Col>
-                  <div className="payment-method-radio-section">
-                    <Row>
-                      <Col>
-                        <div className="payment-method-radio">
-                          <AvRadio label="Bonifico Bancario" value="CREDIT_TRANSFER" />
-                        </div>
-                      </Col>
-                      <Col>
-                        <img src="content/images/credit-transfer.png" className="payment-method-image" />
-                      </Col>
-                    </Row>
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          </AvRadioGroup>
-        </AvGroup>
+        <Col>
+          <AvGroup>
+            <AvRadioGroup name="paymentType" required errorMessage="Pick one!">
+              <div className="payment-method-radio-box">
+                <Row>
+                  {/*
+                  <Col md="4">
+                    <PaymentMethodType
+                      label="Paypal"
+                      value="PAYPAL"
+                      imgUrl="content/images/paypal.png"
+                    />
+                  </Col>
+                  */}
+                  <Col md="4">
+                    <PaymentMethodType label="Bonifico Bancario" value="CREDIT_TRANSFER" imgUrl="content/images/credit-transfer.png" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <h4 className="sheet-title">Coordinate del pagamento</h4>
+                    <span>
+                      Per finalizzare l'iscrizione alla gara sarà necessario effettuare un bonifico bancario utilizzando i seguenti dati:
+                      <ul>
+                        <li>
+                          <b>IBAN:</b> IT87I9890988767578764797
+                        </li>
+                        <li>
+                          <b>Intestatario:</b> Acsi a.s.d. Ciclismo Lazio
+                        </li>
+                        <li>
+                          <b>Banca:</b> BNL
+                        </li>
+                        <li>
+                          <b>Casuale:</b> Quota iscrizione gara {props.race.date}-{props.race.name}{' '}
+                        </li>
+                      </ul>
+                    </span>
+                  </Col>
+                </Row>
+              </div>
+            </AvRadioGroup>
+          </AvGroup>
+        </Col>
       </Row>
       <StepperButtons
         activeStep={props.activeStep}

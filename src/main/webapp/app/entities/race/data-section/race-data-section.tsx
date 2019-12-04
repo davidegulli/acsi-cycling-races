@@ -79,7 +79,7 @@ const raceDataSection = (props: IRaceDataSection) => {
             name="location"
             validate={{
               required: { value: true, errorMessage: 'Il campo è obbligatorio' },
-              pattern: { value: "^[A-Za-z'àèùì ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici e numerici' },
+              pattern: { value: "^[A-Za-z'àèùì ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici' },
               minLength: { value: 4, errorMessage: 'Il campo deve esse composto da almeno 4 caratteri' },
               maxLength: { value: 30, errorMessage: 'Il campo può essere composto da un massimo di 30 caratteri' }
             }}

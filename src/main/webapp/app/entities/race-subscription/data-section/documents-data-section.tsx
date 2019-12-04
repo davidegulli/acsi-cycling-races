@@ -57,6 +57,9 @@ const documentsDataSection = (props: IDocumentsDataSection) => {
             onDrop={onDropPersonalIdDoc}
             previewUrl={!props.isNew ? props.entity.binaryLogoUrl : null}
           />
+          {state.formConfirmed && !state.personalIdDocUploaded ? (
+            <div className="invalid-feedback">File obbligatorio, selezionane uno!</div>
+          ) : null}
         </div>
         <div style={{ marginBottom: '1rem' }}>
           <Label for="race-medicalCertification">Certificato Medico</Label>
@@ -65,6 +68,9 @@ const documentsDataSection = (props: IDocumentsDataSection) => {
             onDrop={onDropMedicalCertificationDoc}
             previewUrl={!props.isNew ? props.entity.binaryLogoUrl : null}
           />
+          {state.formConfirmed && !state.medicalCertificationDocUploaded ? (
+            <div className="invalid-feedback">File obbligatorio, selezionane uno!</div>
+          ) : null}
         </div>
         <StepperButtons
           activeStep={props.activeStep}

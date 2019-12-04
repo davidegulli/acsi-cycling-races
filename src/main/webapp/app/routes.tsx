@@ -17,6 +17,7 @@ import { AUTHORITIES } from 'app/config/constants';
 import Race from './entities/race';
 import Detail from './entities/race/race-detail';
 import EventSubscription from './entities/race-subscription/race-subscription-update';
+import EventSubscriptionSummary from './entities/race-subscription/race-subscription-summary';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -49,7 +50,8 @@ const Routes = () => (
       />
       <ErrorBoundaryRoute path="/" exact component={Home} />
       <ErrorBoundaryRoute path={`/event/:id`} component={Detail} />
-      <ErrorBoundaryRoute path={`/subscription/:raceId`} component={EventSubscription} />
+      <ErrorBoundaryRoute exact path={`/subscription/:raceId`} component={EventSubscription} />
+      <ErrorBoundaryRoute exact path={`/subscription/:raceId/summary/:id`} component={EventSubscriptionSummary} />
       <ErrorBoundaryRoute component={PageNotFound} />
     </Switch>
   </div>

@@ -34,7 +34,10 @@ const personalDataSection = (props: IPersonalDataSection) => (
               type="text"
               name="name"
               validate={{
-                required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                pattern: { value: "^[A-Za-z'àèùìéò ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici' },
+                minLength: { value: 3, errorMessage: 'Il campo deve esse composto da almeno 3 caratteri' },
+                maxLength: { value: 20, errorMessage: 'Il campo deve esse composto da al massimo 20 caratteri' }
               }}
             />
           </AvGroup>
@@ -49,7 +52,10 @@ const personalDataSection = (props: IPersonalDataSection) => (
               type="text"
               name="surname"
               validate={{
-                required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                pattern: { value: "^[A-Za-z'àèùìéò ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici' },
+                minLength: { value: 3, errorMessage: 'Il campo deve esse composto da almeno 3 caratteri' },
+                maxLength: { value: 20, errorMessage: 'Il campo deve esse composto da al massimo 20 caratteri' }
               }}
             />
           </AvGroup>
@@ -83,7 +89,10 @@ const personalDataSection = (props: IPersonalDataSection) => (
               type="text"
               name="birthPlace"
               validate={{
-                required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                pattern: { value: "^[A-Za-z'àèùìéò ]+$", errorMessage: 'Il campo può contenere solamente caratteri alfabetici' },
+                minLength: { value: 3, errorMessage: 'Il campo deve esse composto da almeno 3 caratteri' },
+                maxLength: { value: 20, errorMessage: 'Il campo deve esse composto da al massimo 20 caratteri' }
               }}
             />
           </AvGroup>
@@ -114,11 +123,15 @@ const personalDataSection = (props: IPersonalDataSection) => (
               Codice Fiscale
             </Label>
             <AvField
+              style={{ textTransform: 'uppercase' }}
               id="race-subscription-taxCode"
               type="text"
               name="taxCode"
               validate={{
-                required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                pattern: { value: '[A-Z0-9]$', errorMessage: 'Il campo deve contenere un codice fiscale valido' },
+                minLength: { value: 16, errorMessage: 'Il campo deve contenere un codice fiscale valido' },
+                maxLength: { value: 16, errorMessage: 'Il campo deve contenere un codice fiscale valido' }
               }}
             />
           </AvGroup>
@@ -152,7 +165,10 @@ const personalDataSection = (props: IPersonalDataSection) => (
               type="text"
               name="phone"
               validate={{
-                required: { value: true, errorMessage: 'Il campo è obbligatorio' }
+                required: { value: true, errorMessage: 'Il campo è obbligatorio' },
+                pattern: { value: '^[0-9 -]+$', errorMessage: 'Il campo può contenere solamente caratteri numerici' },
+                minLength: { value: 8, errorMessage: 'Il campo deve esse composto da almeno 3 caratteri' },
+                maxLength: { value: 14, errorMessage: 'Il campo deve esse composto da al massimo 14 caratteri' }
               }}
             />
           </AvGroup>
@@ -170,3 +186,8 @@ const personalDataSection = (props: IPersonalDataSection) => (
 );
 
 export default personalDataSection;
+
+/*
+pattern: { value: '^(?:[A-Z][AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$',
+                           errorMessage: 'Il campo può contenere solamente caratteri numerici' }
+*/

@@ -36,6 +36,7 @@ import SummaryDataSection from './data-section/summary-data-section';
 import { withStyles } from '@material-ui/styles';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import debounce from 'lodash.debounce';
+import race from '../race/race';
 
 export interface IRaceSubscriptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; raceId: string }> {}
 
@@ -59,7 +60,7 @@ const IconLabel = withStyles({
 })(StepIcon);
 
 function getSteps() {
-  return ['Dati Personali', 'Documenti', 'Associazione', 'Gara', 'Pagamento'];
+  return ['Dati Personali', 'Documenti', 'Associazione', 'Pagamento'];
 }
 
 export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpdateProps, IRaceSubscriptionUpdateState> {
@@ -85,8 +86,7 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      // TODO handle success state
-      // this.handleClose();
+      this.handleSuccess(nextProps.race.id, nextProps.raceSubscriptionEntity.id);
     }
   }
 
@@ -119,8 +119,8 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
     }
   };
 
-  handleClose = () => {
-    this.props.history.push('/entity/race-subscription');
+  handleSuccess = (raceId, subscriptionId) => {
+    this.props.history.push(`/subscription/${raceId}/summary/${subscriptionId}`);
   };
 
   nextStepHandler = (event, errors, values) => {
@@ -135,7 +135,6 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
       if (this.state.step === 3) {
         this.saveEntity(updateErrors, updatedValues);
         const currentState = this.state.step;
-        this.setState({ step: currentState + 1 });
       } else {
         const currentState = this.state.step;
         this.setState({ step: currentState + 1 });
@@ -250,21 +249,13 @@ export class RaceSubscriptionUpdate extends React.Component<IRaceSubscriptionUpd
                   stepIndex={3}
                   stepsLength={5}
                   entity={raceSubscriptionEntity}
+                  race={race}
                   isNew={this.state.isNew}
                   updating={updating}
                   nextStepHandler={this.nextStepHandler}
                   prevStepHandler={this.prevStepHandler}
                   subscriptionTypes={subscriptionTypes}
                   cancelUrl={cancelUrl}
-                />
-                <SummaryDataSection
-                  activeStep={this.state.step}
-                  stepIndex={4}
-                  stepsLength={5}
-                  entity={raceSubscriptionEntity}
-                  isNew={this.state.isNew}
-                  updating={updating}
-                  results={{ resul: 'success' }}
                 />
               </Fragment>
             )}
