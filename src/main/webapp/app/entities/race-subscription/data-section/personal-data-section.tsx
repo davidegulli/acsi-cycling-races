@@ -129,7 +129,7 @@ const personalDataSection = (props: IPersonalDataSection) => (
               name="taxCode"
               validate={{
                 required: { value: true, errorMessage: 'Il campo è obbligatorio' },
-                pattern: { value: '[A-Z0-9]$', errorMessage: 'Il campo deve contenere un codice fiscale valido' },
+                pattern: { value: '[A-Z0-9]', errorMessage: 'Il campo deve contenere un codice fiscale valido' },
                 minLength: { value: 16, errorMessage: 'Il campo deve contenere un codice fiscale valido' },
                 maxLength: { value: 16, errorMessage: 'Il campo deve contenere un codice fiscale valido' }
               }}
@@ -167,7 +167,7 @@ const personalDataSection = (props: IPersonalDataSection) => (
               validate={{
                 required: { value: true, errorMessage: 'Il campo è obbligatorio' },
                 pattern: { value: '^[0-9 -]+$', errorMessage: 'Il campo può contenere solamente caratteri numerici' },
-                minLength: { value: 8, errorMessage: 'Il campo deve esse composto da almeno 3 caratteri' },
+                minLength: { value: 8, errorMessage: 'Il campo deve esse composto da almeno 8 caratteri' },
                 maxLength: { value: 14, errorMessage: 'Il campo deve esse composto da al massimo 14 caratteri' }
               }}
             />

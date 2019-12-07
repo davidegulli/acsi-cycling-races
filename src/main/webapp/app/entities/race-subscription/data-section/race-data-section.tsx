@@ -34,11 +34,11 @@ const raceDataSection = (props: IRaceDataSection) => (
         <Col>
           <AvRadioGroup name="subcriptionTypeId" required errorMessage="Devi selezionare la tipologia di iscrizione">
             <Row>
-              <Col md="4">
-                {props.subscriptionTypes.map((item, index) => (
+              {props.subscriptionTypes.map((item, index) => (
+                <Col md="4">
                   <SubscriptionType key={index} id={item.id} name={item.name} description={item.description} price={item.price} />
-                ))}
-              </Col>
+                </Col>
+              ))}
             </Row>
           </AvRadioGroup>
         </Col>

@@ -27,7 +27,7 @@ const subscriptionType = (props: ISubscriptionType) => (
       </Row>
       <Row>
         <Col>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="p" className="mt-3">
             {props.description}
           </Typography>
         </Col>
